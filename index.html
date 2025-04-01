@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>매우 상세한 나만의 결혼 준비 체크리스트</title>
     <style>
+        /* --- 기본 스타일 --- */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
             line-height: 1.6;
@@ -84,9 +85,10 @@
             box-sizing: border-box;
             background-color: #f8f9fa; /* 메모칸 배경색 */
         }
-         .checklist-item input[type="checkbox"]:checked + label {
-            text-decoration: line-through;
-            color: #adb5bd;
+         /* 체크 시 라벨 스타일 변경은 JS에서 처리 */
+        .checklist-item input[type="checkbox"]:checked + label {
+             /* text-decoration: line-through; */
+             /* color: #adb5bd; */
         }
         .important-note {
             background-color: #fff9db; /* 연한 노란색 */
@@ -125,7 +127,38 @@
             font-size: 1.05em;
         }
 
-        /* 반응형 조정 */
+        /* --- 저장/로드 버튼 스타일 --- */
+        .file-controls {
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #f1f3f5;
+            border-radius: 8px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px; /* 버튼 사이 간격 */
+        }
+        .file-controls button, .file-controls label {
+            padding: 10px 20px;
+            background-color: #c34a71;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background-color 0.2s ease;
+        }
+        .file-controls button:hover, .file-controls label:hover {
+            background-color: #a83c5d;
+        }
+        /* 파일 입력 숨기기 */
+        .file-controls input[type="file"] {
+            display: none;
+        }
+
+        /* --- 반응형 조정 --- */
         @media (max-width: 768px) {
              .container {
                  padding: 20px;
@@ -147,6 +180,10 @@
             }
             h1 { font-size: 1.8em; }
             h2 { font-size: 1.4em; }
+            .file-controls {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
 </head>
@@ -159,7 +196,20 @@
         <strong>✨ 슬기로운 셀프 웨딩 준비: 호갱 탈출 프로젝트! ✨</strong><br>
         웨딩플래너 없이 직접 부딪히며 만드는 소중한 결혼식! 이 체크리스트는 정보의 홍수 속에서 길을 잃지 않고, 불필요한 지출을 막으며 현명하게 결혼을 준비할 수 있도록 최대한 상세하게 구성했습니다.<br>
         각 항목을 꼼꼼히 체크하고, **메모칸을 적극 활용**하여 조사 내용, 견적 비교, 업체 정보, 계약 조건, 주의사항 등을 상세히 기록하세요. '아는 것이 힘!' 입니다.<br>
-        <strong>⚠️ 중요:</strong> 메모 내용은 현재 사용 중인 브라우저의 로컬 저장소에만 저장됩니다. 다른 기기에서 보거나 브라우저 데이터를 청소하면 내용이 사라지니, 중요한 정보는 반드시 별도로 백업 (메모 복사, 스크린샷 등) 해두세요!
+        <strong>⚠️ 데이터 관리:</strong>
+        <ul>
+            <li>기본적으로 진행 상황은 브라우저의 로컬 저장소에 자동 저장됩니다.</li>
+            <li><b>[파일로 저장]</b> 버튼을 눌러 현재 상태를 내 컴퓨터에 백업 파일(.json)로 저장할 수 있습니다.</li>
+            <li>다른 기기에서 보거나 데이터를 복원하려면 <b>[파일에서 로드]</b> 버튼을 눌러 저장했던 파일을 선택하세요.</li>
+            <li>중요한 내용은 주기적으로 파일로 저장하여 백업하는 것을 권장합니다.</li>
+        </ul>
+    </div>
+
+    <!-- 파일 저장/로드 컨트롤 추가 -->
+    <div class="file-controls">
+        <button id="saveToFileBtn">💾 파일로 저장</button>
+        <label for="loadFileInput">📂 파일에서 로드</label>
+        <input type="file" id="loadFileInput" accept=".json">
     </div>
 
     <!-- 체크리스트 섹션 -->
@@ -176,28 +226,28 @@
                 <label for="item1_1">양가 부모님께 결혼 소식 정식으로 알리기
                     <span class="description">각자 부모님께 먼저 말씀드린 후, 함께 찾아뵙는 등 방식과 시기 조율. 예의를 갖추는 것이 중요.</span>
                 </label>
-                <textarea placeholder="각 집안 방문 일정, 드릴 말씀 요점, 선물 준비 여부 등 메모..."></textarea>
+                <textarea placeholder="각 집안 방문 일정, 드릴 말씀 요점, 선물 준비 여부 등 메모..." data-notes-for="item1_1"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item1_2">
                 <label for="item1_2">상견례 날짜 및 장소 선정
                     <span class="description">양가 부모님 스케줄 및 선호도 고려 (주말 점심/저녁, 한정식/중식/일식 등). 교통 편의성, 룸 유무, 분위기 체크. 최소 2~3주 전 예약.</span>
                 </label>
-                <textarea placeholder="희망 날짜 후보 (최소 2개), 장소 후보 (이름, 위치, 메뉴, 가격대), 예약 담당자/연락처 메모..."></textarea>
+                <textarea placeholder="희망 날짜 후보 (최소 2개), 장소 후보 (이름, 위치, 메뉴, 가격대), 예약 담당자/연락처 메모..." data-notes-for="item1_2"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item1_3">
                 <label for="item1_3">상견례 비용 부담 논의 및 준비
                     <span class="description">보통 신랑측에서 부담하는 경우가 많으나, 양가 합의 하에 조정 가능. 미리 정해두는 것이 좋음.</span>
                 </label>
-                <textarea placeholder="비용 부담 주체 합의 내용, 예상 비용, 결제 준비 (카드/현금) 메모..."></textarea>
+                <textarea placeholder="비용 부담 주체 합의 내용, 예상 비용, 결제 준비 (카드/현금) 메모..." data-notes-for="item1_3"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item1_4">
                 <label for="item1_4">상견례 시 대화 주제 및 분위기 사전 조율
                     <span class="description">결혼 준비 관련 민감한 이야기는 최소화. 서로 칭찬하고 화기애애한 분위기 유도. (예: 자녀 칭찬, 덕담 위주)</span>
                 </label>
-                <textarea placeholder="피해야 할 주제, 긍정적인 대화 소재 아이디어 메모..."></textarea>
+                <textarea placeholder="피해야 할 주제, 긍정적인 대화 소재 아이디어 메모..." data-notes-for="item1_4"></textarea>
             </div>
 
             <div class="subsection-title">1-2. 예산 계획 및 관리</div>
@@ -215,28 +265,28 @@
                 <label for="item2_1">결혼 관련 전체 예상 비용 항목 상세 리스트업
                     <span class="description">위 Tip 참고하여 최대한 상세하게 분류. (예: 스드메 → 스튜디오 원본비, 드레스 헬퍼비 등으로 세분화)</span>
                 </label>
-                <textarea placeholder="예상 비용 항목 리스트 작성... (엑셀 등 별도 관리 권장)"></textarea>
+                <textarea placeholder="예상 비용 항목 리스트 작성... (엑셀 등 별도 관리 권장)" data-notes-for="item2_1"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item2_2">
                 <label for="item2_2">항목별 평균 비용 리서치 및 예산 분배
                     <span class="description">웨딩 커뮤니티, 블로그 후기 등을 통해 현실적인 비용 파악 후, 우리 상황에 맞게 예산 배정.</span>
                 </label>
-                <textarea placeholder="항목별 리서치 금액, 우리 예산 배정액, 정보 출처 링크 메모..."></textarea>
+                <textarea placeholder="항목별 리서치 금액, 우리 예산 배정액, 정보 출처 링크 메모..." data-notes-for="item2_2"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item2_3">
                 <label for="item2_3">결혼 총 예산 확정 및 자금 마련 계획
                     <span class="description">양가 지원 포함 여부, 각자 부담 비율, 예산 확보 방법 (저축, 대출 등) 구체화.</span>
                 </label>
-                <textarea placeholder="총 예산 OOO만원, 신랑 O%, 신부 O%, 양가 지원 O만원, 자금 확보 계획 메모..."></textarea>
+                <textarea placeholder="총 예산 OOO만원, 신랑 O%, 신부 O%, 양가 지원 O만원, 자금 확보 계획 메모..." data-notes-for="item2_3"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item2_4">
                 <label for="item2_4">예산 관리 시스템 구축 (엑셀, 앱 등)
                     <span class="description">예산 대비 실제 지출액을 꾸준히 기록하고 관리해야 과소비 방지 가능.</span>
                 </label>
-                <textarea placeholder="사용할 툴 (구글 시트 링크 등), 관리 규칙 메모..."></textarea>
+                <textarea placeholder="사용할 툴 (구글 시트 링크 등), 관리 규칙 메모..." data-notes-for="item2_4"></textarea>
             </div>
 
             <div class="subsection-title">1-3. 기본 방향 설정</div>
@@ -245,28 +295,28 @@
                 <label for="item3_1">결혼식 희망 날짜 범위 설정 (최소 3개 후보)
                     <span class="description">선호 계절, 요일(주말/평일), 시간대(점심/저녁), 특별한 날짜(기념일) 등 고려. 길일은 빨리 마감되니 서둘러야 함.</span>
                 </label>
-                <textarea placeholder="1순위: O월O일(토) 점심, 2순위: ..., 3순위: ..., 날짜 선정 이유 메모..."></textarea>
+                <textarea placeholder="1순위: O월O일(토) 점심, 2순위: ..., 3순위: ..., 날짜 선정 이유 메모..." data-notes-for="item3_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item4_1">
                 <label for="item4_1">예상 하객 규모 산출 (양가 리스트 초벌 취합)
                     <span class="description">최소/최대 예상 인원 범위를 파악해야 웨딩홀 선택 및 보증인원 설정에 용이. (가족, 친척, 친구, 직장 등 그룹별 예상)</span>
                 </label>
-                <textarea placeholder="신랑측 최소 O명/최대 O명, 신부측 최소 O명/최대 O명, 총 예상 O명 ~ O명 메모..."></textarea>
+                <textarea placeholder="신랑측 최소 O명/최대 O명, 신부측 최소 O명/최대 O명, 총 예상 O명 ~ O명 메모..." data-notes-for="item4_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item5_1">
                 <label for="item5_1">원하는 결혼식 스타일 및 컨셉 구체화
                     <span class="description">호텔/컨벤션/웨딩홀/하우스/야외/스몰/전통혼례 등. 분위기(경건/차분/파티/활기찬), 중요 요소(식사맛/교통/주차/홀분위기) 정의.</span>
                 </label>
-                <textarea placeholder="선호 스타일 키워드, 필수 조건, 포기 가능 조건, 레퍼런스 이미지/링크 메모..."></textarea>
+                <textarea placeholder="선호 스타일 키워드, 필수 조건, 포기 가능 조건, 레퍼런스 이미지/링크 메모..." data-notes-for="item5_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item5_2">
                 <label for="item5_2">결혼 준비 역할 분담 논의 (신랑 & 신부)
                     <span class="description">누가 어떤 부분을 주로 담당할지 미리 정하면 효율적이고 갈등 감소. (예: 신부-스드메, 신랑-신혼여행)</span>
                 </label>
-                <textarea placeholder="신랑 담당: ..., 신부 담당: ..., 공동 담당: ..., 의사결정 방식 메모..."></textarea>
+                <textarea placeholder="신랑 담당: ..., 신부 담당: ..., 공동 담당: ..., 의사결정 방식 메모..." data-notes-for="item5_2"></textarea>
             </div>
         </section>
 
@@ -289,42 +339,42 @@
                 <label for="item10_1">웨딩홀 검색 기준 설정
                     <span class="description">지역(대중교통 접근성 중요!), 예산(식대/대관료 상한선), 하객 수용 규모, 원하는 홀 분위기/스타일, 식사 종류(뷔페/코스) 등 우선순위 정의.</span>
                 </label>
-                <textarea placeholder="필수 조건: ..., 선호 조건: ..., 제외 조건: ..."></textarea>
+                <textarea placeholder="필수 조건: ..., 선호 조건: ..., 제외 조건: ..." data-notes-for="item10_1"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item10_2">
                 <label for="item10_2">조건에 맞는 웨딩홀 리스트업 및 정보 수집
                     <span class="description">웨딩 커뮤니티(레몬테라스, 다이렉트 등), 웨딩 앱(웨딩북 등), 블로그/인스타 후기, 지인 추천 활용. 각 홀의 기본 정보(위치, 가격대, 사진) 정리.</span>
                 </label>
-                <textarea placeholder="관심 웨딩홀 리스트 (이름, 위치), 예상 견적 범위, 장단점 요약, 후기 링크 등 메모..."></textarea>
+                <textarea placeholder="관심 웨딩홀 리스트 (이름, 위치), 예상 견적 범위, 장단점 요약, 후기 링크 등 메모..." data-notes-for="item10_2"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item11_1">
                 <label for="item11_1">웨딩홀 투어 예약 및 방문 (최소 3곳 이상)
                     <span class="description">미리 전화/온라인 예약. 방문 시 체크리스트 준비 (홀 밝기/천고/기둥유무, 버진로드 길이, 음향/조명 상태, 신부대기실 크기/화장실, 연회장 동선/청결도, 주차 공간/시간 등).</span>
                 </label>
-                <textarea placeholder="투어 일정 (날짜/시간), 각 홀별 체크리스트 결과, 상담 내용 요약, 받은 견적서 첨부 위치 메모..."></textarea>
+                <textarea placeholder="투어 일정 (날짜/시간), 각 홀별 체크리스트 결과, 상담 내용 요약, 받은 견적서 첨부 위치 메모..." data-notes-for="item11_1"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item11_2">
                 <label for="item11_2">웨딩홀별 상세 견적 비교 분석표 작성
                     <span class="description">동일 기준으로 비교 (식대, 대관료, 필수옵션 포함 총액, 서비스 항목, 장단점 등). 엑셀 활용 추천.</span>
                 </label>
-                <textarea placeholder="비교표 파일 위치/링크, 최종 후보 선정 과정 메모..."></textarea>
+                <textarea placeholder="비교표 파일 위치/링크, 최종 후보 선정 과정 메모..." data-notes-for="item11_2"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item12_1">
                 <label for="item12_1">최종 웨딩홀 결정 및 가계약/정계약 진행
                     <span class="description">계약서 내용 꼼꼼히 재확인 후 서명. 계약서 사본 및 영수증 보관 필수.</span>
                 </label>
-                <textarea placeholder="최종 결정 웨딩홀, 계약일, 계약금액, 담당자 정보, 계약서 파일 위치, 주요 계약 조건 요약 메모..."></textarea>
+                <textarea placeholder="최종 결정 웨딩홀, 계약일, 계약금액, 담당자 정보, 계약서 파일 위치, 주요 계약 조건 요약 메모..." data-notes-for="item12_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item13_1">
                 <label for="item13_1">시식 날짜 예약 및 진행 (가능하다면 양가 부모님과 함께)
                     <span class="description">계약 전/후 시식 가능 여부, 시식 가능 인원, 비용 확인. 음식 종류, 맛, 양, 서빙 상태 등 꼼꼼히 체크.</span>
                 </label>
-                <textarea placeholder="시식 가능 시기/인원/비용, 예약일, 시식 후 피드백 (메뉴 구성, 맛 평가, 개선 요청 사항) 메모..."></textarea>
+                <textarea placeholder="시식 가능 시기/인원/비용, 예약일, 시식 후 피드백 (메뉴 구성, 맛 평가, 개선 요청 사항) 메모..." data-notes-for="item13_1"></textarea>
             </div>
         </section>
 
@@ -347,84 +397,84 @@
                 <label for="item20_1">나의 웨딩 스타일(사진/드레스/메이크업) 레퍼런스 수집
                     <span class="description">인스타, 핀터레스트 등 활용하여 원하는 컨셉, 분위기, 스타일 스크랩. 이것이 업체 선정의 기준이 됨.</span>
                 </label>
-                <textarea placeholder="선호 컨셉 키워드, 스크랩 이미지/링크 저장 위치 메모..."></textarea>
+                <textarea placeholder="선호 컨셉 키워드, 스크랩 이미지/링크 저장 위치 메모..." data-notes-for="item20_1"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item20_2">
                 <label for="item20_2">스드메 업체 유형 결정 (토탈샵 / 드레스샵+메이크업샵 / 개별진행)
                     <span class="description">각 유형의 장단점 비교. 예산, 선호도, 준비 스타일에 맞춰 선택. (토탈샵: 한 곳에서 진행, 편리함 / 개별: 각 분야 전문성, 선택 폭 넓음)</span>
                 </label>
-                <textarea placeholder="우리에게 맞는 유형 결정, 이유, 관련 정보 서치 내용 메모..."></textarea>
+                <textarea placeholder="우리에게 맞는 유형 결정, 이유, 관련 정보 서치 내용 메모..." data-notes-for="item20_2"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item21_1">
                 <label for="item21_1">스튜디오 리서치 및 후보 선정 (촬영 생략 여부 결정)
                     <span class="description">샘플 앨범, 촬영 후기 확인 (특히 원본 퀄리티!). 인물중심/배경중심, 실내/야외 비중 등 고려. 촬영 생략 시 대안(본식스냅 강화, 데이트스냅 등) 고려.</span>
                 </label>
-                <textarea placeholder="관심 스튜디오 리스트, 각 스타일 특징, 예상 견적(원본/수정본 포함), 촬영 생략 시 계획 메모..."></textarea>
+                <textarea placeholder="관심 스튜디오 리스트, 각 스타일 특징, 예상 견적(원본/수정본 포함), 촬영 생략 시 계획 메모..." data-notes-for="item21_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item21_2">
                 <label for="item21_2">스튜디오 상담 및 계약 (필요시)
                     <span class="description">촬영 시간, 제공 상품(앨범 페이지 수, 액자 크기/종류), 원본/수정본 제공 방식 및 비용, 촬영 컨셉, 헤어/메이크업 제휴 여부 등 확인 후 계약.</span>
                 </label>
-                <textarea placeholder="선택 스튜디오, 계약일, 상품 구성 상세, 총 비용(추가금 포함), 담당자, 촬영 희망일, 계약서 확인 사항 메모..."></textarea>
+                <textarea placeholder="선택 스튜디오, 계약일, 상품 구성 상세, 총 비용(추가금 포함), 담당자, 촬영 희망일, 계약서 확인 사항 메모..." data-notes-for="item21_2"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item22_1">
                 <label for="item22_1">드레스샵 리서치 및 투어 리스트 작성
                     <span class="description">선호하는 드레스 스타일(실크/비즈/레이스, A라인/머메이드 등), 예산 범위 고려. 투어는 하루 2~3곳이 적당. 피팅비 발생 확인.</span>
                 </label>
-                <textarea placeholder="관심 드레스샵 리스트, 스타일 특징, 가격대, 투어 예약 희망일, 피팅비 정보 메모..."></textarea>
+                <textarea placeholder="관심 드레스샵 리스트, 스타일 특징, 가격대, 투어 예약 희망일, 피팅비 정보 메모..." data-notes-for="item22_1"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item22_2">
                 <label for="item22_2">드레스 투어 진행 및 샵 결정
                     <span class="description">본인 체형과 스타일에 맞는 곳 선택. 입어본 드레스 사진 촬영 가능 여부 확인. 당일 지정 혜택 확인 (신중히 결정!). 헬퍼 퀄리티 후기 참고.</span>
                 </label>
-                <textarea placeholder="투어 일정, 각 샵별 입어본 드레스 (사진/모델명), 만족도, 견적 비교, 최종 선택 샵, 계약 내용 메모..."></textarea>
+                <textarea placeholder="투어 일정, 각 샵별 입어본 드레스 (사진/모델명), 만족도, 견적 비교, 최종 선택 샵, 계약 내용 메모..." data-notes-for="item22_2"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item23_1">
                 <label for="item23_1">헤어 & 메이크업 샵 리서치 및 후보 선정
                     <span class="description">화보, 실제 신부 후기 사진(특히 피부표현, 헤어스타일링) 참고. 원하는 스타일(과즙/세미스모키/내추럴) 명확히.</span>
                 </label>
-                <textarea placeholder="관심 메이크업샵 리스트, 스타일 특징, 가격대, 아티스트 정보, 후기 요약 메모..."></textarea>
+                <textarea placeholder="관심 메이크업샵 리스트, 스타일 특징, 가격대, 아티스트 정보, 후기 요약 메모..." data-notes-for="item23_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item23_2">
                 <label for="item23_2">헤어 & 메이크업 상담 및 계약
                     <span class="description">신랑 포함 여부, 혼주 가능 여부 및 비용, 아티스트 지정 비용, 얼리 스타트 비용 등 확인. 사전 상담/시연 가능 여부 체크.</span>
                 </label>
-                <textarea placeholder="선택 메이크업샵, 계약일, 서비스 범위(신랑/혼주 포함?), 총 비용(추가금 포함), 담당 아티스트, 계약 조건 메모..."></textarea>
+                <textarea placeholder="선택 메이크업샵, 계약일, 서비스 범위(신랑/혼주 포함?), 총 비용(추가금 포함), 담당 아티스트, 계약 조건 메모..." data-notes-for="item23_2"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item24_1">
                 <label for="item24_1">리허설 촬영(스튜디오 촬영) 날짜 확정 및 준비
                     <span class="description">촬영 컨셉 상세 논의, 의상(드레스 외 캐주얼, 한복 등) 및 소품 준비, 신랑 헤어/메이크업 예약, 간식 준비, 도우미(헬퍼) 배정 확인.</span>
                 </label>
-                <textarea placeholder="촬영 확정일, 준비물 체크리스트(의상, 소품, 간식, 비상용품), 타임라인 계획, 컨셉 시안 전달 내용 메모..."></textarea>
+                <textarea placeholder="촬영 확정일, 준비물 체크리스트(의상, 소품, 간식, 비상용품), 타임라인 계획, 컨셉 시안 전달 내용 메모..." data-notes-for="item24_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item24_2">
                 <label for="item24_2">리허설 촬영 진행 및 사진 셀렉
                     <span class="description">표정/포즈 연습. 촬영 후 원본 수령 및 셀렉 일정 확인. 수정 요청 사항 정리.</span>
                 </label>
-                <textarea placeholder="촬영 당일 특이사항, 셀렉 마감일, 셀렉 방법, 수정 요청 사항 목록, 앨범/액자 수령 예정일 메모..."></textarea>
+                <textarea placeholder="촬영 당일 특이사항, 셀렉 마감일, 셀렉 방법, 수정 요청 사항 목록, 앨범/액자 수령 예정일 메모..." data-notes-for="item24_2"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item25_1">
                 <label for="item25_1">본식 드레스 가봉 날짜 예약 및 진행
                     <span class="description">보통 본식 1~2달 전 진행. 체형 변화 고려. 본식 때 신을 구두 준비해가기. 사진 촬영 필수.</span>
                 </label>
-                <textarea placeholder="가봉 예약일, 준비물(웨딩브라, 구두), 함께 갈 사람, 마음에 드는 드레스 후보 (사진/모델명) 메모..."></textarea>
+                <textarea placeholder="가봉 예약일, 준비물(웨딩브라, 구두), 함께 갈 사람, 마음에 드는 드레스 후보 (사진/모델명) 메모..." data-notes-for="item25_1"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item25_2">
                 <label for="item25_2">본식 드레스 최종 선택 및 액세서리 매칭
                     <span class="description">최종 드레스 결정 후, 베일, 티아라, 귀걸이 등 액세서리 선택. 헬퍼 이모님 배정 확인 및 연락처 받기.</span>
                 </label>
-                <textarea placeholder="최종 선택 드레스 (모델명), 선택한 액세서리 리스트, 2부 드레스(필요시) 선택, 헬퍼 정보 메모..."></textarea>
+                <textarea placeholder="최종 선택 드레스 (모델명), 선택한 액세서리 리스트, 2부 드레스(필요시) 선택, 헬퍼 정보 메모..." data-notes-for="item25_2"></textarea>
             </div>
         </section>
 
@@ -446,77 +496,77 @@
                 <label for="item30_1">결혼반지(웨딩밴드) 스타일 및 예산 결정
                     <span class="description">평소 착용 고려한 디자인(심플/화려, 두께), 재질(플래티넘/골드), 다이아 유무 등 선호도 파악. 예산 상한선 설정.</span>
                 </label>
-                <textarea placeholder="선호 스타일 키워드, 예산 범위, 리서치한 브랜드/샵 정보 메모..."></textarea>
+                <textarea placeholder="선호 스타일 키워드, 예산 범위, 리서치한 브랜드/샵 정보 메모..." data-notes-for="item30_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item30_2">
                 <label for="item30_2">웨딩밴드 투어 및 비교 (백화점, 청담, 종로 등)
                     <span class="description">최소 3곳 이상 방문하여 착용감, 디자인, 가격 비교. 견적 시 중량, 재질, 다이아 등급 등 상세 정보 요청.</span>
                 </label>
-                <textarea placeholder="투어 매장 리스트, 각 매장별 견적 비교(상세 스펙 포함), 착용 사진, 최종 후보 메모..."></textarea>
+                <textarea placeholder="투어 매장 리스트, 각 매장별 견적 비교(상세 스펙 포함), 착용 사진, 최종 후보 메모..." data-notes-for="item30_2"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item30_3">
                 <label for="item30_3">웨딩밴드 최종 결정 및 계약
                     <span class="description">사이즈 측정 정확히. 계약 내용(제품 스펙, 가격, 제작 기간, A/S 규정, 각인 문구) 확인 후 계약.</span>
                 </label>
-                <textarea placeholder="최종 선택 매장/제품, 계약일, 계약 금액, 사이즈, 각인 문구, 수령 예정일, 계약서 사본 위치 메모..."></textarea>
+                <textarea placeholder="최종 선택 매장/제품, 계약일, 계약 금액, 사이즈, 각인 문구, 수령 예정일, 계약서 사본 위치 메모..." data-notes-for="item30_3"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item31_1">
                 <label for="item31_1">예물/예단 진행 여부 및 품목/예산 범위 양가 합의
                     <span class="description">가장 중요! 양가 부모님과 신랑 신부가 충분히 상의하여 결정. (생략/현금/현물, 품목 리스트, 예산 상한선 등 구체적으로)</span>
                 </label>
-                <textarea placeholder="양가 합의 결과 (날짜, 내용 상세히), 결정된 품목/예산, 전달 시기/방식 메모..."></textarea>
+                <textarea placeholder="양가 합의 결과 (날짜, 내용 상세히), 결정된 품목/예산, 전달 시기/방식 메모..." data-notes-for="item31_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item31_2">
                 <label for="item31_2">예물/예단 준비 (결정된 경우)
                     <span class="description">품목 구매처 리서치 및 구매 진행. 현금 예단 시 예단 봉투, 서식지 등 준비. 전달 시 예의 갖추기.</span>
                 </label>
-                <textarea placeholder="구매 품목 리스트, 구매처 정보, 비용, 포장 상태, 전달 완료 여부 메모..."></textarea>
+                <textarea placeholder="구매 품목 리스트, 구매처 정보, 비용, 포장 상태, 전달 완료 여부 메모..." data-notes-for="item31_2"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item32_1">
                 <label for="item32_1">신랑 예복 스타일 결정 (맞춤 vs. 대여) 및 업체 리서치
                     <span class="description">활용도, 예산, 선호 스타일 고려. 맞춤 시 제작 방식, 원단 중요. 대여 시 디자인, 사이즈, 대여 기간 확인.</span>
                 </label>
-                <textarea placeholder="맞춤/대여 결정, 이유, 관심 업체 리스트, 각 업체 특징/가격대 메모..."></textarea>
+                <textarea placeholder="맞춤/대여 결정, 이유, 관심 업체 리스트, 각 업체 특징/가격대 메모..." data-notes-for="item32_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item32_2">
                 <label for="item32_2">신랑 예복 상담, 측정/피팅 및 계약
                     <span class="description">맞춤 시: 원단 선택, 디자인 상담, 신체 치수 측정. 대여 시: 디자인 피팅, 구성품(셔츠/타이/구두 등) 확인. 계약 내용(가격, 가봉/픽업일, 반납 조건) 확인.</span>
                 </label>
-                <textarea placeholder="선택 업체, 계약일, 계약 내용(맞춤 스펙/대여 구성), 총 비용, 가봉/피팅 일정, 픽업/반납 예정일 메모..."></textarea>
+                <textarea placeholder="선택 업체, 계약일, 계약 내용(맞춤 스펙/대여 구성), 총 비용, 가봉/피팅 일정, 픽업/반납 예정일 메모..." data-notes-for="item32_2"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item32_3">
                 <label for="item32_3">신랑 예복 가봉 및 최종 확인 (맞춤 시) / 픽업 (대여 시)
                     <span class="description">맞춤: 최소 1회 이상 가봉 통해 핏 수정. 대여: 픽업 시 상태 꼼꼼히 확인.</span>
                 </label>
-                <textarea placeholder="가봉일/픽업일, 수정 사항, 최종 확인 내용, 담당자 정보 메모..."></textarea>
+                <textarea placeholder="가봉일/픽업일, 수정 사항, 최종 확인 내용, 담당자 정보 메모..." data-notes-for="item32_3"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item33_1">
                 <label for="item33_1">한복 필요 여부 결정 (신랑/신부/양가 혼주) 및 예산 설정
                     <span class="description">폐백 진행 여부, 양가 부모님 의사, 촬영 시 활용 계획 등 고려. 맞춤/대여 결정.</span>
                 </label>
-                <textarea placeholder="한복 필요한 사람(역할), 맞춤/대여 결정, 예산 범위 메모..."></textarea>
+                <textarea placeholder="한복 필요한 사람(역할), 맞춤/대여 결정, 예산 범위 메모..." data-notes-for="item33_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item33_2">
                 <label for="item33_2">한복 업체 리서치, 상담 및 계약
                     <span class="description">디자인, 색감, 원단 퀄리티 비교. 대여 시 구성품(속치마, 속바지, 버선, 신발, 노리개 등) 확인. 혼주 한복은 양가 색상 조율 필요.</span>
                 </label>
-                <textarea placeholder="관심 업체 리스트, 상담 내용 비교, 선택 업체, 계약 내용(디자인/색상/구성품), 비용, 가봉/대여 시작일 메모..."></textarea>
+                <textarea placeholder="관심 업체 리스트, 상담 내용 비교, 선택 업체, 계약 내용(디자인/색상/구성품), 비용, 가봉/대여 시작일 메모..." data-notes-for="item33_2"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item33_3">
                 <label for="item33_3">한복 가봉 / 대여품 확인 및 수령
                     <span class="description">맞춤 시 가봉 통해 사이즈/디자인 최종 점검. 대여 시 수령일에 상태(오염, 파손 등) 꼼꼼히 확인.</span>
                 </label>
-                <textarea placeholder="가봉/수령일, 최종 확인 사항, 반납 예정일 및 방법 메모..."></textarea>
+                <textarea placeholder="가봉/수령일, 최종 확인 사항, 반납 예정일 및 방법 메모..." data-notes-for="item33_3"></textarea>
             </div>
         </section>
 
@@ -539,161 +589,161 @@
                 <label for="item40_1">청첩장에 들어갈 정보 최종 정리
                     <span class="description">신랑/신부 이름, 양가 혼주 성함, 예식 일시/장소(정확히!), 연락처, 인사말 문구, 교통편 안내(지하철/버스/자가용 주차 정보), 피로연 안내(필요시), 계좌번호(선택) 등.</span>
                 </label>
-                <textarea placeholder="포함될 모든 정보 텍스트로 정리, 오타 확인 필수!"></textarea>
+                <textarea placeholder="포함될 모든 정보 텍스트로 정리, 오타 확인 필수!" data-notes-for="item40_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item40_2">
                 <label for="item40_2">청첩장 업체 선정 및 디자인 선택 (샘플 후기 기반)
                     <span class="description">다양한 업체의 무료 샘플 신청 및 비교. 가격, 디자인, 종이 재질, 최소 주문 수량, 제작 기간 고려.</span>
                 </label>
-                <textarea placeholder="샘플 신청 업체 리스트, 각 샘플 후기, 최종 선택 업체/디자인 모델명 메모..."></textarea>
+                <textarea placeholder="샘플 신청 업체 리스트, 각 샘플 후기, 최종 선택 업체/디자인 모델명 메모..." data-notes-for="item40_2"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item41_1">
                 <label for="item41_1">청첩장 주문 및 시안 확인 (★매우 중요★)
                     <span class="description">주문 수량 확정 (여유분 포함). 시안 확인 시 오타, 정보 오류 없는지 **최소 3번 이상** 꼼꼼히 교차 확인 (양가 부모님께도 확인 요청).</span>
                 </label>
-                <textarea placeholder="주문 업체, 주문 수량(기본 O부 + 여유분 O부), 최종 시안 확인 완료 날짜, 예상 수령일, 총 비용 메모..."></textarea>
+                <textarea placeholder="주문 업체, 주문 수량(기본 O부 + 여유분 O부), 최종 시안 확인 완료 날짜, 예상 수령일, 총 비용 메모..." data-notes-for="item41_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item41_2">
                 <label for="item41_2">모바일 청첩장 제작 (업체 서비스 or 직접 제작)
                     <span class="description">사진 선택, 인사말 작성, 기능 설정(지도, 방명록, 계좌번호 등). 완성 후 링크 오류 없는지 테스트.</span>
                 </label>
-                <textarea placeholder="모바일 청첩장 제작 업체/툴, 제작 완료일, 링크 주소, 주요 기능 설정 내용 메모..."></textarea>
+                <textarea placeholder="모바일 청첩장 제작 업체/툴, 제작 완료일, 링크 주소, 주요 기능 설정 내용 메모..." data-notes-for="item41_2"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item42_1">
                 <label for="item42_1">청첩장 전달 대상 리스트 최종 확정 및 주소록 정리
                     <span class="description">직접 전달 / 우편 발송 / 모바일 전달 대상 구분. 우편 발송 시 주소, 우편번호 정확히 확인.</span>
                 </label>
-                <textarea placeholder="전달 대상 리스트 파일 위치/링크, 주소록 정리 완료일 메모..."></textarea>
+                <textarea placeholder="전달 대상 리스트 파일 위치/링크, 주소록 정리 완료일 메모..." data-notes-for="item42_1"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item42_2">
                 <label for="item42_2">청첩장 접기, 봉투 작업 및 발송/전달 시작
                     <span class="description">보통 예식일 기준 1~2달 전 전달 시작. 직접 전달 시 약속 잡기. 우편 발송 시 라벨 작업 및 우표 구매.</span>
                 </label>
-                <textarea placeholder="작업 예상 소요 시간, 필요한 인력(가족/친구 도움?), 발송 시작일, 전달 완료 목표일 메모..."></textarea>
+                <textarea placeholder="작업 예상 소요 시간, 필요한 인력(가족/친구 도움?), 발송 시작일, 전달 완료 목표일 메모..." data-notes-for="item42_2"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item43_1">
                 <label for="item43_1">신혼여행지 및 일정 확정
                     <span class="description">예산, 기간, 원하는 여행 스타일(휴양/관광/액티비티) 고려. 항공권/숙소 가격 변동성 크므로 미리 결정하는 것이 유리.</span>
                 </label>
-                <textarea placeholder="최종 목적지, 여행 기간(O박 O일), 예상 총 경비, 컨셉 메모..."></textarea>
+                <textarea placeholder="최종 목적지, 여행 기간(O박 O일), 예상 총 경비, 컨셉 메모..." data-notes-for="item43_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item43_2">
                 <label for="item43_2">신혼여행 항공권 및 숙소 예약
                     <span class="description">가격 비교 사이트 활용. 취소/변경 수수료 규정 확인. 여권 유효기간 확인 필수 (최소 6개월 이상).</span>
                 </label>
-                <textarea placeholder="예약 사이트/여행사, 항공편 정보, 숙소 정보, 총 예약 비용, 예약 확인서 저장 위치 메모..."></textarea>
+                <textarea placeholder="예약 사이트/여행사, 항공편 정보, 숙소 정보, 총 예약 비용, 예약 확인서 저장 위치 메모..." data-notes-for="item43_2"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item43_3">
                 <label for="item43_3">신혼여행 세부 계획 (현지 교통, 투어, 맛집 등) 및 준비
                     <span class="description">필요시 비자 신청, 예방 접종, 국제면허증 발급, 여행자 보험 가입, 환전 등.</span>
                 </label>
-                <textarea placeholder="세부 일정표, 예약 필요한 투어/액티비티 리스트, 준비물 체크리스트, 비상 연락망 메모..."></textarea>
+                <textarea placeholder="세부 일정표, 예약 필요한 투어/액티비티 리스트, 준비물 체크리스트, 비상 연락망 메모..." data-notes-for="item43_3"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item44_1">
                 <label for="item44_1">주례 선정 또는 주례 없는 예식 결정
                     <span class="description">주례 있는 경우: 은사, 존경하는 분께 정중히 부탁 (최소 2~3달 전). 주례 없는 경우: 혼인 서약, 성혼 선언문 낭독 방식 결정.</span>
                 </label>
-                <textarea placeholder="주례 O/X, 주례 선생님 성함/연락처, 주례사 부탁 내용, 주례 없는 예식 시 식순 계획 메모..."></textarea>
+                <textarea placeholder="주례 O/X, 주례 선생님 성함/연락처, 주례사 부탁 내용, 주례 없는 예식 시 식순 계획 메모..." data-notes-for="item44_1"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item44_2">
                 <label for="item44_2">사회자 섭외 (지인 부탁 vs. 전문 사회자)
                     <span class="description">지인: 친밀감, 편안함 / 전문가: 매끄러운 진행. 섭외 시 예식 컨셉, 원하는 분위기 전달. 식순 공유 및 사전 미팅. 사례비/선물 준비.</span>
                 </label>
-                <textarea placeholder="사회자 (이름/연락처), 섭외 방식, 원하는 진행 스타일, 식순 전달일, 사전 미팅 일정, 사례 내용 메모..."></textarea>
+                <textarea placeholder="사회자 (이름/연락처), 섭외 방식, 원하는 진행 스타일, 식순 전달일, 사전 미팅 일정, 사례 내용 메모..." data-notes-for="item44_2"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item44_3">
                 <label for="item44_3">축가/연주 섭외 및 곡 선정
                     <span class="description">지인 부탁 / 전문 업체 / 셀프 축가 등. 곡 분위기(감동/재미) 고려. MR 또는 반주자 필요 여부 확인. 사례비/선물 준비.</span>
                 </label>
-                <textarea placeholder="축가/연주자 (이름/연락처), 곡명 리스트, MR/반주 준비 책임, 음향 체크 일정, 사례 내용 메모..."></textarea>
+                <textarea placeholder="축가/연주자 (이름/연락처), 곡명 리스트, MR/반주 준비 책임, 음향 체크 일정, 사례 내용 메모..." data-notes-for="item44_3"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item45_1">
                 <label for="item45_1">본식 스냅 업체 리서치 및 선정
                     <span class="description">포트폴리오(색감, 구도, 분위기) 꼼꼼히 확인. 1인/2인 촬영, 촬영 시작 시간(메이크업샵/신부대기실), 원판 촬영 포함 여부, 앨범/액자 구성 확인.</span>
                 </label>
-                <textarea placeholder="관심 업체 리스트, 스타일 비교, 견적 비교(상품 구성별), 후기 요약, 최종 후보 메모..."></textarea>
+                <textarea placeholder="관심 업체 리스트, 스타일 비교, 견적 비교(상품 구성별), 후기 요약, 최종 후보 메모..." data-notes-for="item45_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item45_2">
                 <label for="item45_2">본식 스냅 계약
                     <span class="description">계약서 상 촬영 범위, 작가 지정 여부, 원본/수정본 제공 방식 및 시기, 저작권/초상권 관련 내용, 잔금 지불 방식 등 확인.</span>
                 </label>
-                <textarea placeholder="선택 업체, 계약일, 상품 구성 상세, 총 비용(출장비 포함?), 작가 정보, 계약서 확인 사항 메모..."></textarea>
+                <textarea placeholder="선택 업체, 계약일, 상품 구성 상세, 총 비용(출장비 포함?), 작가 정보, 계약서 확인 사항 메모..." data-notes-for="item45_2"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item45_3">
                 <label for="item45_3">본식 영상(DVD) 업체 리서치, 선정 및 계약 (선택 사항)
                     <span class="description">스냅과 마찬가지로 스타일(다큐/뮤비형), 화질, 촬영 범위(1인/2인), 편집 스타일, 하이라이트 영상 유무, USB/파일 제공 방식 등 확인 후 계약.</span>
                 </label>
-                <textarea placeholder="영상 진행 여부, 관심 업체 리스트, 견적 비교, 선택 업체, 계약 내용 상세 메모..."></textarea>
+                <textarea placeholder="영상 진행 여부, 관심 업체 리스트, 견적 비교, 선택 업체, 계약 내용 상세 메모..." data-notes-for="item45_3"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item46_1">
                 <label for="item46_1">부케 및 부토니에, 코사지 주문
                     <span class="description">드레스, 홀 분위기, 계절 고려하여 꽃 종류/색상/스타일 선택. 필요한 코사지 수량(양가 부모님, 주례, 사회자 등) 정확히 파악 후 주문.</span>
                 </label>
-                <textarea placeholder="선택 업체, 부케 디자인/꽃 종류, 부토니에/코사지 수량, 총 비용, 배송 방법/시간 메모..."></textarea>
+                <textarea placeholder="선택 업체, 부케 디자인/꽃 종류, 부토니에/코사지 수량, 총 비용, 배송 방법/시간 메모..." data-notes-for="item46_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item46_2">
                 <label for="item46_2">폐백 진행 여부 결정 및 음식 주문 (진행 시)
                     <span class="description">양가 합의 필요. 폐백 음식 종류 및 구성(기본/추가), 수량, 가격 비교 후 주문. 폐백 의상 대여, 수모님(폐백 도우미) 필요 여부 확인.</span>
                 </label>
-                <textarea placeholder="폐백 진행 O/X, 음식 주문 업체, 구성/가격, 수모님 필요 여부 및 비용 확인 메모..."></textarea>
+                <textarea placeholder="폐백 진행 O/X, 음식 주문 업체, 구성/가격, 수모님 필요 여부 및 비용 확인 메모..." data-notes-for="item46_2"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item46_3">
                 <label for="item46_3">식권 준비 (웨딩홀 제공 or 자체 제작)
                     <span class="description">웨딩홀 식권 사용 시 디자인/수량 확인. 자체 제작 시 디자인 선택 및 주문. 분실 방지 위한 넘버링/도장 작업.</span>
                 </label>
-                <textarea placeholder="식권 종류(홀 제공/자체), 디자인, 필요한 총 수량(예상 하객 + 여유분), 준비 완료일 메모..."></textarea>
+                <textarea placeholder="식권 종류(홀 제공/자체), 디자인, 필요한 총 수량(예상 하객 + 여유분), 준비 완료일 메모..." data-notes-for="item46_3"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item47_1">
                 <label for="item47_1">결혼식 당일 도움 주실 분들 섭외 및 역할 부탁
                     <span class="description">축의금 접수/관리(양가 각 1~2명), 하객 안내, 신부 가방/소지품 보관(가방순이), 웨딩카 운전 등. 미리 역할 설명 및 감사 표시 준비.</span>
                 </label>
-                <textarea placeholder="도움 주실 분 리스트(이름/역할/연락처), 부탁 내용 상세, 감사 표시(선물/식사) 계획 메모..."></textarea>
+                <textarea placeholder="도움 주실 분 리스트(이름/역할/연락처), 부탁 내용 상세, 감사 표시(선물/식사) 계획 메모..." data-notes-for="item47_1"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item47_2">
                 <label for="item47_2">결혼식 당일 지불할 비용 확인 및 현금 준비
                     <span class="description">헬퍼비, 수모비(폐백 시), 주례/사회/축가 사례비 등 현금 필요 항목 리스트업 및 금액 확인. 봉투에 미리 준비.</span>
                 </label>
-                <textarea placeholder="현금 필요 항목 리스트, 각 금액, 총액, 봉투 준비 완료 여부 메모..."></textarea>
+                <textarea placeholder="현금 필요 항목 리스트, 각 금액, 총액, 봉투 준비 완료 여부 메모..." data-notes-for="item47_2"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item48_1">
                 <label for="item48_1">하객 답례품 진행 여부 결정 및 품목/수량/예산 설정
                     <span class="description">필수 아님. 예산, 하객 특성 고려. 품목(수건, 소금, 쿠키, 와인 등), 포장, 전달 방식(당일 배부/택배) 결정.</span>
                 </label>
-                <textarea placeholder="답례품 진행 O/X, 품목 후보, 예산, 예상 수량, 주문 업체 정보, 포장/전달 계획 메모..."></textarea>
+                <textarea placeholder="답례품 진행 O/X, 품목 후보, 예산, 예상 수량, 주문 업체 정보, 포장/전달 계획 메모..." data-notes-for="item48_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item48_2">
                 <label for="item48_2">답례품 주문 및 준비
                     <span class="description">제작/배송 기간 고려하여 주문. 수령 후 수량/상태 확인. 당일 전달 시 보관 장소 및 전달 도우미 지정.</span>
                 </label>
-                <textarea placeholder="주문 완료일, 예상 수령일, 보관/전달 계획 상세 메모..."></textarea>
+                <textarea placeholder="주문 완료일, 예상 수령일, 보관/전달 계획 상세 메모..." data-notes-for="item48_2"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item49_1">
                 <label for="item49_1">신혼집 계약 / 인테리어 / 가구 / 가전 준비 시작
                     <span class="description">결혼 준비와 병행 또는 이후 진행. 예산 설정, 필수 품목 리스트업, 구매 시기 계획. 입주 청소 예약.</span>
                 </label>
-                <textarea placeholder="신혼집 관련 진행 상황 (계약/공사/구매 등), 품목별 예산/구매처 정보, 입주 예정일 메모..."></textarea>
+                <textarea placeholder="신혼집 관련 진행 상황 (계약/공사/구매 등), 품목별 예산/구매처 정보, 입주 예정일 메모..." data-notes-for="item49_1"></textarea>
             </div>
         </section>
 
@@ -706,84 +756,84 @@
                 <label for="item60_1">하객 참석 여부 최종 확인 (RSVP 체크)
                     <span class="description">청첩장 전달 후 미응답 하객에게 개별 연락하여 참석 여부 확인.</span>
                 </label>
-                <textarea placeholder="연락 대상 리스트, 확인 완료일, 예상 최종 참석 인원 집계 메모..."></textarea>
+                <textarea placeholder="연락 대상 리스트, 확인 완료일, 예상 최종 참석 인원 집계 메모..." data-notes-for="item60_1"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item60_2">
                 <label for="item60_2">웨딩홀에 최종 보증인원 전달
                     <span class="description">계약서상 명시된 최종 전달 기한 확인 후 연락. 보증인원 변경 시 추가 비용 발생 여부 재확인.</span>
                 </label>
-                <textarea placeholder="최종 보증인원 (신랑측 O명, 신부측 O명), 웨딩홀 전달 완료일, 담당자 확인 내용 메모..."></textarea>
+                <textarea placeholder="최종 보증인원 (신랑측 O명, 신부측 O명), 웨딩홀 전달 완료일, 담당자 확인 내용 메모..." data-notes-for="item60_2"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item61_1">
                 <label for="item61_1">결혼식 식순 최종 확정 및 관련자 공유
                     <span class="description">주례사, 혼인 서약서, 성혼 선언문 등 텍스트 최종본 준비. 사회자, 주례, 축가/연주자, 스냅/DVD 작가, 웨딩홀 담당자에게 최종 식순 및 큐시트 전달.</span>
                 </label>
-                <textarea placeholder="최종 식순 파일 위치, 주요 텍스트 파일 위치, 공유 대상 리스트 및 전달 완료일 메모..."></textarea>
+                <textarea placeholder="최종 식순 파일 위치, 주요 텍스트 파일 위치, 공유 대상 리스트 및 전달 완료일 메모..." data-notes-for="item61_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item62_1">
                 <label for="item62_1">결혼식 당일 타임라인 상세 계획 (분 단위)
                     <span class="description">기상 시간부터 메이크업샵 이동, 웨딩홀 도착, 본식 시작, 폐백, 식사, 정산까지 모든 동선 및 소요 시간 계산.</span>
                 </label>
-                <textarea placeholder="당일 상세 타임라인 표 위치/링크, 이동 수단 계획(웨딩카 등) 메모..."></textarea>
+                <textarea placeholder="당일 상세 타임라인 표 위치/링크, 이동 수단 계획(웨딩카 등) 메모..." data-notes-for="item62_1"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item62_2">
                 <label for="item62_2">결혼식 당일 역할 분담 최종 확인 및 리마인드
                     <span class="description">축의금 담당, 안내 담당, 가방순이 등 도우미들에게 역할 및 동선, 비상 연락망 재확인.</span>
                 </label>
-                <textarea placeholder="역할 분담표 최종본 위치, 도우미별 주요 임무 및 주의사항 리마인드 내용 메모..."></textarea>
+                <textarea placeholder="역할 분담표 최종본 위치, 도우미별 주요 임무 및 주의사항 리마인드 내용 메모..." data-notes-for="item62_2"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item62_3">
                 <label for="item62_3">모든 업체(웨딩홀, 스드메, 스냅 등) 최종 확인 전화
                     <span class="description">예식일 D-7 ~ D-3 사이. 예약 내용(시간, 장소, 서비스 내용) 재확인 및 특이사항 전달.</span>
                 </label>
-                <textarea placeholder="업체별 연락처 리스트, 확인 전화 일정, 통화 내용 요약 메모..."></textarea>
+                <textarea placeholder="업체별 연락처 리스트, 확인 전화 일정, 통화 내용 요약 메모..." data-notes-for="item62_3"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item63_1">
                 <label for="item63_1">결혼식 관련 잔금 내역 확인 및 지불 준비 완료
                     <span class="description">웨딩홀, 스드메, 본식 스냅/DVD, 기타 업체 잔금 금액 및 지불 방법(계좌이체/카드/현금), 시점 최종 확인. 이체 한도 미리 확인.</span>
                 </label>
-                <textarea placeholder="잔금 지불 리스트 (업체명, 금액, 지불방법/시기), 총 잔금액, 이체 한도 증액 여부 메모..."></textarea>
+                <textarea placeholder="잔금 지불 리스트 (업체명, 금액, 지불방법/시기), 총 잔금액, 이체 한도 증액 여부 메모..." data-notes-for="item63_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item64_1">
                 <label for="item64_1">신혼여행 가방 싸기 완료
                     <span class="description">여권, 항공권/E-티켓, 호텔 바우처, 비자(필요시), 환전한 돈/카드, 의류, 세면도구, 상비약, 카메라, 충전기 등 빠짐없이 체크.</span>
                 </label>
-                <textarea placeholder="여행 가방 체크리스트 확인 완료, 가방 보관 위치 메모..."></textarea>
+                <textarea placeholder="여행 가방 체크리스트 확인 완료, 가방 보관 위치 메모..." data-notes-for="item64_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item65_1">
                 <label for="item65_1">피부 관리, 헤어 관리 등 최종 점검
                     <span class="description">새로운 시술은 피하고, 기존 관리 유지. 염색/컷 등은 최소 1주 전에 완료.</span>
                 </label>
-                <textarea placeholder="네일/패디 예약일, 최종 헤어 시술일, 피부과 관리일 메모..."></textarea>
+                <textarea placeholder="네일/패디 예약일, 최종 헤어 시술일, 피부과 관리일 메모..." data-notes-for="item65_1"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item65_2">
                 <label for="item65_2">충분한 휴식 및 컨디션 조절 (★매우 중요★)
                     <span class="description">결혼식 며칠 전부터는 무리하지 않고, 숙면 취하기. 긍정적인 마음 유지.</span>
                 </label>
-                <textarea placeholder="D-7부터 숙면 노력, 스트레스 관리 방법 (명상, 취미 등) 메모..."></textarea>
+                <textarea placeholder="D-7부터 숙면 노력, 스트레스 관리 방법 (명상, 취미 등) 메모..." data-notes-for="item65_2"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item66_1">
                 <label for="item66_1">결혼식 당일 가져갈 물품 최종 패킹 리스트 확인
                     <span class="description">결혼반지, 예복/드레스 관련 소품(구두, 액세서리 등), 한복(해당 시), 여분의 스타킹/양말, 편한 신발, 휴대폰 충전기, 간단한 간식, 상비약/반짇고리, 감사 봉투, 식권(필요시) 등.</span>
                 </label>
-                <textarea placeholder="최종 패킹 리스트 점검 완료, 물품별 담당자/보관 위치 메모..."></textarea>
+                <textarea placeholder="최종 패킹 리스트 점검 완료, 물품별 담당자/보관 위치 메모..." data-notes-for="item66_1"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item66_2">
                 <label for="item66_2">결혼식 전날 최종 준비사항 체크 및 숙면
                     <span class="description">알람 설정 확인, 다음 날 동선 리마인드, 일찍 잠자리에 들기.</span>
                 </label>
-                <textarea placeholder="전날 밤 체크리스트: 알람 O개 설정, 준비물 현관 앞 배치, 연락처 확인 등."></textarea>
+                <textarea placeholder="전날 밤 체크리스트: 알람 O개 설정, 준비물 현관 앞 배치, 연락처 확인 등." data-notes-for="item66_2"></textarea>
             </div>
         </section>
 
@@ -796,63 +846,63 @@
                 <label for="item70_1">양가 부모님 및 가까운 친척께 감사 인사 전화/방문
                     <span class="description">신혼여행 중 또는 다녀와서 최대한 빨리 연락드리고 찾아뵙기.</span>
                 </label>
-                <textarea placeholder="연락/방문 대상 리스트, 완료일 메모..."></textarea>
+                <textarea placeholder="연락/방문 대상 리스트, 완료일 메모..." data-notes-for="item70_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item70_2">
                 <label for="item70_2">결혼식 참석 및 축하해주신 하객들께 감사 인사 (문자/카톡/전화)
                     <span class="description">개별 연락이 어렵다면 단체 메시지 활용. 도움 주신 분들께는 별도 감사 표시.</span>
                 </label>
-                <textarea placeholder="감사 메시지 문구 초안, 발송 완료일 메모..."></textarea>
+                <textarea placeholder="감사 메시지 문구 초안, 발송 완료일 메모..." data-notes-for="item70_2"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item71_1">
                 <label for="item71_1">결혼식 관련 모든 비용 최종 정산 완료 확인
                     <span class="description">미지급된 잔금 없는지, 추가 정산 필요한 부분 없는지 확인. 영수증 정리.</span>
                 </label>
-                <textarea placeholder="최종 정산 내역 확인 리스트, 영수증 보관 위치 메모..."></textarea>
+                <textarea placeholder="최종 정산 내역 확인 리스트, 영수증 보관 위치 메모..." data-notes-for="item71_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item72_1">
                 <label for="item72_1">대여 물품(드레스, 턱시도, 한복, 폐백의상 등) 반납 완료
                     <span class="description">반납 기한 및 방법(직접/택배) 확인 후 처리. 파손/분실 시 비용 발생 가능성 유의.</span>
                 </label>
-                <textarea placeholder="반납 필요 물품 리스트, 업체별 반납 기한/방법, 반납 완료일 메모..."></textarea>
+                <textarea placeholder="반납 필요 물품 리스트, 업체별 반납 기한/방법, 반납 완료일 메모..." data-notes-for="item72_1"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item73_1">
                 <label for="item73_1">혼인신고 진행
                     <span class="description">신분증, 혼인신고서(증인 2명 서명/날인 필요), 가족관계증명서 등 필요 서류 준비하여 시/구/읍/면사무소 방문 신고.</span>
                 </label>
-                <textarea placeholder="혼인신고 예정일/완료일, 필요 서류 준비 완료 여부, 증인 정보 메모..."></textarea>
+                <textarea placeholder="혼인신고 예정일/완료일, 필요 서류 준비 완료 여부, 증인 정보 메모..." data-notes-for="item73_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item74_1">
                 <label for="item74_1">본식 스냅 원본 수령 및 셀렉 진행
                     <span class="description">업체에서 정한 기한 내 셀렉 완료. 앨범/액자 제작 시 수정 요청 사항 전달.</span>
                 </label>
-                <textarea placeholder="원본 수령일, 셀렉 마감일, 셀렉 파일 전달 방식, 수정 요청 사항 메모..."></textarea>
+                <textarea placeholder="원본 수령일, 셀렉 마감일, 셀렉 파일 전달 방식, 수정 요청 사항 메모..." data-notes-for="item74_1"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item74_2">
                 <label for="item74_2">본식 영상(DVD) 원본/편집본 수령 (진행 시)
                     <span class="description">수령 후 재생 확인. 수정 필요한 부분 있다면 업체와 소통.</span>
                 </label>
-                <textarea placeholder="영상 수령 예정일/완료일, 확인 결과, 수정 요청 사항 메모..."></textarea>
+                <textarea placeholder="영상 수령 예정일/완료일, 확인 결과, 수정 요청 사항 메모..." data-notes-for="item74_2"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item75_1">
                 <label for="item75_1">각종 주소 및 개인 정보 변경 (필요시)
                     <span class="description">은행, 보험사, 통신사, 카드사 등 금융/통신 관련 주소 변경. 운전면허증 주소 변경 등.</span>
                 </label>
-                <textarea placeholder="변경 필요한 서비스/기관 리스트, 변경 완료 여부 메모..."></textarea>
+                <textarea placeholder="변경 필요한 서비스/기관 리스트, 변경 완료 여부 메모..." data-notes-for="item75_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item75_2">
                 <label for="item75_2">건강보험 피부양자 등록 등 행정 처리 (해당 시)
                     <span class="description">필요한 경우 관련 서류 준비하여 신청.</span>
                 </label>
-                <textarea placeholder="필요 여부 확인, 진행 계획/완료일 메모..."></textarea>
+                <textarea placeholder="필요 여부 확인, 진행 계획/완료일 메모..." data-notes-for="item75_2"></textarea>
             </div>
         </section>
 
@@ -865,35 +915,35 @@
                 <label for="item80_1">결혼 준비 예산 지속적 트래킹 및 관리
                     <span class="description">지출 발생 시마다 예산 관리 툴에 기록하고, 예산 초과 여부 점검.</span>
                 </label>
-                <textarea placeholder="정기 점검 주기 (매주/격주), 현재 예산 대비 지출 현황 요약 메모..."></textarea>
+                <textarea placeholder="정기 점검 주기 (매주/격주), 현재 예산 대비 지출 현황 요약 메모..." data-notes-for="item80_1"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item80_2">
                 <label for="item80_2">파트너와 정기적인 소통 및 의사결정
                     <span class="description">준비 상황 공유, 의견 조율, 갈등 발생 시 대화로 해결 노력. 서로 격려하고 지지하기.</span>
                 </label>
-                <textarea placeholder="주기적인 대화 시간 갖기 (예: 매주 일요일 저녁), 주요 논의/결정 사항 기록..."></textarea>
+                <textarea placeholder="주기적인 대화 시간 갖기 (예: 매주 일요일 저녁), 주요 논의/결정 사항 기록..." data-notes-for="item80_2"></textarea>
             </div>
              <div class="checklist-item">
                 <input type="checkbox" id="item80_3">
                 <label for="item80_3">양가 부모님과 주요 진행 상황 소통
                     <span class="description">결정된 사항 위주로 공유. 과도한 간섭은 정중히 거절하되, 존중하는 태도 유지.</span>
                 </label>
-                <textarea placeholder="정기 연락 주기, 공유할 내용 필터링 기준 메모..."></textarea>
+                <textarea placeholder="정기 연락 주기, 공유할 내용 필터링 기준 메모..." data-notes-for="item80_3"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item80_4">
                 <label for="item80_4">건강 관리 및 스트레스 관리
                     <span class="description">규칙적인 생활, 건강한 식단, 적절한 운동 유지. 스트레스 해소 방법 찾기 (취미, 데이트 등).</span>
                 </label>
-                <textarea placeholder="건강 관리 목표, 스트레스 해소 활동 계획 메모..."></textarea>
+                <textarea placeholder="건강 관리 목표, 스트레스 해소 활동 계획 메모..." data-notes-for="item80_4"></textarea>
             </div>
             <div class="checklist-item">
                 <input type="checkbox" id="item80_5">
                 <label for="item80_5">결혼 준비 관련 서류 및 계약서 철저히 보관
                     <span class="description">계약서, 영수증, 견적서 등 모든 관련 서류를 한 곳에 모아 정리. 분실 대비 사진/스캔 보관 권장.</span>
                 </label>
-                <textarea placeholder="서류 보관 방법 (파일 폴더, 클라우드 등), 정리 상태 메모..."></textarea>
+                <textarea placeholder="서류 보관 방법 (파일 폴더, 클라우드 등), 정리 상태 메모..." data-notes-for="item80_5"></textarea>
             </div>
         </section>
 
@@ -911,49 +961,132 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const checklist = document.getElementById('checklist');
+        const saveToFileBtn = document.getElementById('saveToFileBtn');
+        const loadFileInput = document.getElementById('loadFileInput');
 
-        // 로컬 스토리지에서 데이터 로드
-        const loadData = () => {
-            const checkboxes = checklist.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                const savedState = localStorage.getItem(checkbox.id);
-                if (savedState !== null) {
-                    checkbox.checked = savedState === 'true';
-                    updateLabelStyle(checkbox); // 페이지 로드 시 스타일 업데이트
-                }
-                checkbox.addEventListener('change', saveData);
-                checkbox.addEventListener('change', () => updateLabelStyle(checkbox)); // 변경 시 스타일 업데이트
-            });
-
-            const textareas = checklist.querySelectorAll('textarea');
-            textareas.forEach(textarea => {
-                const id = textarea.id || generateTextareaId(textarea); // ID가 없으면 생성 시도
-                if(id) {
-                    textarea.id = id; // ID 할당 (없었을 경우)
-                    const savedText = localStorage.getItem(id);
-                    if (savedText !== null) {
-                        textarea.value = savedText;
+        // --- 데이터 관리 객체 ---
+        const dataManager = {
+            getAllData: function() {
+                const data = {
+                    checkboxes: {},
+                    textareas: {}
+                };
+                checklist.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                    data.checkboxes[checkbox.id] = checkbox.checked;
+                });
+                checklist.querySelectorAll('textarea').forEach(textarea => {
+                    const id = textarea.id || textarea.getAttribute('data-notes-for');
+                    if (id) {
+                        // data-notes-for 속성을 ID로 사용하되, freeMemo는 그대로 사용
+                        const key = textarea.id === 'freeMemo' ? 'freeMemo' : (textarea.getAttribute('data-notes-for') ? textarea.getAttribute('data-notes-for') + '-notes' : id);
+                        data.textareas[key] = textarea.value;
+                    } else {
+                         console.warn('Textarea without identifiable ID or data-notes-for attribute found:', textarea);
                     }
-                    textarea.addEventListener('input', saveData);
-                } else {
-                    console.warn('Textarea without a valid ID found, cannot save/load data for it.', textarea);
+                });
+                return data;
+            },
+            applyData: function(data) {
+                // 체크박스 적용
+                if (data.checkboxes) {
+                    checklist.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                        if (data.checkboxes.hasOwnProperty(checkbox.id)) {
+                            checkbox.checked = data.checkboxes[checkbox.id];
+                            updateLabelStyle(checkbox); // 스타일 업데이트
+                        }
+                    });
                 }
-            });
-        };
+                // 텍스트 영역 적용
+                if (data.textareas) {
+                     checklist.querySelectorAll('textarea').forEach(textarea => {
+                        const id = textarea.id;
+                        const dataNotesFor = textarea.getAttribute('data-notes-for');
+                        let key = null;
 
-        // 로컬 스토리지에 데이터 저장
-        const saveData = (event) => {
-            const element = event.target;
-            if (element.type === 'checkbox') {
-                localStorage.setItem(element.id, element.checked);
-            } else if (element.tagName === 'TEXTAREA') {
-                 if(element.id) {
-                     localStorage.setItem(element.id, element.value);
-                 }
+                        if (id === 'freeMemo') {
+                            key = 'freeMemo';
+                        } else if (dataNotesFor) {
+                            key = dataNotesFor + '-notes';
+                        } else if (id) { // fallback to id if data-notes-for is missing
+                            key = id;
+                        }
+
+                        if (key && data.textareas.hasOwnProperty(key)) {
+                            textarea.value = data.textareas[key];
+                        } else if (!key) {
+                            console.warn('Textarea without identifiable ID or data-notes-for attribute during load:', textarea);
+                        }
+                    });
+                }
+                console.log('Data loaded and applied.');
+            },
+            saveToLocalStorage: function() {
+                const data = this.getAllData();
+                localStorage.setItem('weddingChecklistData', JSON.stringify(data));
+                 // console.log('Data saved to Local Storage.');
+            },
+            loadFromLocalStorage: function() {
+                const savedData = localStorage.getItem('weddingChecklistData');
+                if (savedData) {
+                    try {
+                        const data = JSON.parse(savedData);
+                        this.applyData(data);
+                        console.log('Data loaded from Local Storage.');
+                    } catch (e) {
+                        console.error('Error parsing data from Local Storage:', e);
+                        // 저장된 데이터가 잘못된 경우 기존 데이터 삭제 고려
+                        // localStorage.removeItem('weddingChecklistData');
+                    }
+                } else {
+                    console.log('No data found in Local Storage.');
+                }
+            },
+            saveToFile: function() {
+                const data = this.getAllData();
+                const dataStr = JSON.stringify(data, null, 2); // 보기 좋게 포맷팅
+                const blob = new Blob([dataStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                const today = new Date();
+                const dateString = `${today.getFullYear()}${(today.getMonth() + 1).toString().padStart(2, '0')}${today.getDate().toString().padStart(2, '0')}`;
+                a.href = url;
+                a.download = `wedding_checklist_backup_${dateString}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                console.log('Data saved to file.');
+                alert('체크리스트 데이터가 파일로 저장되었습니다.');
+            },
+            loadFromFile: function(file) {
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        if (confirm('파일에서 데이터를 로드하시겠습니까? 현재 페이지의 내용은 덮어씌워집니다.')) {
+                            this.applyData(data);
+                            this.saveToLocalStorage(); // 파일 로드 후 로컬 스토리지에도 저장
+                            alert('파일에서 데이터를 성공적으로 로드했습니다.');
+                        }
+                    } catch (e) {
+                        console.error('Error reading or parsing file:', e);
+                        alert('파일을 읽거나 분석하는 중 오류가 발생했습니다. 유효한 JSON 파일인지 확인해주세요.');
+                    } finally {
+                         // 파일 입력 초기화 (동일 파일 재선택 가능하도록)
+                         loadFileInput.value = null;
+                    }
+                };
+                reader.onerror = (event) => {
+                    console.error('File reading error:', event);
+                     alert('파일을 읽는 중 오류가 발생했습니다.');
+                     loadFileInput.value = null;
+                };
+                reader.readAsText(file);
             }
         };
 
-        // 체크박스 상태에 따라 라벨 스타일 업데이트
+        // 체크박스 상태에 따라 라벨 스타일 업데이트 함수
         const updateLabelStyle = (checkbox) => {
             const label = checklist.querySelector(`label[for="${checkbox.id}"]`);
             if (label) {
@@ -962,67 +1095,68 @@
                     label.style.color = '#adb5bd';
                 } else {
                     label.style.textDecoration = 'none';
-                    label.style.color = '#343a40'; // 원래 라벨 색상으로 복원
+                    label.style.color = '#343a40'; // 원래 라벨 색상 복원
                 }
             }
         };
 
-        // Textarea ID 생성 함수 (Fallback)
-        const generateTextareaId = (textarea) => {
-            const parentItem = textarea.closest('.checklist-item');
-            if (parentItem) {
-                const checkbox = parentItem.querySelector('input[type="checkbox"]');
-                if (checkbox && checkbox.id) {
-                    return checkbox.id + '-notes';
-                }
-            }
-            // 자유 메모 영역 등 특정 ID가 필요한 경우
-            if(textarea.placeholder && textarea.placeholder.includes("자유롭게 메모")) {
-                return 'freeMemo'; // 명시적 ID 부여
-            }
-            // 고유 ID 생성 시도 (간단 버전)
-            const timestamp = Date.now().toString(36);
-            const randomStr = Math.random().toString(36).substring(2, 7);
-            return `textarea-${timestamp}-${randomStr}`;
-        };
+        // --- 이벤트 리스너 설정 ---
 
-
-        // 초기 데이터 로드
-        loadData();
-
-        // 동적으로 ID 할당 및 데이터 로드 재시도 (더 견고하게)
-        const items = checklist.querySelectorAll('.checklist-item');
-        items.forEach(item => {
-            const checkbox = item.querySelector('input[type="checkbox"]');
-            const textarea = item.querySelector('textarea');
-            if (checkbox && textarea && !textarea.id) {
-                 const generatedId = generateTextareaId(textarea);
-                 if(generatedId){
-                     textarea.id = generatedId;
-                     const savedText = localStorage.getItem(textarea.id);
-                     if (savedText !== null) {
-                        textarea.value = savedText;
-                     }
-                     // 이미 loadData에서 리스너를 추가했을 수 있으므로 중복 방지하며 추가
-                     textarea.removeEventListener('input', saveData);
-                     textarea.addEventListener('input', saveData);
-                 }
-            }
+        // 체크박스 변경 시 로컬 스토리지 저장 및 스타일 업데이트
+        checklist.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                updateLabelStyle(checkbox);
+                dataManager.saveToLocalStorage();
+            });
         });
 
-         // 자유 메모 영역 명시적 처리
-         const freeMemoArea = document.getElementById('freeMemo');
-         if (freeMemoArea && !freeMemoArea.getAttribute('listener-attached')) { // 리스너 중복 부착 방지
-             const savedMemo = localStorage.getItem('freeMemo');
-             if (savedMemo !== null) {
-                 freeMemoArea.value = savedMemo;
-             }
-             freeMemoArea.addEventListener('input', saveData);
-             freeMemoArea.setAttribute('listener-attached', 'true');
-         }
+        // 텍스트 영역 입력 시 로컬 스토리지 저장 (Debounce 적용 가능)
+        let timeoutId;
+        checklist.querySelectorAll('textarea').forEach(textarea => {
+            textarea.addEventListener('input', () => {
+                clearTimeout(timeoutId); // 이전 타이머 클리어
+                timeoutId = setTimeout(() => { // 500ms 후에 저장
+                    dataManager.saveToLocalStorage();
+                }, 500);
+            });
+        });
+
+        // 파일로 저장 버튼 클릭
+        saveToFileBtn.addEventListener('click', () => {
+            dataManager.saveToFile();
+        });
+
+        // 파일에서 로드 입력 변경
+        loadFileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            dataManager.loadFromFile(file);
+        });
+
+        // --- 초기화 ---
+        // 페이지 로드 시 로컬 스토리지에서 데이터 로드
+        dataManager.loadFromLocalStorage();
+
+        // 각 textarea에 data-notes-for 속성 자동 할당 (ID가 있고 data-notes-for가 없을 경우)
+        checklist.querySelectorAll('.checklist-item').forEach(item => {
+            const checkbox = item.querySelector('input[type="checkbox"]');
+            const textarea = item.querySelector('textarea');
+            if (checkbox && textarea && checkbox.id && !textarea.getAttribute('data-notes-for') && textarea.id !== 'freeMemo') {
+                textarea.setAttribute('data-notes-for', checkbox.id);
+            }
+             // 각 textarea에 고유 ID 보장 (data-notes-for 기반 또는 자체 ID)
+            if (textarea && !textarea.id) {
+                const dataNotesFor = textarea.getAttribute('data-notes-for');
+                if (dataNotesFor) {
+                    textarea.id = dataNotesFor + '-notes';
+                } else if (textarea.placeholder && textarea.placeholder.includes("자유롭게 기록")) {
+                     textarea.id = 'freeMemo'; // 명시적으로 freeMemo ID 부여
+                }
+                // console.log(`Assigned ID "${textarea.id}" to textarea.`);
+            }
+        });
 
     });
 </script>
 
 </body>
-        </html>
+</html>
