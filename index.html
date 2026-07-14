@@ -3,352 +3,1132 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>지예 ♥ 진엽</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Noto+Serif+KR:wght@200;300;400;500&display=swap" rel="stylesheet">
+<title>결혼 준비 런시트</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+:root{
+  --bg:#F3F3F1; --surface:#FFFFFF; --ink:#1E1C22; --sub:#6E6A75; --line:#E3E1DE;
+  --focus:#31527B;      /* 현재 절차 */
+  --pre:#9A4F3F;        /* 선행 조건 (이걸 먼저) */
+  --next:#3F7263;       /* 후행 (이게 풀린다) */
+  --money:#55705B;
+}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
-body{
-  background:#FAF6F0;color:#4A4139;
-  font-family:'Noto Serif KR',serif;font-weight:300;
-  line-height:1.8;min-height:100vh;overflow-x:hidden;
-}
-.wrap{max-width:460px;margin:0 auto}
-.hero{padding:80px 40px 60px;text-align:center;position:relative}
-.hero-line{position:absolute;top:30px;left:50%;transform:translateX(-50%);width:1px;height:30px;background:#C4A97D;opacity:.5}
-.date-eng{
-  font-family:'Cormorant Garamond',serif;font-weight:300;font-size:13px;
-  letter-spacing:6px;color:#8A7E72;text-transform:uppercase;margin-bottom:40px;
-  opacity:0;animation:fadeUp 1s ease .3s forwards;
-}
-.names-wrap{margin-bottom:36px;opacity:0;animation:fadeUp 1s ease .6s forwards}
-.names{font-weight:200;font-size:32px;letter-spacing:4px;line-height:1.4}
-.amp{
-  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
-  font-size:24px;color:#C4A97D;display:block;margin:8px 0;
-}
-.invite{font-size:14px;color:#8A7E72;font-weight:300;letter-spacing:1px;opacity:0;animation:fadeUp 1s ease .9s forwards}
-.dv{display:flex;align-items:center;justify-content:center;gap:16px;padding:0 60px;margin:10px 0}
-.dv-l{flex:1;height:1px;background:#E8E0D4}
-.dv-d{width:4px;height:4px;background:#C4A97D;border-radius:50%;opacity:.6}
-.sec{padding:50px 36px;text-align:center}
-.sec-t{
-  font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:5px;
-  color:#8A7E72;text-transform:uppercase;margin-bottom:32px;
-}
-.sc-label{font-family:'Cormorant Garamond',serif;font-size:13px;letter-spacing:5px;color:#8A7E72;text-transform:uppercase;margin-bottom:8px}
-.sc-sub{font-size:12px;color:#B8A080;margin-bottom:28px;font-weight:300}
-.sc-wrap{
-  position:relative;width:100%;max-width:320px;margin:0 auto;
-  border-radius:16px;overflow:hidden;
-  box-shadow:0 4px 30px rgba(180,165,140,.15);
-  background:#FAF6F0;
-}
-.sc-inner{position:relative;width:100%;padding-top:133.33%}
-.sc-hidden{
-  position:absolute;inset:0;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;padding:30px;
-  background:#FAF6F0;z-index:1;
-}
-.sc-photo{
-  width:130px;height:130px;border-radius:50%;background:#E8E0D4;
-  margin-bottom:24px;display:flex;align-items:center;justify-content:center;
-  border:3px solid #F0EBE3;font-size:48px;overflow:hidden;
-}
-.sc-msg{font-size:15px;font-weight:300;line-height:2;text-align:center;word-break:keep-all}
-.sc-msg .hl{color:#C4A97D;font-weight:400}
-.sc-canvas-wrap{
-  position:absolute;inset:0;z-index:2;border-radius:16px;overflow:hidden;
-  transition:opacity .8s ease;
-}
-.sc-canvas-wrap.gone{opacity:0;pointer-events:none}
-#scratchCanvas{width:100%;height:100%;cursor:pointer;touch-action:none;display:block}
-.sc-hint{margin-top:16px;font-size:11px;color:#8A7E72;opacity:.7;transition:opacity .5s;height:16px}
-.sc-hint.hide{opacity:0}
-.info-date{font-weight:300;font-size:22px;letter-spacing:2px;margin-bottom:8px}
-.info-time{font-size:14px;color:#6B5F53;font-weight:300;margin-bottom:6px}
-.info-dday{font-family:'Cormorant Garamond',serif;font-size:13px;color:#C4A97D;letter-spacing:2px;margin-top:10px}
-.v-name{font-size:18px;font-weight:400;letter-spacing:1px;margin-bottom:6px}
-.v-floor{font-size:14px;color:#6B5F53;font-weight:300;margin-bottom:16px}
-.v-addr{font-size:13px;color:#8A7E72;font-weight:300;line-height:1.8;margin-bottom:24px}
-.map-box{
-  width:100%;height:180px;background:#F0EBE3;border-radius:12px;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  color:#8A7E72;font-size:13px;margin-bottom:16px;border:1px solid #E8E0D4;gap:4px;
-}
-.map-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.map-btn{
-  padding:10px 24px;border:1px solid #E8E0D4;border-radius:30px;
-  background:transparent;color:#6B5F53;font-family:'Noto Serif KR',serif;
-  font-size:12px;font-weight:300;cursor:pointer;letter-spacing:1px;transition:all .3s;
-}
-.map-btn:active{background:#E8E0D4;color:#4A4139}
-.p-row{display:flex;justify-content:center;gap:50px;margin-top:24px}
-.p-label{
-  font-size:11px;color:#C4A97D;letter-spacing:3px;margin-bottom:10px;
-  font-family:'Cormorant Garamond',serif;text-transform:uppercase;
-}
-.p-names{font-size:14px;color:#6B5F53;font-weight:300;line-height:2}
-.p-names b{font-weight:400}
-.ct-row{display:flex;justify-content:center;gap:60px;margin-top:20px}
-.ct-grp{text-align:center}
-.ct-grp-label{font-size:12px;color:#8A7E72;margin-bottom:10px;font-weight:300}
-.ct-btns{display:flex;gap:12px;justify-content:center}
-.ct-btn{
-  width:44px;height:44px;border-radius:50%;border:1px solid #E8E0D4;
-  background:transparent;display:flex;align-items:center;justify-content:center;
-  cursor:pointer;color:#8A7E72;font-size:16px;transition:all .3s;
-}
-.ct-btn:active{background:#E8E0D4}
-.ct-names{font-size:11px;color:#8A7E72;margin-top:6px;display:flex;gap:18px;justify-content:center}
-.footer{
-  font-family:'Cormorant Garamond',serif;font-size:14px;
-  color:#B8A080;font-style:italic;letter-spacing:2px;
-  padding:40px 36px 60px;text-align:center;
-}
-.fi{opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s ease}
-.fi.vis{opacity:1;transform:translateY(0)}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--ink);
+  font-family:'IBM Plex Sans KR',-apple-system,sans-serif;touch-action:none;overscroll-behavior:none}
+#app{position:fixed;inset:0;display:flex;flex-direction:column}
+
+/* ---------- header ---------- */
+header{padding:10px 16px 8px;background:var(--bg);z-index:20;border-bottom:1px solid var(--line)}
+.h-top{display:flex;align-items:baseline;justify-content:space-between}
+.h-eyebrow{font-size:9.5px;letter-spacing:2.5px;color:var(--sub);font-weight:600}
+h1{font-size:17px;font-weight:700;letter-spacing:-.3px;margin-top:1px}
+.dday{font-size:12px;color:var(--sub);text-align:right}
+.dday b{color:var(--focus);font-size:14px;display:block}
+.dday input{border:none;background:transparent;font:inherit;color:var(--sub);width:112px;text-align:right}
+/* 툴바 */
+.h-tools{display:flex;gap:6px;margin-top:8px}
+.tbtn{flex:1;padding:7px 0;border-radius:9px;border:1px solid var(--line);background:var(--surface);
+  font-size:12px;font-weight:600;color:var(--ink);font-family:inherit;cursor:pointer}
+.tbtn:active{background:#F1F0EE}
+.tbtn:disabled{opacity:.35}
+.tbtn.primary{color:var(--focus)}
+/* 오버레이 모달 (검색/예산) */
+#ovl{position:fixed;inset:0;background:rgba(30,28,34,.35);z-index:40;display:none}
+#ovl.on{display:block}
+#modal{position:fixed;left:0;right:0;bottom:0;max-height:80vh;background:var(--surface);
+  border-radius:20px 20px 0 0;z-index:41;display:none;flex-direction:column;
+  padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -8px 30px rgba(30,28,34,.2)}
+#modal.on{display:flex}
+.m-head{display:flex;align-items:center;gap:10px;padding:14px 16px 10px;border-bottom:1px solid var(--line)}
+.m-title{font-size:15px;font-weight:700;flex:1}
+.m-close{border:none;background:#F1F0EE;border-radius:10px;width:34px;height:34px;font-size:14px;cursor:pointer;font-family:inherit}
+.m-body{overflow-y:auto;padding:12px 16px 18px;touch-action:pan-y}
+#searchInput{width:100%;padding:11px 14px;border-radius:12px;border:1.5px solid var(--line);
+  font:inherit;font-size:14px;background:#FBFAF9;outline:none}
+#searchInput:focus{border-color:var(--focus)}
+.sr-empty{font-size:13px;color:var(--sub);padding:18px 4px;text-align:center}
+
+.stat{font-size:12.5px;line-height:1.7;color:#3C3944;padding:10px 12px;border-radius:12px;
+  background:#F7F6F4;border:1px solid var(--line);margin-bottom:8px}
+.stat b{color:var(--focus)}
+.chip.warn{background:#F6EAE7;color:#A4503F;font-weight:600}
+.chip.soon{background:#FBF3E3;color:#8A6B1F;font-weight:600}
+.chip.date{background:#EFEEF6;color:#4E4A78;font-weight:600}
+/* 패널 액션 (캘린더/공유/생략) */
+.act-row{display:flex;gap:8px;margin:12px 0 2px}
+.abtn{flex:1;padding:10px 0;border-radius:11px;border:1px solid var(--line);background:#FBFAF9;
+  font-size:12px;font-weight:600;color:var(--ink);font-family:inherit;cursor:pointer;text-align:center;text-decoration:none}
+.abtn:active{background:#F1F0EE}
+.abtn.skip-on{background:#F6EAE7;color:#A4503F;border-color:#E4C7C0}
+/* 바로가기 링크 */
+.lnk{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;color:var(--focus);
+  padding:7px 12px;border-radius:20px;border:1px solid #C9D3E0;background:#F4F7FB;
+  text-decoration:none;margin:0 6px 6px 0}
+.lnk::after{content:"↗";font-size:10px;opacity:.7}
+/* 생략된 절차 */
+.row.skipped{opacity:.28}
+.row.skipped text.nm{text-decoration:line-through}
+#worldDetail.focusing .row.skipped{opacity:.15}
+/* 커스텀 모달 */
+.cu-label{font-size:11.5px;font-weight:700;color:var(--sub);margin:14px 0 6px;letter-spacing:.5px}
+.cu-names{display:flex;gap:8px;align-items:center}
+.cu-names input{flex:1;padding:10px 12px;border-radius:11px;border:1.5px solid var(--line);
+  font:inherit;font-size:14px;outline:none;background:#FBFAF9;min-width:0}
+.cu-names input:focus{border-color:var(--focus)}
+.preset{display:flex;gap:7px}
+.pbtn{flex:1;padding:10px 4px;border-radius:11px;border:1.5px solid var(--line);background:#FBFAF9;
+  font-size:12px;font-weight:600;font-family:inherit;cursor:pointer;color:var(--ink)}
+.pbtn.on{border-color:var(--focus);background:#F4F7FB;color:var(--focus)}
+.cu-note{font-size:11.5px;color:var(--sub);line-height:1.6;margin-top:6px}
+html.bigfont .s-tip,html.bigfont .s-check,html.bigfont .s-ask{font-size:14.5px}
+html.bigfont .p-title{font-size:17.5px}
+html.bigfont .rel{font-size:13.5px}
+/* 검색 확장 */
+.qrow{display:flex;gap:8px;margin-top:10px;align-items:center}
+.sel{padding:9px 10px;border-radius:10px;border:1.5px solid var(--line);font:inherit;
+  font-size:12.5px;background:#FBFAF9;color:var(--ink);outline:none;flex:0 0 auto}
+.qchips{display:flex;flex-wrap:wrap;gap:6px;flex:1}
+.qchip{font-size:11.5px;padding:5px 10px;border-radius:16px;background:#F1F0EE;color:var(--sub);
+  cursor:pointer;border:none;font-family:inherit;font-weight:600}
+.qchip:active{background:#E7E6E3}
+.rel.col{flex-direction:column;align-items:stretch;gap:3px}
+.rl1{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.rl1 .ph{font-size:10px;color:var(--focus);font-weight:700}
+.snip{font-size:11.5px;color:var(--sub);line-height:1.55}
+.snip b{color:var(--pre);font-weight:700}
+/* 요약 */
+.sum-ph{font-size:12px;font-weight:700;margin:16px 0 6px;color:var(--ink);
+  display:flex;justify-content:space-between;align-items:baseline}
+.sum-ph small{font-size:10.5px;color:var(--focus);font-weight:600}
+/* 테마 스와치 */
+.swatches{display:flex;gap:12px;padding:2px 0}
+.sw{width:36px;height:36px;border-radius:50%;border:3px solid transparent;cursor:pointer;
+  outline:2px solid var(--line);outline-offset:2px}
+.sw.on{outline-color:var(--ink)}
+/* 비용 숨김 */
+html.nocost .chip.cost{display:none}
+/* 다크 모드 */
+html.dark{--bg:#141318;--surface:#1F1D24;--ink:#EDEBF1;--sub:#9B96A4;--line:#34313B}
+html.dark .tbtn,html.dark .nav,html.dark .abtn,html.dark .pbtn,html.dark .m-close,
+html.dark .qchip,html.dark .expander{background:#2A2731;color:var(--ink)}
+html.dark .chip{background:#2A2731;color:var(--sub)}
+html.dark .chip.d{background:#26303E;color:#8FB0DA}
+html.dark .chip.cost{background:#243029;color:#8FBF9F}
+html.dark .chip.date{background:#2B2940;color:#A9A3E0}
+html.dark .chip.warn{background:#3A2724;color:#E09A87}
+html.dark .chip.soon{background:#3A3322;color:#DFC27A}
+html.dark .rel,html.dark .stat{background:#26242C}
+html.dark .row.focus rect.bg{fill:#232B38}
+html.dark .spine{stroke:#3B3844}
+html.dark .row circle.dot{stroke:#4A4653}
+html.dark #searchInput,html.dark .cu-names input,html.dark .sel{background:#26242C;color:var(--ink)}
+html.dark .s-tip,html.dark .s-check,html.dark .s-ask{color:#C9C5D0}
+html.dark .lnk{background:#232B38;border-color:#3B475A;color:#8FB0DA}
+html.dark .seg{background:#2A2731}
+html.dark .sr-empty,html.dark .cu-note{color:#8B8694}
+/* 예산 v2 */
+
+.okTxt{color:var(--next);font-weight:700}
+.warnTxt{color:var(--pre);font-weight:700}
+.sim{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--ink);margin:4px 0}
+.sim input{width:64px;padding:7px 8px;border:1px solid var(--line);border-radius:8px;
+  font:inherit;font-size:13px;text-align:right;background:#FBFAF9;outline:none}
+html.dark .sim input{background:#26242C;color:var(--ink)}
+.abtn:disabled{opacity:.35}
+/* 패널 액션 */
+.act-row{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 2px}
+.act{padding:8px 11px;border-radius:10px;border:1px solid var(--line);background:#FBFAF9;
+  font-size:12px;font-weight:600;color:var(--ink);font-family:inherit;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+.act:active{background:#F1F0EE}
+.act.warn{color:#A4503F;border-color:#E5D2CC}
+.act.ok{color:var(--next);border-color:#CFDDD6}
+.memo-box{width:100%;min-height:64px;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);
+  font:inherit;font-size:13px;line-height:1.6;background:#FBFAF9;outline:none;resize:vertical}
+.memo-box:focus{border-color:var(--focus)}
+.off-banner{font-size:12.5px;color:#A4503F;background:#F6EAE7;border-radius:10px;padding:10px 12px;margin-top:10px}
+/* 설정 */
+.set-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.set-row small{display:block;font-size:11px;color:var(--sub);margin-top:2px}
+.tgl{position:relative;width:44px;height:26px;flex:0 0 auto;cursor:pointer}
+.tgl input{opacity:0;width:0;height:0}
+.tgl i{position:absolute;inset:0;border-radius:13px;background:#D8D6D2;transition:.2s}
+.tgl i::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.tgl input:checked+i{background:var(--next)}
+.tgl input:checked+i::after{transform:translateX(18px)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.form-grid input,.form-grid select{padding:10px 12px;border-radius:10px;border:1.5px solid var(--line);font:inherit;font-size:13px;background:#FBFAF9;outline:none}
+.form-grid input:focus,.form-grid select:focus{border-color:var(--focus)}
+.form-grid .full{grid-column:1/-1}
+.btn-wide{width:100%;padding:12px;border-radius:12px;border:none;background:var(--focus);color:#fff;
+  font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;margin-top:4px}
+.btn-wide.ghost{background:#F1F0EE;color:#A4503F}
+.save-note{font-size:11px;color:var(--sub);margin-top:10px;line-height:1.6}
+/* 단계 진행 바 (run sheet segments) */
+#phaseBar{display:flex;gap:3px;margin-top:9px;height:22px}
+.seg{flex:1;border-radius:4px;background:#E7E6E3;position:relative;cursor:pointer;overflow:hidden}
+.seg.active{background:var(--focus)}
+.seg .tip{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:8.5px;font-weight:600;color:var(--sub);white-space:nowrap;overflow:hidden}
+.seg.active .tip{color:#fff}
+
+/* ---------- stage ---------- */
+#stage{flex:1;position:relative;overflow:hidden;background:var(--bg)}
+svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+#viewport{will-change:transform}
+
+.ph-head text.num{font-size:11px;font-weight:700;fill:var(--sub);letter-spacing:1px}
+.ph-head text.nm{font-size:16px;font-weight:700;fill:var(--ink)}
+.ph-head text.pd{font-size:10.5px;fill:var(--sub)}
+.ph-head line{stroke:var(--line);stroke-width:1}
+
+.spine{stroke:#D8D6D2;stroke-width:2}
+.row{cursor:pointer}
+.row rect.bg{fill:var(--surface);stroke:var(--line);stroke-width:1;rx:10}
+.row text.nm{font-size:13.5px;font-weight:600;fill:var(--ink)}
+.row text.info{font-size:10.5px;fill:var(--sub)}
+.row text.dl{font-size:9.5px;font-weight:600;fill:var(--sub);text-anchor:end}
+.row circle.dot{fill:var(--surface);stroke:#B9B6B1;stroke-width:2}
+/* 포커스/관계 상태 */
+#worldDetail.focusing .row{opacity:.32}
+#worldDetail.focusing .row.focus,#worldDetail.focusing .row.pre,#worldDetail.focusing .row.next{opacity:1}
+#worldDetail.focusing .ph-head,#worldDetail.focusing .spine{opacity:.5}
+.row.focus rect.bg{stroke:var(--focus);stroke-width:2;fill:#F4F7FB}
+.row.off rect.bg{stroke-dasharray:4 3;fill:#F5F4F2}
+.row.off text.nm{fill:#A5A1AA;text-decoration:line-through}
+.row.off text.info,.row.off text.dl{fill:#B9B6B1}
+.row.off circle.dot{stroke:#CFCCC7;fill:#F5F4F2}
+.row.custom rect.bg{stroke:#8A6B1F}
+.row.focus circle.dot{stroke:var(--focus);fill:var(--focus)}
+.row.focus text.dl{fill:var(--focus)}
+.row.pre rect.bg{stroke:var(--pre);stroke-width:1.4}
+.row.pre circle.dot{stroke:var(--pre)}
+.row.next rect.bg{stroke:var(--next);stroke-width:1.4}
+.row.next circle.dot{stroke:var(--next)}
+.f-edge{fill:none;stroke-width:2;opacity:.85}
+.f-edge.pre{stroke:var(--pre)}
+.f-edge.next{stroke:var(--next);stroke-dasharray:5 4}
+.f-tag{font-size:9px;font-weight:700}
+.f-tag.pre{fill:var(--pre)} .f-tag.next{fill:var(--next)}
+
+/* overview phase cards */
+.p-card rect.bg{fill:var(--surface);stroke:var(--line);stroke-width:1;rx:14}
+.p-card text.num{font-size:13px;font-weight:700;fill:var(--sub);letter-spacing:1px}
+.p-card text.nm{font-size:20px;font-weight:700;fill:var(--ink)}
+.p-card text.pd{font-size:12px;fill:var(--focus)}
+.p-card text.ct{font-size:12px;fill:var(--sub)}
+
+.controls{position:absolute;right:12px;top:12px;display:flex;flex-direction:column;gap:8px;z-index:15}
+.ctl{width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--surface);
+  color:var(--ink);font-size:18px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 1px 4px rgba(30,28,34,.08);cursor:pointer}
+.ctl:active{transform:scale(.94)}
+.ctl.fit{font-size:10.5px;font-weight:700}
+
+/* ---------- story panel (bottom) ---------- */
+#panel{background:var(--surface);border-top:1px solid var(--line);z-index:30;
+  box-shadow:0 -6px 24px rgba(30,28,34,.10);display:flex;flex-direction:column;
+  padding-bottom:env(safe-area-inset-bottom)}
+.p-head{display:flex;align-items:center;gap:10px;padding:10px 12px}
+.nav{width:46px;height:52px;border-radius:12px;border:1px solid var(--line);background:var(--surface);
+  font-size:17px;color:var(--ink);cursor:pointer;flex:0 0 auto}
+.nav:disabled{opacity:.3}
+.nav:active:not(:disabled){background:#F1F0EE}
+.p-mid{flex:1;min-width:0;cursor:pointer}
+.p-eyebrow{font-size:10px;font-weight:600;color:var(--sub);letter-spacing:.5px;display:flex;gap:8px;align-items:center}
+.p-eyebrow .cnt{color:var(--focus)}
+.p-title{font-size:16px;font-weight:700;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-chips{display:flex;gap:6px;margin-top:4px;flex-wrap:nowrap;overflow:hidden}
+.chip{font-size:10.5px;padding:3px 8px;border-radius:20px;background:#F1F0EE;color:var(--sub);white-space:nowrap}
+.chip.d{background:#EBF0F6;color:var(--focus);font-weight:600}
+.chip.cost{background:#EDF1EC;color:var(--money)}
+.expander{width:34px;height:52px;border:none;background:transparent;color:var(--sub);
+  font-size:15px;cursor:pointer;flex:0 0 auto;transition:transform .25s}
+#panel.open .expander{transform:rotate(180deg)}
+.p-body{max-height:0;overflow-y:auto;transition:max-height .32s cubic-bezier(.3,.9,.35,1);
+  touch-action:pan-y;padding:0 16px}
+#panel.open .p-body{max-height:52vh;padding-bottom:14px}
+.s-sec{font-size:11.5px;font-weight:700;color:var(--ink);margin:14px 0 7px;
+  display:flex;align-items:center;gap:8px}
+.s-sec::after{content:"";flex:1;height:1px;background:var(--line)}
+.s-sec .mark{width:8px;height:8px;border-radius:2px;flex:0 0 auto}
+.s-tip{font-size:13px;line-height:1.68;color:#3C3944;padding-left:13px;position:relative;margin-bottom:7px}
+.s-tip::before{content:"";position:absolute;left:0;top:9px;width:5px;height:5px;border-radius:50%;background:var(--focus)}
+.s-check{font-size:13px;line-height:1.6;color:#3C3944;padding-left:22px;position:relative;margin-bottom:6px}
+.s-check::before{content:"";position:absolute;left:0;top:4px;width:11px;height:11px;border-radius:3px;border:1.5px solid #B9B6B1}
+.s-check[data-ck]{cursor:pointer;user-select:none;-webkit-user-select:none}
+.s-check.on{color:#A5A1AC;text-decoration:line-through}
+.s-check.on::before{background:var(--next);border-color:var(--next)}
+.todo-task{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:10px 0 4px;padding:6px 8px;background:#F7F6F4;border-radius:8px;cursor:pointer}
+html.dark .todo-task{background:#2A2733}
+.todo-task b{font-size:13px;font-weight:600}
+.todo-task small{font-size:11px;color:var(--sub);white-space:nowrap}
+.todo-bar{position:sticky;top:0;background:var(--surface);padding:4px 0 8px;z-index:2;font-size:12px;color:var(--sub)}
+.todo-bar b{color:var(--next)}
+.s-ask{font-size:13px;line-height:1.6;color:#3C3944;padding-left:19px;position:relative;margin-bottom:6px}
+.s-ask::before{content:"Q";position:absolute;left:0;top:1px;font-size:10.5px;font-weight:700;color:var(--money)}
+.rel{display:flex;align-items:center;gap:8px;font-size:12.5px;padding:8px 10px;border-radius:10px;
+  margin-bottom:6px;cursor:pointer;border:1px solid var(--line);background:#FBFAF9}
+.rel:active{background:#F1F0EE}
+.rel .rd{margin-left:auto;font-size:10px;color:var(--sub);white-space:nowrap}
+.rel.pre{border-left:3px solid var(--pre)}
+.rel.next{border-left:3px solid var(--next)}
+.guide-link{display:inline-block;margin:10px 0 4px;font-size:12px;font-weight:600;color:var(--focus);
+  background:none;border:none;font-family:inherit;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+/* ---------- 구조 분석 뷰 ---------- */
+.st-note{font-size:11.5px;color:var(--sub);line-height:1.55;margin:4px 0 10px}
+.st-note b{color:var(--ink)}
+.st-sec{margin:16px 0 7px;font-size:12px;font-weight:700;color:var(--sub);letter-spacing:.3px}
+.st-sec b{color:var(--focus)}
+.st-item{display:flex;align-items:center;gap:8px;padding:9px 11px;border:1px solid var(--line);
+  border-radius:10px;margin-bottom:6px;background:var(--surface);font-size:13px;cursor:pointer}
+.st-item:active{background:#F1F0EE}
+.st-item.off{opacity:.4}
+.st-item .n{flex:1;font-weight:600;letter-spacing:-.2px}
+.st-item small{color:var(--sub);font-size:10.5px;white-space:nowrap}
+.st-deg{font-size:11px;font-weight:700;color:var(--focus);min-width:34px;text-align:right}
+.st-item.edge .st-deg{color:var(--sub)}
+.badge{font-size:10px;font-weight:700;padding:2px 6px;border-radius:6px;background:#F3EDE2;color:#8A6A2E;white-space:nowrap}
+.badge.g{background:#E9F1ED;color:#3F7263}
+.row[data-tier=core] .bg{stroke:var(--focus);stroke-width:1.5}
+.row[data-tier=edge] .bg{stroke-dasharray:4 3}
+
+/* ---------- 연결 지도(v7-5) ---------- */
+.me{fill:none;stroke:#C9C5BE;stroke-width:1.1;opacity:.7}
+.me.pre{stroke:var(--pre);stroke-width:2.2;opacity:1}
+.me.next{stroke:var(--next);stroke-width:2.2;opacity:1}
+.me.dim{opacity:.08}
+.mnode{cursor:pointer}
+.mnode .mb{fill:var(--surface);stroke:var(--line);stroke-width:1.1}
+.mnode .mn-core{stroke:var(--focus);stroke-width:2}
+.mnode .mn-edge{stroke-dasharray:4 3}
+.mnode .mt{font-size:9.5px;font-weight:600;fill:var(--ink);letter-spacing:-.3px}
+.mnode .mw.family{fill:#B08A3E}.mnode .mw.guest{fill:#3F7263}
+.mnode.off,.mnode.skipped{opacity:.25}
+.mnode.m-dim{opacity:.14}
+.mnode.m-focus .mb{stroke:var(--ink);stroke-width:2.6}
+.mnode.m-pre .mb{stroke:var(--pre);stroke-width:2.2}
+.mnode.m-next .mb{stroke:var(--next);stroke-width:2.2}
+.mlg{font-size:11px;fill:var(--sub);font-weight:600}
+html.dark .mnode .mb{fill:#26242C}
+html.dark .me{stroke:#524F58}
 </style>
 </head>
 <body>
-<div class="wrap">
-
-  <section class="hero">
-    <div class="hero-line"></div>
-    <div class="date-eng">March 22, 2026</div>
-    <div class="names-wrap">
-      <div class="names">
-        김진엽
-        <span class="amp">&amp;</span>
-        박지예
-      </div>
-    </div>
-    <p class="invite">오래 좋아한 사람과 결혼합니다</p>
-  </section>
-
-  <div class="dv"><div class="dv-l"></div><div class="dv-d"></div><div class="dv-l"></div></div>
-
-  <section class="sec fi">
-    <div class="sc-label">For You</div>
-    <div class="sc-sub">아래를 손가락으로 긁어보세요</div>
-    <div class="sc-wrap" id="scratchCard">
-      <div class="sc-inner">
-        <div class="sc-hidden">
-          <div class="sc-photo"><span style="opacity:.7">👫</span></div>
-          <div class="sc-msg">
-            서로 다른 길을 걸어온 두 사람이<br>
-            이제 <span class="hl">같은 길</span>을 걸으려 합니다<br><br>
-            저희의 첫 걸음에<br>
-            함께해 주시면<br>
-            <span class="hl">참 좋겠습니다</span>
-          </div>
-        </div>
-        <div class="sc-canvas-wrap" id="canvasWrap">
-          <canvas id="scratchCanvas"></canvas>
-        </div>
-      </div>
-    </div>
-    <div class="sc-hint" id="scratchHint">손가락으로 문질러주세요 ✦</div>
-  </section>
-
-  <div class="dv"><div class="dv-l"></div><div class="dv-d"></div><div class="dv-l"></div></div>
-
-  <section class="sec fi">
-    <div class="sec-t">Wedding Day</div>
-    <div class="info-date">2026년 3월 22일 일요일</div>
-    <div class="info-time">오후 2시</div>
-    <div class="info-dday" id="ddayText"></div>
-  </section>
-
-  <div class="dv"><div class="dv-l"></div><div class="dv-d"></div><div class="dv-l"></div></div>
-
-  <section class="sec fi">
-    <div class="sec-t">Location</div>
-    <div class="v-name">더 채플앳청담</div>
-    <div class="v-floor">그랜드홀 3층</div>
-    <div class="v-addr">
-      서울특별시 강남구 청담동 123-45<br>
-      지하철 7호선 청담역 2번 출구 도보 5분
-    </div>
-    <div class="map-box">
-      <span>지도 영역</span>
-      <span style="font-size:11px">(카카오맵/네이버맵 연동 가능)</span>
-    </div>
-    <div class="map-btns">
-      <button class="map-btn">카카오맵</button>
-      <button class="map-btn">네이버지도</button>
-      <button class="map-btn">티맵</button>
-    </div>
-  </section>
-
-  <div class="dv"><div class="dv-l"></div><div class="dv-d"></div><div class="dv-l"></div></div>
-
-  <section class="sec fi">
-    <div class="sec-t">Invitation</div>
-    <div class="p-row">
+<div id="app">
+  <header>
+    <div class="h-top">
       <div>
-        <div class="p-label">Groom</div>
-        <div class="p-names">김영수 · 박미영의 아들<br><b>진엽</b></div>
+        <div class="h-eyebrow">WEDDING RUN SHEET</div>
+        <h1>결혼 준비 런시트</h1>
       </div>
-      <div>
-        <div class="p-label">Bride</div>
-        <div class="p-names">박정호 · 최수진의 딸<br><b>지예</b></div>
-      </div>
+      <div class="dday"><b id="ddayLabel">예식일 미설정</b><input type="date" id="ddayInput" aria-label="예식일"></div>
     </div>
-  </section>
-
-  <div class="dv"><div class="dv-l"></div><div class="dv-d"></div><div class="dv-l"></div></div>
-
-  <section class="sec fi">
-    <div class="sec-t">Contact</div>
-    <div class="ct-row">
-      <div class="ct-grp">
-        <div class="ct-grp-label">신랑측</div>
-        <div class="ct-btns">
-          <button class="ct-btn">📞</button>
-          <button class="ct-btn">📞</button>
-        </div>
-        <div class="ct-names"><span>진엽</span><span>아버지</span></div>
-      </div>
-      <div class="ct-grp">
-        <div class="ct-grp-label">신부측</div>
-        <div class="ct-btns">
-          <button class="ct-btn">📞</button>
-          <button class="ct-btn">📞</button>
-        </div>
-        <div class="ct-names"><span>지예</span><span>아버지</span></div>
-      </div>
+    <div class="h-tools">
+      <button class="tbtn" id="searchBtn">🔍 검색</button>
+      <button class="tbtn primary" id="todayBtn" disabled>📍 오늘</button>
+      <button class="tbtn" id="sumBtn">☑️ 할일</button>
+      <button class="tbtn" id="structBtn">🧭 구조</button>
+      <button class="tbtn" id="customBtn">⚙️ 커스텀</button>
     </div>
-  </section>
+    <div id="phaseBar"></div>
+  </header>
 
-  <div class="dv"><div class="dv-l"></div><div class="dv-d"></div><div class="dv-l"></div></div>
+  <div id="stage">
+    <svg id="svg">
+      <g id="viewport">
+        <g id="worldDetail">
+          <g id="phaseHeads"></g><g id="spineG"></g><g id="rows"></g><g id="focusEdges"></g>
+        </g>
+        <g id="worldOverview"><g id="pCards"></g></g>
+        <g id="worldMap" style="opacity:0;pointer-events:none"><g id="mapEdges"></g><g id="mapNodes"></g></g>
+      </g>
+    </svg>
+    <div class="controls">
+      <button class="ctl" id="zin" aria-label="확대">＋</button>
+      <button class="ctl" id="zout" aria-label="축소">－</button>
+      <button class="ctl fit" id="zfit" aria-label="전체">전체</button>
+    </div>
+  </div>
 
-  <div class="footer">Jinyeob &amp; Jiye</div>
+  <div id="panel">
+    <div class="p-head">
+      <button class="nav" id="prevBtn" aria-label="이전 절차">◀</button>
+      <div class="p-mid" id="panelMid">
+        <div class="p-eyebrow"><span id="peEyebrow"></span><span class="cnt" id="peCnt"></span></div>
+        <div class="p-title" id="peTitle"></div>
+        <div class="p-chips" id="peChips"></div>
+      </div>
+      <button class="expander" id="expBtn" aria-label="상세 열기">▲</button>
+      <button class="nav" id="nextBtn" aria-label="다음 절차">▶</button>
+    </div>
+    <div class="p-body" id="pBody"></div>
+  </div>
+</div>
 
+<div id="ovl"></div>
+<div id="modal">
+  <div class="m-head"><div class="m-title" id="mTitle"></div><button class="m-close" id="mClose">✕</button></div>
+  <div class="m-body" id="mBody"></div>
 </div>
 
 <script>
-(function(){
-  var wedding = new Date('2026-03-22T14:00:00+09:00');
-  var now = new Date();
-  var diff = Math.ceil((wedding - now) / (1000*60*60*24));
-  var el = document.getElementById('ddayText');
-  if(diff > 0) el.textContent = '결혼식까지 ' + diff + '일';
-  else if(diff === 0) el.textContent = '오늘, 결혼합니다';
-  else el.textContent = '부부가 되었습니다';
+/* ============================================================
+   데이터 — 단계 12개 · 절차 97개 · 할일 317개 — v3 형식검증 최종 통과(스키마/그래프·사이클/시간순서/역할/완성 산출물 69종 커버리지/need-by/도달성/중복). 검증은 산출 파이프라인에서 수행·보증됨.
+   ============================================================ */
+const PHASES=[{"id": "g1", "name": "준비 시작", "period": "D-365~330", "desc": "결혼 합의·상견례·예산의 뼈대", "goal": "결혼 합의·예산·분담이 기록으로 남는다"}, {"id": "g2", "name": "웨딩홀", "period": "D-330~270", "desc": "날짜가 확정되는 순간", "goal": "날짜·홀·보증인원이 계약서로 확정된다"}, {"id": "g3", "name": "스드메", "period": "D-270~200", "desc": "스튜디오·드레스·메이크업", "goal": "3사 예약 완료 + 추가금 총액 상한이 지켜진다"}, {"id": "g4", "name": "웨딩 촬영", "period": "D-180~140", "desc": "가봉·리허설 촬영·셀렉", "goal": "앨범과 청첩장·영상용 사진이 손에 들어온다"}, {"id": "g5", "name": "신혼집", "period": "D-240~40", "desc": "집·인테리어·혼수·이사", "goal": "식 한 달 전, 입주가 끝난 신혼집이 준비된다"}, {"id": "g6", "name": "예물·예단·한복", "period": "D-150~30", "desc": "양가의 격식 맞추기", "goal": "양가 격식이 갈등 없이 합의·기록된다"}, {"id": "g7", "name": "신혼여행", "period": "D-180~14", "desc": "항공은 빠를수록 싸다", "goal": "항공·숙소·여권 확정, 짐만 싸면 되는 상태"}, {"id": "g8", "name": "청첩장·하객", "period": "D-90~30", "desc": "알리고 대접하는 단계", "goal": "모든 하객이 초대받고 최종 인원 근거가 생긴다"}, {"id": "g9", "name": "본식 준비", "period": "D-60~7", "desc": "식을 완성하는 디테일", "goal": "식순·사람·물건이 당일 그대로 굴러가게 세팅된다"}, {"id": "g10", "name": "최종 점검", "period": "D-7~D-1", "desc": "숫자·현금·동선의 마무리", "goal": "숫자·현금·동선 확정, 가방까지 싸이면 준비 끝"}, {"id": "gd", "name": "결혼식 당일", "period": "D-day", "desc": "예식 시각 H 기준 분 단위 런시트", "goal": "두 사람은 웃기만 하고, 나머지는 담당자가 굴러가는 하루"}, {"id": "g11", "name": "식 후 마무리", "period": "D+1~D+30", "desc": "신고·정산·감사 인사", "goal": "법적·재정·관계 마무리까지 끝나면 결혼 완료 🎉"}];
+const TASKS=[{"id": "agree", "g": "g1", "name": "결혼 합의·양가 인사", "d": "D-365", "cost": "-", "deps": [], "tips": ["프러포즈 전후로 각자 부모님께 먼저 인사드리는 순서가 자연스러워요. 보통 신부 측 → 신랑 측 순.", "이 단계에서 두 사람이 \"언제쯤, 어떤 규모로\"의 큰 그림을 합의해두면 이후 모든 결정이 빨라져요."], "check": ["각자 부모님께 결혼 의사 전달", "대략적 시기(계절·연도) 합의", "규모 성향 합의: 호텔·일반홀·스몰·채플", "택일(길일) 여부 양가 확인"]}, {"id": "sangprep", "g": "g1", "name": "상견례 준비", "d": "D-365", "cost": "-", "deps": ["agree"], "tips": ["상견례의 8할은 준비예요. 장소·좌석·대화 주제를 커플이 설계하면 당일이 편안해집니다.", "양가 부모님의 취향(한식/중식, 술 여부)과 이동 거리를 먼저 조사하세요.", "가벼운 선물(과일·차·홍삼 등 3~5만원대)을 양가 교차로 준비하면 분위기가 부드러워요."], "check": ["양가 중간 지점 프라이빗룸 예약(2~3주 전)", "양가 참석 인원 확정(형제 포함 여부 통일)", "호칭 정리표 공유", "대화 주제·피할 주제 커플 합의", "계산 담당 미리 결정(보통 신랑 측 또는 반반)"], "ask": ["부모님, 식사는 한식·중식 중 어느 쪽이 편하세요?", "형제자매까지 함께할까요, 부모님만 뵐까요?"], "who": "family"}, {"id": "sang", "g": "g1", "name": "상견례", "d": "D-360", "cost": "식사 인당 5~10만원", "deps": ["sangprep"], "tips": ["자리 배치: 양가 아버지가 마주 보고, 커플은 각자 부모님 옆이 기본형이에요.", "대화 순서: 근황 → 커플 칭찬 → 결혼 시기·규모 합의 → 예단·예물 수위 \"간소하게\" 정도로만 언급.", "구체적 금액 이야기는 이날 하지 않는 게 원칙이에요. 큰 방향만 합의하고 세부는 커플이 중개합니다.", "식사 시간은 1시간 30분~2시간이 적당해요. 길어지면 커플이 자연스럽게 마무리 멘트를."], "check": ["시기·규모 합의 결과 메모", "예단·예물 방향(간소화/생략/전통) 큰 틀 확인", "다음 소통 창구는 커플로 일원화 선언"], "who": "family"}, {"id": "religion", "g": "g1", "name": "종교·예식 형식 협의", "d": "D-358", "cost": "-", "deps": ["agree"], "tips": ["가톨릭 혼배미사는 혼인교리 이수가 필수예요. 본당마다 교리 일정이 한정돼 있어 최소 6개월 전, 가급적 1년 전에 성당에 확인하세요.", "식 형식(무교식/성당/교회/사찰/전통혼례)은 웨딩홀 선택보다 먼저 정해야 해요. 형식에 따라 장소 자체가 달라집니다.", "양가 종교가 다르면 \"식은 무교식 + 가족별 종교 행사는 별도\"가 검증된 절충안이에요. 초반에 정리해야 뒤탈이 없어요."], "check": ["예식 형식 결정", "종교 요건(교리·서류·주례자) 확인", "양가 종교 관련 합의 기록"], "who": "family"}, {"id": "finance", "g": "g1", "name": "커플 재정 공개·신용 점검", "d": "D-355", "cost": "-", "deps": ["agree"], "tips": ["결혼 준비에서 가장 용기가 필요한 절차예요. 자산·부채·신용점수·고정지출을 서로 전부 공개해야 예산과 신혼집 대출 계획이 현실이 됩니다.", "숨긴 부채는 대출 심사에서 반드시 드러나요. 지금 공개하는 게 가장 싸게 먹히는 시점이에요.", "마이데이터 앱(토스·뱅크샐러드 등)으로 화면을 같이 보며 정리하면 30분이면 끝나요."], "check": ["자산·부채·신용점수 상호 공개", "고정지출(구독·보험·할부) 목록 교환", "결혼 자금 가용액 합산"]}, {"id": "budget", "g": "g1", "name": "총예산 수립", "d": "D-350", "cost": "평균 5,000~8,000만원(주거 제외)", "deps": ["sang"], "tips": ["시장 실측치(2025): 예식장 기본금 평균 약 1,644만원, 스드메 기본금 평균 약 346만원, 결혼 서비스(예식+스드메 중심) 평균 2,100~2,500만원, 총비용(주거 제외) 평균 약 6,800만원.", "배분 기준안: 웨딩홀 40% · 스드메 8% · 예물예단 20% · 신혼여행 15% · 본식비용 7% · 예비비 10%. 이 비율로 항목별 상한선을 시트에 먼저 적어두세요.", "축의금 예상 수입은 예산에 절대 넣지 마세요. 들어오면 보너스, 안 들어와도 문제없게.", "결혼 전용 공동 통장 + 지출 기록 시트를 만들면 정산 갈등이 90% 줄어요.", "모든 견적은 \"총액 기준\"으로 비교하세요. 업계는 옵션·추가금이 붙는 구조예요."], "check": ["공동 통장 개설", "지출 기록 시트 생성(항목/예산/실지출/담당)", "양가 지원 여부·조건 확인", "항목별 상한선 합의"]}, {"id": "share", "g": "g1", "name": "예산 분담 협의", "d": "D-345", "cost": "-", "deps": ["budget"], "tips": ["\"항목별 분담(홀은 누가, 혼수는 누가)\"보다 \"총액 비율 분담\"이 계산이 깔끔하고 갈등이 적어요.", "양가 지원금은 조건(예단 규모, 명의 등)과 함께 기록으로 남기세요. 말은 반드시 어긋납니다."], "check": ["분담 비율 확정", "양가 지원 금액·조건 문서화", "예비비 10% 별도 확보"], "who": "family"}, {"id": "expo", "g": "g1", "name": "웨딩 박람회·정보 수집", "d": "D-340", "cost": "입장 무료(사은품 미끼 주의)", "deps": ["budget"], "tips": ["박람회 당일 계약 금지 원칙: 혜택에 혹해 그 자리에서 계약하면 원하는 날짜가 없거나 포함 서비스가 제한적인 경우가 많아요. 견적만 받고 하루 자고 결정하세요.", "박람회는 \"시세 파악용\"으로 가세요. 현장 계약 압박이 세지만, 당일 계약 특전은 대부분 상시 혜택이에요.", "커뮤니티(카페·앱) 실후기에서 업체명+\"불만/환불\" 키워드 검색은 필수 루틴입니다.", "견적서는 사진으로 모두 보관하세요. 나중에 비교·네고의 무기가 됩니다."], "check": ["홀·스드메 시세 범위 파악", "후기 커뮤니티 2곳 가입", "견적서 보관 폴더 생성"]}, {"id": "support", "g": "g1", "name": "신혼부부 지원제도 조회", "d": "D-335", "cost": "-", "deps": ["budget"], "tips": ["버팀목(전세)·디딤돌(구입)·신생아 특례 등 신혼부부 전용 대출과 특별공급 청약 자격을 미리 조회해두면 신혼집 예산의 뼈대가 잡혀요.", "지자체별 결혼·주거 지원금(전세 이자 지원 등)이 따로 있어요. 두 사람 주소지 기준으로 각각 확인하세요.", "혼인신고 시점이 청약·대출·세금 유불리에 영향을 줘요. 이 단계에서 큰 그림만 파악해두고, 신고 시기는 식 후에 전략적으로 정합니다."], "check": ["대출 자격·한도 사전 조회", "특별공급 청약 요건 확인", "거주 지자체 지원금 검색", "보건소 예비부부 무료 건강검진 예약(풍진 등)"], "links": [{"n": "주택도시기금", "u": "https://nhuf.molit.go.kr"}, {"n": "마이홈포털", "u": "https://www.myhome.go.kr"}, {"n": "정부24", "u": "https://www.gov.kr"}]}, {"id": "checkup", "g": "g1", "d": "D-320", "name": "예비부부 건강검진", "cost": "보건소 무료 / 민간 정밀 10~30만원", "deps": ["support"], "tips": ["보건소 예비부부 검진(풍진 항체·B형간염·빈혈·성병 등)은 무료예요. support 절차에서 예약한 검진을 이 시점에 수검합니다.", "풍진 항체가 없어 접종하면 접종 후 1개월 피임이 권장돼요. 임신 계획이 있다면 일정 역산이 필요한 이유입니다.", "결과지는 서로 공유하는 게 원칙이에요. 재정 공개(finance)와 같은 결의 신뢰 절차입니다."], "check": ["양가 각자 수검 완료", "결과 상호 공유", "필요 시 예방접종·추적 검사 일정"]}, {"id": "tour", "g": "g2", "name": "웨딩홀 투어", "d": "D-330", "cost": "-", "deps": ["religion", "expo"], "tips": ["3~5곳만 비교하세요. 그 이상 보면 기준이 흐려지고 피로만 쌓여요.", "주말 12~14시가 골든타임. 같은 홀도 시간대별로 대관료가 달라요.", "식대가 진짜 비용의 몸통이에요. 대관료 무료라도 식대×보증인원이 크면 비싼 홀입니다.", "실제 예식이 있는 시간에 방문해 하객 동선·주차·식사 회전을 눈으로 확인하세요."], "check": ["비교표: 식대/대관료/보증인원/사용시간/꽃장식/주차/폐백실", "예식 간격(단독홀 vs 동시예식) 확인", "버진로드 길이·천장고 확인(사진 퀄리티 좌우)", "어르신 동선 확인(엘리베이터·휠체어 접근·좌식 여부)"], "ask": ["보증인원 최종 확정은 언제까지, 몇 명까지 조정 가능한가요?", "꽃장식·연출(축포 등)은 기본 포함인가요?", "외부 스냅·DVD 업체 반입이 가능한가요? 전속 강제인가요?", "식대에 음주류가 포함되나요?"], "links": [{"n": "카카오맵 웨딩홀 검색", "u": "https://map.kakao.com/?q=%EC%9B%A8%EB%94%A9%ED%99%80"}]}, {"id": "hall", "g": "g2", "name": "웨딩홀 계약(날짜 확정)", "d": "D-300", "cost": "식대 5~8만원/인 × 보증인원", "deps": ["tour"], "tips": ["계약금은 가급적 카드로 결제하세요. 업체 폐업·분쟁 시 할부항변권으로 보호받을 수 있어요.", "이 계약이 전체 준비의 기준점이에요. 이후 스드메·여행·청첩장·스냅이 전부 여기서 풀립니다.", "보증인원은 최소로 잡으세요. 늘리긴 쉬워도 줄이긴 거의 불가능해요.", "봄가을 성수기 인기 홀은 1년 전 마감, 금요일 저녁·일요일은 10~20% 저렴한 경우가 많아요."], "check": ["계약금·중도금·잔금 일정 확인", "위약금·천재지변·연기 조항 확인", "구두 약속(서비스) 전부 계약서 특약에 명시", "계약서 전체 사진 보관"]}, {"id": "meal", "g": "g2", "name": "식사 형태·보증인원 설계", "d": "D-280", "cost": "-", "deps": ["hall"], "tips": ["뷔페는 회전과 하객 만족, 코스는 격식. 하객 연령대가 높으면 코스+뷔페 혼합도 고려하세요.", "실제 참석률은 초대 명단의 70~80%예요. 명단이 완성되면 이 계수로 보증인원을 역산합니다."], "check": ["식사 형태 결정", "아동식·주류 단가 확인", "최종 인원 통보 마감일 캘린더 등록"], "who": "guest"}, {"id": "hallopt", "g": "g2", "name": "홀 옵션·연출 협상", "d": "D-270", "cost": "생화 업그레이드 50~150만원", "deps": ["hall"], "tips": ["꽃장식은 조화→생화 업그레이드 압박이 가장 큰 항목이에요. 실물 시공 사진을 보고 결정하세요.", "폐백실 사용료, 신부대기실 꽃, 포토테이블은 \"빼달라\"고 하면 빠지는 경우가 많아요. 다 협상 대상입니다."], "check": ["꽃장식 등급 확정", "식전 영상 송출 규격(비율·형식) 확인", "원판(단체사진) 촬영 위치 확인"]}, {"id": "tasting", "g": "g2", "d": "D-260", "name": "웨딩홀 식사 시식", "who": "guest", "cost": "2~4인 무료 제공 홀 다수(유료 3~5만원/인)", "deps": ["meal"], "tips": ["하객이 기억하는 건 결국 식사예요. 계약 홀의 시식 제공 여부를 확인하고 반드시 두 사람이 직접 드셔보세요.", "뷔페면 회전 시간대(12~13시)에 방문해 실제 운영 품질을 보고, 코스면 어르신 기준(간·식감)으로 평가하세요.", "아쉬운 메뉴는 이 시점에 교체 협상이 가능해요. 최종 확정 후에는 바꾸기 어렵습니다."], "check": ["시식 예약·방문", "어르신 기준 메뉴 평가", "아동식·주류 시음", "교체 요청 사항 기록"]}, {"id": "planner", "g": "g3", "name": "플래너 vs 다이렉트", "d": "D-270", "cost": "동행 20~50만원 · 스드메 총 400~500만원선", "deps": ["budget"], "tips": ["숨은 추가금 리스트를 외우세요: 드레스 피팅비(투어비 5~15만/샵), 헬퍼비(회당 20만대×리허설·본식 2회), 사진 원본비(30만대), 얼리스타트비(새벽 메이크업), 헤어변형비, 작가 지정비, 드레스 라벨 업그레이드비, 액자·앨범 업글. 견적서에 이 항목들의 포함 여부를 전부 적게 하세요.", "업셀 패턴 주의: 기본 라벨 드레스 위 등급을 먼저 보여주고 고르게 유도하는 게 전형적인 수법이에요. 낮은 계약가일수록 추가금 구조가 심해서, 350만원 계약이 실지출 500만원을 넘는 사례가 흔합니다. 총액 상한을 먼저 정하고 들어가세요.", "2025년 4월 \"결혼준비대행업 표준약관\"이 제정됐어요. 표준약관 사용 여부와 추가금 사전 고지(정찰제), 위약금 기준 명시를 계약 전에 확인하세요. 계약서에 없는 항목은 거절할 수 있습니다.", "스드메 상식 단가: 스튜디오 ~100만 / 드레스 ~200만 / 헤어메이크업 ~100만, 합계 400~500만원선이 표준 구간이에요.", "스드메 패키지는 플래너 경유가 보통 10~30% 저렴해요. 다이렉트(직접 계약)는 발품이 들지만 선택 폭이 넓고 중간 수수료가 없어요."], "ask": ["표준약관으로 계약하나요? 추가금 발생 항목 전체 목록을 주세요.", "패키지에서 개별 업체 교체가 가능한가요?", "촬영 당일 동행하시나요?"], "check": ["플래너 동행/비동행·다이렉트 중 결정", "계약 시 환불·위약 조건 확인", "소통 채널(카톡·시트) 합의"]}, {"id": "studio", "g": "g3", "name": "스튜디오 예약", "d": "D-250", "cost": "80~150만원", "deps": ["hall", "planner"], "tips": ["포토테이블·모바일 청첩장용 컷은 빨리 필요해요. 계약 때 일부 컷 \"선출고\"가 가능한지 미리 요청해두세요.", "인기 스튜디오는 6개월 전 마감이에요. 날짜 확정 즉시 잡으세요.", "샘플 앨범 말고 \"최근 실촬영 원본 보정본\"을 보여달라고 하세요. 샘플은 최상급만 모은 거예요."], "ask": ["원본 전체 제공인가요? 수정본은 몇 장인가요?", "앨범 규격·페이지 추가 비용은?", "야외·한복 컷 추가 비용은?"], "check": ["촬영일 확정(본식 4~5개월 전 권장)", "원본·수정본 장수와 추가금 표 확인", "모바일 청첩장용 사진 조기 수령 요청"]}, {"id": "dress", "g": "g3", "name": "드레스샵 투어", "d": "D-240", "cost": "대여 100~200만원+투어비 3~5만원/샵", "deps": ["planner"], "tips": ["샵당 3~4벌 피팅, 2~3개 샵이면 충분해요. 피팅 사진 촬영 가능 여부를 예약 시 확인하세요.", "촬영용과 본식용 라인을 다르게 가면 사진이 풍성해요. 예: 촬영은 벨라인, 본식은 머메이드.", "헬퍼(이모님) 비용 20~30만원은 별도 현금인 경우가 많아요. 총액에 미리 넣어두세요."], "check": ["체형에 맞는 라인 메모(A라인/벨/머메이드/프린세스)", "피팅 사진 허용 샵 우선 예약", "헬퍼비·가봉비 별도 여부 확인"]}, {"id": "makeup", "g": "g3", "name": "메이크업샵 예약", "d": "D-230", "cost": "60~120만원(리허설+본식)", "deps": ["planner"], "tips": ["담당 등급(원장/부원장/실장)에 따라 가격이 크게 달라요. 등급보다 \"내 얼굴형 시연 사진\"을 보세요.", "본식 예식 시간에 따라 새벽 4~5시 시작도 있어요. 첫 타임 여부와 샵→홀 이동 시간을 확인하세요."], "ask": ["본식 당일 몇 시 입실인가요?", "혼주(어머님) 메이크업 동시 진행 가능한가요? 비용은?", "붙임머리·피부 표현 추가금이 있나요?"], "check": ["본식 새벽 타임 가능 여부 확인(5시 이전 불가 샵 존재)", "리허설·본식 담당 지정", "혼주 메이크업 동반 할인 문의"]}, {"id": "concept", "g": "g3", "name": "촬영 컨셉 확정", "d": "D-220", "cost": "-", "deps": ["studio", "dress"], "tips": ["2026 트렌드: 필름 카메라 감성의 레트로 스냅과 자연광 야외 컷 인기가 높아요. 정통 실내 컷과 반반 섞으면 실패가 없어요.", "레퍼런스 사진 10~15장을 폴더로 만들어 스튜디오·드레스샵·메이크업에 동일하게 공유하세요. 세 곳의 톤이 맞아야 결과물이 삽니다.", "한복 컷을 넣으면 양가 어른 만족도가 매우 높아요. 원판용으로도 활용됩니다."], "check": ["컨셉 2~3개 확정(정통/야외/필름 등)", "레퍼런스 폴더 3사 공유", "촬영 소품(꽃·편지·반려동물) 준비 목록"]}, {"id": "hairplan", "g": "g3", "name": "헤어 플랜(기르기·시술)", "d": "D-200", "cost": "펌·염색 회당 10~30만원", "deps": ["makeup"], "tips": ["업스타일·번헤어를 원하면 어깨선 아래 길이가 필요해요. 지금부터 길러야 본식에 맞습니다. 부족하면 붙임머리(추가금)로 보완.", "펌·염색은 촬영 3주 전, 본식 2주 전이 마지노선이에요. 직전 시술은 모발 손상·색 들뜸 리스크가 큽니다.", "신랑 커트는 D-7~5가 최적. 당일 아침 커트는 절대 금지예요(스타일 실패 복구 불가)."], "check": ["목표 스타일 레퍼런스 확정", "시술 일정 역산 예약", "트리트먼트 루틴 시작", "신랑 D-7 커트 예약"]}, {"id": "shoes", "g": "g3", "d": "D-180", "name": "웨딩슈즈·액세서리 준비", "cost": "슈즈 5~20만원 / 액세서리 대여·구매 상이", "deps": ["dress"], "tips": ["가봉(fitting)은 본식 굽 높이 그대로 진행해야 기장이 정확해요. 그래서 슈즈는 가봉 전에 확보하는 게 순서입니다.", "티아라·귀걸이는 드레스샵 대여와 구매를 총액으로 비교하세요. 대여가 무료 포함인 샵도 있어요.", "새 신발은 집에서 3~4회 신어 길들이세요. 본식은 서 있는 시간이 깁니다."], "check": ["본식 굽 높이 확정·구매", "가봉일 전 수령", "귀걸이·티아라 대여/구매 결정", "실내 길들이기"]}, {"id": "snap", "g": "g4", "name": "본식 스냅·DVD 예약", "d": "D-180", "cost": "스냅 60~120만원 / DVD 50~100만원", "deps": ["hall"], "tips": ["주의: 인기 스냅 업체는 6개월 전 마감이에요. 홀 계약 직후 바로 알아보는 게 정석입니다.", "홀이 전속 업체를 강제하는지, 외부 반입비가 있는지 계약 전에 확인했어야 해요(홀 투어 질문 참조).", "작가 1인/2인 구성 차이가 커요. 하객 200명 이상이면 2인을 추천합니다."], "ask": ["원본 제공·보정본 장수는?", "대기실 컷부터인가요, 메이크업샵 출발 컷부터인가요?", "납품 기간은 얼마나 걸리나요?"], "check": ["본식 스냅·DVD 업체 계약(원본 제공 여부)", "아이폰 스냅 부탁할 지인 지정·원본 공유 방법 합의", "\"반드시 남길 컷\" 5~7개 리스트 작가 전달"]}, {"id": "fitting", "g": "g4", "name": "드레스 가봉", "d": "D-170", "cost": "가봉비 별도 샵 존재", "deps": ["shoes"], "tips": ["촬영 2~3주 전 진행. 당일 착용할 속옷과 힐 굽 높이를 그대로 가져가야 기장이 정확해요.", "앉기·팔 들기·계단 오르기를 해보고 불편한 곳을 다 말하세요. 촬영은 8시간 노동이에요."], "check": ["당일 속옷·힐 지참", "기장·허리 핀 위치 확인", "액세서리(티아라·귀걸이) 매칭 확인"]}, {"id": "rehearsal", "g": "g4", "name": "리허설(웨딩) 촬영", "d": "D-160", "cost": "스냅 동행 추가 30~60만원", "deps": ["fitting", "concept", "hairplan"], "tips": ["준비물: 물+빨대(립 보호), 초콜릿 등 간식, 편한 슬리퍼, 스타킹 여분, 신랑 양말 여분.", "표정보다 손끝·시선 디렉팅을 잘 따라가는 커플이 결과물이 좋아요. 어색하면 \"걷는 컷\"을 요청하세요.", "오전 촬영이 피부 컨디션과 조명에 유리해요."], "check": ["준비물 가방 전날 패킹", "부케·소품 수령 시간 확인", "동행 인원(친구·헬퍼) 확정"]}, {"id": "datesnap", "g": "g4", "name": "셀프·데이트 스냅(선택)", "d": "D-150", "cost": "셀프 무료 / 반셀프 20~40만원", "deps": ["concept"], "tips": ["2026 트렌드: 필름카메라·일상 데이트 컷을 청첩장과 식전 영상에 섞는 커플이 많아요. 스튜디오 컷의 격식과 셀프 컷의 자연스러움이 서로를 보완합니다.", "삼각대+스마트폰이면 충분해요. 황금 시간대(일몰 1시간 전) 야외에서 찍으면 실패가 없어요.", "반셀프(출장 스냅 작가 1~2시간)는 20~40만원으로 리허설 촬영 대비 부담이 적어요."], "check": ["장소 2곳 선정(추억의 장소 추천)", "의상 톤 맞추기(흰·베이지 계열 무난)", "베스트컷 청첩장·영상 폴더에 추가"]}, {"id": "select", "g": "g4", "name": "사진 셀렉·앨범 제작", "d": "D-140", "cost": "추가 수정 장당 2~5만원", "deps": ["rehearsal"], "tips": ["셀렉 기한(보통 2주)을 넘기면 지연비가 붙는 곳이 있어요. 촬영 직후 주말에 바로 끝내세요.", "모바일 청첩장·식전 영상·포토테이블에 쓸 컷을 이때 같이 골라두면 두 번 일하지 않아요."], "check": ["앨범용 셀렉 완료", "청첩장용 5~10컷 별도 폴더", "식전 영상용 20~30컷 별도 폴더", "포토테이블용 인화·액자 준비(홀 규격 확인)"]}, {"id": "homebudget", "g": "g5", "name": "지역·주거 예산 결정", "d": "D-240", "cost": "-", "deps": ["support", "finance"], "tips": ["두 사람 직장 기준 출퇴근 40분 이내 교집합부터 좁혀가세요.", "신혼부부 전용 대출(버팀목·디딤돌·특례) 한도와 조건을 먼저 조회하고 예산을 정하는 게 순서예요. 집을 보고 나서 대출을 알아보면 늦어요."], "check": ["대출 한도 사전 조회", "전세/매매/월세 방향 합의", "우선 지역 2~3곳 선정"], "links": [{"n": "주택도시기금", "u": "https://nhuf.molit.go.kr"}, {"n": "마이홈포털", "u": "https://www.myhome.go.kr"}]}, {"id": "home", "g": "g5", "name": "집 계약", "d": "D-180", "cost": "지역별 상이", "deps": ["homebudget"], "tips": ["등기부등본은 계약 당일 아침에 한 번 더 떼어보세요. 계약금 입금 직전이 사고 구간이에요.", "입주일은 예식 최소 1개월 전으로 잡으세요. 식 직전 이사는 체력적으로 정말 힘듭니다."], "check": ["등기부등본 당일 재확인", "전입신고+확정일자 계획", "특약(수리·하자) 명시", "잔금일-입주일-예식일 순서 확인"]}, {"id": "interior", "g": "g5", "name": "인테리어·입주 청소", "d": "D-120", "cost": "입주청소 평당 1~1.5만원", "deps": ["home"], "tips": ["도배·장판·조명만 바꿔도 새집 느낌의 80%가 나와요. 전체 시공은 예산과 상의하세요.", "순서 철칙: 시공 → 입주청소 → 가구·가전 반입. 순서가 꼬이면 비용이 두 배가 돼요."], "check": ["시공 범위·견적 3곳 비교", "입주청소 예약(시공 완료 직후)", "커튼·조명 실측"]}, {"id": "appliance", "g": "g5", "name": "혼수 가전·가구", "d": "D-100", "cost": "1,000~1,500만원 선", "deps": ["home", "share"], "tips": ["수건·샴푸 같은 생활 소모품이 의외의 누락 1순위예요. 특히 수건은 20장 이상 넉넉히 — 부족하면 그날 바로 불편합니다.", "백화점 웨딩클럽 가입 시 사은품·상품권 혜택이 커요. 온라인 최저가와 총액으로 비교하세요.", "대형 가전은 배송 2~4주. 입주일에서 역산해 주문하세요.", "매트리스는 반드시 매장에서 두 사람이 같이 누워보고 결정하세요. 10년 쓰는 물건이에요."], "check": ["필수/보류 리스트 분리(다 사지 않기)", "배송일 입주일 정렬", "냉장고 자리 실측(문 개폐 방향 포함)"]}, {"id": "loan", "g": "g5", "d": "D-70", "name": "대출 신청·잔금 자금 확정", "cost": "-", "deps": ["home"], "tips": ["전세·주택 대출은 잔금일 3~4주 전 신청이 안전해요. 은행 심사만 2~3주 걸립니다.", "버팀목·디딤돌 등 기금대출은 소득·자산 증빙과 혼인 예정 증빙(청첩장·예식장 계약서)이 필요해요. 미리 준비하세요.", "금리·한도는 최소 2곳 비교. homebudget에서 조회한 사전 한도와 실제 승인액이 다를 수 있어요."], "check": ["대출 신청(잔금 3~4주 전)", "증빙 서류 제출", "실행일=잔금일 정렬", "자기자본+대출 자금 흐름표 확정"]}, {"id": "cleanout", "g": "g5", "name": "기존 집 정리·계약 종료", "d": "D-60", "cost": "-", "deps": ["home"], "tips": ["지금 사는 집(원룸·전월세) 만기와 신혼집 입주일이 어긋나면 이중 주거비가 나가요. 집주인에게 최소 2~3개월 전 퇴거 통보(기록 남기기)하고 승계·조기종료를 협의하세요.", "보증금 반환일과 신혼집 잔금일의 자금 흐름을 한 표로 맞춰보세요. 하루 차이로 브릿지 자금이 필요해질 수 있어요.", "안 쓰는 가구·가전은 중고 판매나 무료나눔으로 미리 처분하면 이사비가 줄어요."], "check": ["퇴거 통보(문자·내용 기록)", "보증금-잔금 자금 흐름표", "짐 처분 목록 작성"]}, {"id": "movein", "g": "g5", "name": "이사·집 정리", "d": "D-40", "cost": "포장이사 80~150만원", "deps": ["interior", "appliance", "loan", "cleanout"], "tips": ["이사는 예식 한 달 전까지 끝내세요. 마지막 2주는 본식 준비만으로도 꽉 찹니다.", "두 집 살림 합치기: 겹치는 물건은 \"더 새것\"만 남기고 과감히 정리하는 게 수납의 답이에요."], "check": ["이사 날짜 확정·엘리베이터 예약", "인터넷·가스 이전 신청", "겹치는 살림 정리"]}, {"id": "utility", "g": "g5", "name": "공과금·명의 이전", "d": "D-30", "cost": "-", "deps": ["movein"], "tips": ["전기(한전)·가스·수도·관리비 명의를 입주 시점에 이전하고, 이전 거주자 미납분이 없는지 확인하세요.", "인터넷·TV는 결합상품 재약정 타이밍이에요. 두 사람 통신사 결합으로 바꾸면 월 1~3만원 절감됩니다.", "관리사무소에 입주 신고를 하면 주차 등록·택배 수령이 바로 정리돼요.", "형식검증 메모: 원본은 전입신고가 식 후 정산(settle, D+7)에 있어 ‘이사 후 14일 이내’ 원칙(D-40 이사 기준 D-26 마감)과 모순이었어요. 실행을 이 절차(D-30)로 옮기고 settle은 완료 확인만 합니다. 단, 혼인신고 시점과 청약·대출 유불리(support 참조)가 얽히면 전입 시기는 전문가와 조정하세요."], "check": ["전입신고·확정일자 처리(이사 후 14일 이내 원칙)", "전기·가스·수도 명의 이전", "이전 거주자 미납금 확인", "통신 결합상품 재설계", "관리사무소 입주 신고", "우편물 주거이전 서비스 신청(우체국)"]}, {"id": "guarantee", "g": "g5", "d": "D-25", "name": "전세보증금 반환보증 가입", "cost": "보증료 연 0.1~0.15% 선", "deps": ["utility"], "tips": ["전세 사기 대비 필수 안전장치예요. 잔금 지급·전입신고·확정일자까지 마친 뒤 신청할 수 있습니다(그래서 utility 뒤).", "계약기간 절반 경과 전까지만 가입 가능해요. 입주 직후 바로 처리하는 게 안전합니다.", "HUG·HF·SGI 세 기관의 보증료·요건(선순위 채권 등)을 비교하세요."], "check": ["가입 요건(선순위·보증한도) 확인", "전입·확정일자 완료 상태로 신청", "보증서 발급·보관"], "links": [{"n": "HUG 주택도시보증공사", "u": "https://www.khug.or.kr"}, {"n": "HF 한국주택금융공사", "u": "https://www.hf.go.kr"}]}, {"id": "ring", "g": "g6", "name": "예물 반지", "d": "D-150", "cost": "커플링 200~500만원(다이아 별도)", "deps": ["share"], "tips": ["\"매일 낄 결혼반지\"와 \"예물용\"을 분리해 생각하세요. 매일 끼는 건 심플한 밴드가 정답이에요.", "종로·압구정 공방 제작이 브랜드 대비 30~50% 저렴해요. 다이아는 감정서(GIA) 확인.", "제작 기간 2~4주. 손가락 사이즈는 저녁에 재는 게 정확해요."], "check": ["본식용 반지 담당자 지정 계획", "각인 문구 결정", "보증서·감정서 보관"]}, {"id": "yedan", "g": "g6", "name": "예단·예물 범위 협의", "d": "D-140", "cost": "가정별 상이(현금+현물)", "deps": ["sang"], "tips": ["결혼 준비 갈등 1위 항목이에요. 커플이 먼저 안을 만들어 양가에 \"제안\"하는 형식이 가장 안전합니다.", "\"생략\"도 훌륭한 선택지예요. 단, 양가가 동시에 합의해야 하고, 한쪽만 생략하면 반드시 뒤탈이 나요.", "전통 구성 상식: 예단(신부→시댁, 현금·반상기·이불), 예물(신랑→신부, 보석), 봉채비(시댁→신부 측 답례)."], "check": ["생략/간소화/전통 중 방향 합의", "현금 예단 시 봉투·전달 예법 확인", "양가 합의 내용 커플이 기록"], "who": "family"}, {"id": "hanbok", "g": "g6", "name": "한복 대여·맞춤", "d": "D-120", "cost": "대여 30~60만원 / 맞춤 80만원~", "deps": ["yedan"], "tips": ["요즘 트렌드: 본식 한복을 생략하고 어머님들 한복만 준비하는 커플이 크게 늘었어요. 생략도 표준 선택지입니다.", "진행한다면 신부 한복과 양가 어머니 한복 색이 겹치지 않게 3자 톤 조율을 먼저 하세요. 어머님들은 색 계열로 양가를 구분해요.", "폐백 진행 여부를 이 시점에 정하면 대여 구성(폐백복 포함 여부)이 정리돼요."], "check": ["양가 어머니 색상 조율", "폐백 여부 결정", "가봉 일정(본식 3~4주 전) 예약", "예식장 근처 등 반납 쉬운 업체 우선(당일 반납 동선)"], "who": "family"}, {"id": "parents", "g": "g6", "name": "부모님 예복·의상", "d": "D-100", "cost": "양가 100~200만원", "deps": ["hanbok"], "tips": ["아버님 정장은 기성복+수선으로도 충분히 멋져요. 새 구두는 미리 길들이시라고 안내드리세요.", "어머님들 본식 당일 미용실(헤어·메이크업) 예약도 이때 같이 잡아드리면 큰 효도예요."], "check": ["양가 의상 방향(양장/한복) 확인", "어머님 미용실 당일 예약", "코사지(부모님 꽃) 준비 여부 확인"], "who": "family"}, {"id": "ham", "g": "g6", "name": "함 들이기(선택)", "d": "D-30", "cost": "함 구성 50~100만원(생략 다수)", "deps": ["yedan"], "tips": ["최근엔 함 절차를 생략하거나, 시끌벅적한 함진아비 없이 신랑이 조용히 전달하는 간소화가 다수예요. 양가 의사만 확인하면 생략해도 결례가 아닙니다.", "진행한다면 구성: 혼서지, 채단(청·홍 비단), 오방주머니. 함진아비 소란은 아파트에선 민폐가 되니 약식으로."], "check": ["진행 여부·형식 결정", "혼서지 작성(대필 서비스 존재)", "전달 날짜를 예식 2~4주 전으로"], "who": "family"}, {"id": "pyebaek", "g": "g6", "name": "폐백·이바지 준비(선택)", "d": "D-30", "cost": "폐백음식 30~60만원 / 이바지 50~150만원(생략 다수)", "deps": ["hanbok"], "tips": ["폐백은 생략하는 커플이 점점 많고, 하더라도 식 후 10~15분 간소 진행이 일반적이에요. 폐백실 유무·음식 주문 마감일을 홀에 확인하세요.", "진행 시 폐백음식(대추·밤·육포 등)은 전문점 주문이 편하고, 수모(진행 도우미) 비용이 별도인지 홀에 확인하세요.", "이바지 음식(신부 측→시댁)도 양가 합의로 생략 가능해요. 예단 협의 때 함께 정리하는 게 깔끔합니다."], "check": ["폐백 진행 여부 양가 확인", "진행 시 폐백실·수모 예약", "이바지 여부 예단 협의와 함께 결정"], "who": "family"}, {"id": "dest", "g": "g7", "name": "여행지 결정", "d": "D-180", "cost": "-", "deps": ["budget"], "tips": ["휴양 vs 관광 성향을 먼저 합의하세요. 반반이면 \"휴양 5일 + 도시 3일\" 조합이 정답에 가깝습니다.", "우기 달력 확인: 몰디브 5~10월 우기, 발리 11~3월 우기, 하와이·유럽은 예식 시즌과 맞추기 좋아요."], "check": ["성향 합의(휴양/관광/반반)", "기간 확정(보통 5~9일)", "우기·성수기 확인"]}, {"id": "leave", "g": "g7", "name": "신혼여행 휴가 신청", "d": "D-150", "cost": "-", "deps": ["hall"], "tips": ["예식일이 확정돼야 휴가를 낼 수 있어요. 회사 결재는 빠를수록 좋습니다.", "식 다음날 바로 출국보다 하루 쉬고 출국이 체력적으로 훨씬 나아요. 당일 밤 비행은 비추천."], "check": ["양가 회사 휴가 승인", "출국일 = 식+1일 이후로"]}, {"id": "flight", "g": "g7", "name": "항공·숙소 예약", "d": "D-120", "cost": "2인 400~1,000만원", "deps": ["dest", "leave"], "tips": ["예약 시 \"허니문\"임을 밝혀야 특전(객실 업그레이드·케이크·레이트체크아웃)이 나와요. 말 안 하면 안 줍니다.", "항공은 4~6개월 전이 가격 저점인 경우가 많아요. 좌석은 나란히로."], "ask": ["허니문 특전이 있나요?", "리조트 내 식사 포함(올인클루시브) 조건은?", "공항-숙소 픽업이 포함되나요?"], "check": ["항공권 발권(여권 영문명 일치 확인)", "숙소 예약 확정서 저장", "수하물·경유 규정 확인"]}, {"id": "passport", "g": "g7", "name": "여권·비자·보험", "d": "D-90", "cost": "여권 5만원, 보험 2인 5~10만원", "deps": ["dest"], "tips": ["여권 유효기간 6개월 미만이면 입국 거부되는 나라가 많아요. 지금 바로 확인하세요.", "개명·영문명 변경 예정이 있으면 항공권 발권 전에 끝내야 해요. 티켓과 여권 이름이 다르면 탑승 불가."], "check": ["여권 유효기간 6개월+ 확인", "비자/전자여행허가(ESTA 등) 신청", "여행자 보험 가입"], "links": [{"n": "외교부 여권안내", "u": "https://www.passport.go.kr"}, {"n": "해외안전여행", "u": "https://www.0404.go.kr"}]}, {"id": "itinerary", "g": "g7", "d": "D-30", "name": "여행 일정·레스토랑 예약", "cost": "액티비티별 상이", "deps": ["flight"], "tips": ["인기 레스토랑·투어·스파는 3~4주 전 마감이 흔해요. 허니문 디너 1회는 꼭 미리 잡으세요.", "도착일은 무조건 휴식으로 비워두세요. 장거리 비행 직후 일정은 싸움의 씨앗입니다.", "일정표는 바우처 폴더(voucher)에 함께 정리하면 현지에서 헤매지 않아요."], "check": ["일자별 일정표 초안", "레스토랑·투어 예약 확정", "오프라인 지도·번역 앱 준비"]}, {"id": "pack", "g": "g7", "name": "환전·짐·로밍", "d": "D-14", "cost": "-", "deps": ["flight"], "tips": ["환전은 트래블카드+소액 현금 조합이 요즘 정석이에요.", "드레스 입은 몸으로 캐리어 싸기는 지옥이에요. 짐은 D-7 전에 80% 싸두세요."], "check": ["트래블카드 발급·충전", "로밍/유심 결정", "수영복·정장(호텔 디너용)·상비약", "반려동물 위탁·집 관리(화분·우편) 계획"]}, {"id": "voucher", "g": "g7", "name": "여행 서류·바우처 정리", "d": "D-10", "cost": "-", "deps": ["passport", "itinerary"], "tips": ["항공 e티켓·숙소 바우처·보험증서를 클라우드+인쇄 1부로 이중화하세요. 현지에서 폰이 죽으면 종이가 살립니다.", "여권 사본과 여권용 사진 2매를 캐리어와 분리 보관하세요. 분실 시 재발급이 며칠 단축돼요.", "호텔에 \"허니문\" 명시 재확인 메일을 보내세요. 예약 사이트 메모는 누락되는 경우가 많아 특전을 놓칩니다.", "첫날 공항→숙소 이동 수단은 출발 전에 확정하세요. 도착 직후가 여행 중 가장 지친 순간이에요."], "check": ["바우처 폴더(클라우드+인쇄)", "여권 사본·사진 분리 보관", "허니문 특전 재확인 메일", "첫날 이동·오프라인 지도 저장"]}, {"id": "guest", "g": "g8", "name": "하객 명단 정리", "d": "D-90", "cost": "-", "deps": ["hall"], "tips": ["공유 스프레드시트에 양가+커플 명단을 합치고 중복을 제거하세요. 열: 이름/관계/측/청첩장(지·모)/참석예상.", "명단 수 × 0.7~0.8이 실제 참석 예상치예요. 보증인원 조정의 유일한 근거가 됩니다.", "애매한 관계는 \"모바일만\" 그룹으로 분류하면 서로 부담이 없어요."], "check": ["양가 명단 취합·중복 제거", "지첩/모청 그룹 분류", "참석 예상치 계산 → 보증인원 검토"], "who": "guest"}, {"id": "invite", "g": "g8", "name": "종이 청첩장 제작", "d": "D-75", "cost": "장당 500~1,500원 × 200~300장", "deps": ["guest", "select"], "tips": ["전달 적기는 식 6~4주 전. 인쇄 1~2주를 역산해 D-75엔 주문에 들어가야 해요.", "수량은 명단의 1.2배. 부모님이 \"몇 장 더\"를 반드시 요청하십니다.", "샘플 인쇄를 먼저 받아 색감·종이 질감을 확인하고 본인쇄 하세요."], "check": ["양가 부모님 성함·순서 어른들께 최종 검수", "고인이신 부모님 표기(故) 방식 확인", "약도·주차 안내 포함"], "who": "guest"}, {"id": "wording", "g": "g8", "name": "문구·봉투 준비", "d": "D-70", "cost": "-", "deps": ["invite"], "tips": ["초대 문구는 격식형/에세이형/짧은형 세 가지 톤 중 홀 분위기에 맞추세요.", "어른들께 드릴 청첩장은 봉투에 자필로 성함을 쓰는 게 예의예요. 커플이 나눠서 미리 써두세요."], "check": ["문구 오탈자 3인 교차 검수", "어른용 봉투 자필 작성", "회사 배포분 별도 포장"], "who": "guest"}, {"id": "mobile", "g": "g8", "name": "모바일 청첩장", "d": "D-60", "cost": "무료~3만원", "deps": ["select"], "tips": ["리허설 촬영 베스트컷으로 만들면 완성도가 달라져요.", "계좌번호 기재는 양가 협의 후에. 기재 자체를 결례로 보는 어른도 계세요. 접어두기(펼치기) 기능이 절충안입니다.", "참석 여부(RSVP) 기능을 켜두면 최종 인원 산정이 훨씬 정확해져요."], "check": ["지도·내비 링크 테스트", "RSVP 기능 활성화", "양가 단톡 배포 시점 조율(지첩 전달과 순서 맞추기)", "축의 계좌 기재 여부 양가 협의(접어두기 기능이 절충안)"], "who": "guest"}, {"id": "bus", "g": "g8", "name": "하객 버스 대절(지방·단체)", "d": "D-60", "cost": "45인승 대당 30~90만원(거리별)", "deps": ["guest"], "tips": ["수도권 내 30~50만, 수도권→충청·강원 40~60만, →전라·경상 70~90만 선. 성수기(봄·가을 주말)는 차량이 빨리 마감되니 D-60 전후로 견적을 받으세요.", "견적은 최소 2~3곳 비교하고, 왕복·대기 포함 여부와 통행료·기사 식대 포함 여부를 반드시 문서로 확인하세요.", "올버스·콜버스 같은 가격비교 플랫폼을 쓰면 여러 견적을 한 번에 받을 수 있어요.", "차 안에서 드실 간식(김밥·샌드위치+생수, 인당 5천원 선)을 탑승 인원보다 10% 여유 있게 준비하면 어르신들이 좋아하세요."], "check": ["탑승 수요 조사 → 인원·출발지 확정", "견적 2~3곳 비교(왕복·대기·톨비·기사식대 포함가)", "좌석은 인원 대비 10% 여유로 계약", "인솔자 1인 지정·기사님 연락처 교환", "출발 장소·시간 문자 공지(하객 안내 문자와 연동)", "간식·생수 준비 담당 지정"], "who": "guest"}, {"id": "lodging", "g": "g8", "d": "D-45", "name": "원거리 하객 숙박·교통 안내", "who": "guest", "cost": "단체 할인 협의(하객 부담 경감)", "deps": ["guest"], "tips": ["지방·해외에서 오시는 하객에게 숙박 정보는 초대의 완성이에요. 명단에서 원거리 하객을 먼저 추리세요.", "홀 인근 호텔 2~3곳에 단체 문의하면 10~20% 할인 코드를 받는 경우가 많아요. 전날 도착 하객 기준으로 체크인 시간을 안내하세요.", "KTX·공항 ↔ 홀 이동 경로를 한 장으로 정리해두면 안내 문자에 그대로 씁니다."], "check": ["원거리 하객 명단 추림", "인근 호텔 단체 할인 문의", "역·공항 이동 경로 정리", "안내 문자에 포함할 문구 작성"]}, {"id": "meetup", "g": "g8", "name": "청첩장 모임(청모)", "d": "D-45", "cost": "모임당 10~30만원", "deps": ["wording"], "tips": ["청모는 \"밥 사면서 직접 전달\"이 본질이에요. 그룹을 묶어 3~5회로 끝내는 게 체력과 지갑을 지킵니다.", "순서 요령: 회사 → 친구 그룹 → 친척 순. 멀리 사는 그룹은 모바일+전화로 정중히 대체해도 돼요.", "이 자리에서 축의금을 미리 주시는 분이 많아요. 받은 즉시 명단 시트에 기록하세요. 당일과 섞이면 반드시 헷갈립니다.", "식사 장소는 인당 3~5만원대, 예약 필수. \"결혼 얘기만 하는 자리\"가 되지 않게 근황 토크 위주로."], "check": ["그룹별 일정표(주 1~2회 페이스)", "장소 예약·인원 확정", "미리 받은 축의금 기록 규칙 정하기"], "who": "guest"}, {"id": "shower", "g": "g8", "name": "브라이덜 샤워", "d": "D-30", "cost": "인당 5~10만원(보통 친구들이 준비)", "deps": ["guest"], "tips": ["보통 친한 친구들이 주최해요. 신부는 날짜와 드레스코드만 정해주면 됩니다.", "파티룸+가운·풍선 셋업이 정석 코스. 사진 소품(현수막·선글라스)이 만족도를 좌우해요.", "본식 1~2주 전은 피부·체력 관리 기간이니 D-30 전후가 적기예요."], "check": ["날짜·참석자 확정", "드레스코드 공지", "과음 금지(피부!)"]}, {"id": "company", "g": "g8", "name": "회사 공지·경조 혜택 신청", "d": "D-30", "cost": "-", "deps": ["hall"], "tips": ["사내 경조금·경조휴가·축하화환은 신청해야 나와요. 인사팀 규정(증빙: 청첩장·가족관계증명서)을 미리 확인하세요. 회사마다 경조금 10~100만원까지 차이가 큽니다.", "회사 청첩장은 팀 → 부서 → 개인 친분 순으로, 지첩과 모청을 병행하세요. 전 직장 인연도 이때 정리해 연락합니다.", "상사께 축사·주례를 부탁드릴 거라면 D-45 전에 정중히 요청드리는 게 예의예요."], "check": ["경조금·휴가 규정 확인·신청", "화환 신청(가능 시)", "회사 배포 명단 확정"], "who": "guest"}, {"id": "skin", "g": "g9", "name": "피부·체력 관리", "d": "D-60~D-7", "cost": "관리 회당 5~15만원", "deps": [], "tips": ["새로운 시술은 최소 한 달 전까지만. 식 직전 첫 시술은 트러블 도박이에요.", "드레스 핏은 급한 다이어트보다 자세 교정·어깨 라인 운동이 빨라요.", "D-7부터는 새로운 음식·새로운 화장품 금지. 유지가 전략입니다."], "check": ["관리 스케줄 역산 예약", "수분·수면 루틴 고정", "신랑 면도·눈썹 정리 계획"]}, {"id": "mc", "g": "g9", "name": "사회자·축가 섭외", "d": "D-50", "cost": "지인 사례 10~20만원 / 전문 30만원~", "deps": ["hall"], "tips": ["사회자에겐 식순 대본과 이름 발음(양가 성함!)을, 축가자에겐 MR 형식과 리허설 시간을 미리 전달하세요.", "지인 섭외도 사례는 꼭 챙기세요. 정장 대여비 정도는 예의예요.", "축가는 1~2곡이 적당. 3곡부터 하객이 지루해합니다."], "check": ["사회자 대본 전달(D-14)", "축가 MR 홀 음향팀 사전 전달", "축의대·사회자 당일 도착 시간 공지"]}, {"id": "suit", "g": "g9", "name": "신랑 예복·구두", "d": "D-45", "cost": "맞춤 80~150만원 / 기성 40만원~", "deps": ["share"], "tips": ["맞춤은 제작 4~6주 + 최종 가봉. 본식에서 역산해 D-90쯤 주문이 안전하고, D-45는 마지노선이에요.", "식 후에도 입을 네이비·차콜이 활용도가 높아요. 새 구두는 집에서 3~4번 신어 길들이세요."], "check": ["셔츠·타이·포켓치프 세트 구성", "최종 가봉(D-14) 예약", "당일 양말 색 확인(의외의 함정)"]}, {"id": "order", "g": "g9", "name": "식순·주례 설계", "d": "D-40", "cost": "-", "deps": ["mc"], "tips": ["요즘 표준은 주례 없는 예식: 개식 → 화촉점화(양가 어머니) → 신랑 입장 → 신부 입장 → 맞절 → 혼인서약 → 성혼선언문 낭독(보통 양가 아버지 중 한 분) → 축가 → 양가 부모님·하객 인사 → 행진. 축가·이벤트 포함 25분 내로 끝내달라는 홀이 많아요(1시간 간격 예식).", "식전 영상은 2~3분이 최적. 성장 과정 반반+커플 컷 구성으로.", "이벤트(플래시몹 등)는 하나만. 많으면 식이 늘어지고 하객 식사가 늦어져요."], "check": ["식순표 작성 → 홀·사회자 공유", "혼인서약문 작성(각자 비밀로 준비하면 감동 2배)", "행진곡·입장곡 선곡 → 음향팀 전달", "입장 방식 결정(아버지 에스코트/양가 동반 입장/단독) → 식순표 반영", "화동·특별 이벤트 여부 결정(선택)"]}, {"id": "speech", "g": "g9", "name": "성혼선언·축사 원고 준비", "d": "D-30", "cost": "-", "deps": ["order"], "tips": ["주례 없는 식의 성혼선언문(보통 양가 아버님)은 커플이 초안을 만들어 드리면 부담을 크게 덜어드려요. 낭독 30초~1분 분량이 적당합니다.", "친구 축사는 1명, 2분 이내로. 원고를 미리 받아 수위를 확인하세요(\"폭로 금지\" 약속은 농담이 아니에요).", "비상 대비: 사회자·축가·성혼선언 각각 대타 후보를 한 명씩 정해두면 당일 어떤 사고에도 식이 굴러갑니다."], "check": ["성혼선언 낭독자 확정(보통 양가 아버지 중 한 분)·초안 전달", "축사 원고 사전 확인", "대타 후보 리스트", "성혼선언문 낭독용 인쇄 1부(물품 담당 가방에)", "혼주(양가 대표) 마무리 인사말 초안 준비·전달(선택)"], "who": "family"}, {"id": "video", "g": "g9", "name": "식전 영상 제작", "d": "D-30", "cost": "셀프 무료 / 외주 10~30만원", "deps": ["select", "order", "datesnap"], "tips": ["셀렉해둔 촬영 컷+어린 시절 사진 20~30장이면 템플릿 앱으로 셀프 제작이 충분해요.", "홀 송출 규격(16:9 등)과 파일 형식을 미리 확인하고, USB+클라우드 이중 백업하세요."], "check": ["홀 송출 규격 확인", "D-7 홀 사전 테스트 요청", "백업 2벌"]}, {"id": "bouquet", "g": "g9", "name": "부케 예약", "d": "D-30", "cost": "15~30만원", "deps": ["dress"], "tips": ["드레스 라인·톤이 정해져야 부케 모양이 나와요. 드레스 사진을 플로리스트에게 보내세요.", "부케 받을 사람과 당일 서 있을 위치(앞줄)를 미리 안내하세요."], "check": ["드레스 사진 전달", "수령 시간·장소(샵/홀) 확정", "토스용·보존용 분리 여부 결정", "부케 받을 사람 지정·식전 대기 위치 공유", "신랑 부토니에·양가 코사지 수량 확인"]}, {"id": "photobooth", "g": "g9", "name": "포토부스·하객 이벤트", "d": "D-30", "cost": "포토부스 30~60만원", "deps": ["hallopt"], "tips": ["2026 경험 중심 트렌드의 핵심이에요. 하객이 \"참여\"하는 요소 1~2개(포토부스, 방명록 영상, 맞춤 음료 스테이션)만 넣어도 식의 기억이 달라집니다.", "포토부스는 대기 줄이 생기니 식전 30분~식후 1시간 운영으로 잡고, 위치는 축의대 동선 근처가 좋아요.", "인화 프레임에 날짜·이름을 넣으면 답례품 역할까지 해요."], "check": ["이벤트 1~2개만 선정(과유불급)", "홀 설치 가능 위치·전원 확인", "운영 시간대 타임테이블에 반영"], "who": "guest"}, {"id": "party", "g": "g9", "name": "2부·애프터 파티", "d": "D-30", "cost": "대관+케이터링 100~300만원(선택)", "deps": ["order"], "tips": ["친구들과의 프라이빗한 2부는 선택이에요. 하객 수가 많아 1부에서 대화를 못 나누는 커플에게 추천합니다.", "장소는 홀 근처 루프탑·레스토랑 대관이 이동 이탈률을 줄여요. 시작은 본식 종료 2시간 후가 적당.", "드레스는 움직이기 편한 미니·슬립 라인으로 별도 준비하고, 회비제로 운영해도 실례가 아니에요."], "check": ["진행 여부·초대 범위 결정", "장소 대관·케이터링 예약", "2부 드레스·신발 준비"]}, {"id": "car", "g": "g9", "name": "웨딩카·당일 동선", "d": "D-20", "cost": "꽃장식 10~20만원", "deps": ["hall", "makeup"], "tips": ["주말 도심 교통체증은 계획을 30분 이상 잡아먹어요. 타임테이블 모든 이동 구간에 여유 버퍼를 넣으세요.", "메이크업샵 → 홀 이동 시간을 \"예식 당일과 같은 요일·시간대\"에 실측해보세요.", "운전 담당(지인)에겐 사례와 함께 동선 지도·주차 위치를 미리 공유하세요.", "당일 타임테이블을 분 단위로 만들어 관계자 전원(사회자·헬퍼·운전·양가)에게 배포하는 게 플래너의 핵심 업무예요."], "check": ["분 단위 타임테이블 작성·배포", "비상 연락망(관계자 전화번호) 한 장 정리", "우천 시 플랜B"]}, {"id": "vow", "g": "g9", "name": "혼인서약서·편지 쓰기", "d": "D-14", "cost": "-", "deps": ["order"], "tips": ["식에서 가장 기억에 남는 순간은 대부분 서약과 편지예요. 각자 비밀로 준비해 당일 처음 공개하면 감동이 2배가 됩니다.", "분량은 낭독 기준 1분~1분 30초(400~600자). 길면 감동이 흩어져요.", "유머 1 + 추억 1 + 약속 1의 3단 구성이 실패하지 않는 공식이에요. 부모님께 드리는 한 문장을 넣으면 어른들이 우십니다.", "인쇄본 2부(본인용·보관용)를 준비하고, 당일 짐 가방에 넣는 것까지가 이 절차예요."], "check": ["각자 초안 작성(비밀 유지)", "낭독 리허설 1회(시간 재기)", "인쇄 2부·가방에 패킹"]}, {"id": "waiting", "g": "g9", "name": "신부대기실·헬퍼 운영 계획", "d": "D-14", "cost": "헬퍼 본식 20~30만원(현금)", "deps": ["hall", "dress"], "tips": ["대기실은 하객 인사가 몰리는 곳이에요. 촬영 동선(스냅 작가 위치)과 인사 순서(직계→친척→친구)를 미리 정해두면 신부가 덜 지칩니다.", "헬퍼 이모님께는 드레스 사진과 당일 타임테이블을 미리 전달하세요. 현금 봉투도 이때 준비 목록에 넣습니다.", "대기실 간식(물·빨대·초콜릿)과 립 수정 파우치는 친구 한 명에게 전담시키는 게 좋아요."], "check": ["본식 헬퍼 예약 확정(리허설 동일 이모님 여부·현금 사례 확인)", "대기실 인사 순서·촬영 계획", "헬퍼에게 드레스 정보·타임테이블 전달", "간식·수정 파우치 담당 지정"], "who": "guest"}, {"id": "finalfit", "g": "g9", "d": "D-14", "name": "본식 드레스 최종 가봉", "cost": "가봉비 별도 샵 존재", "deps": ["rehearsal"], "tips": ["리허설 촬영 이후 체형 변화를 반영하는 마지막 기회예요. 본식 2주 전이 표준입니다.", "본식 슈즈·속옷을 그대로 지참해야 기장·핏이 정확해요(shoes 절차에서 준비한 그 굽).", "헬퍼 이모님께 전달할 착장 특이사항(핀 위치·트임 등)을 이 자리에서 메모하세요."], "check": ["본식 슈즈·속옷 지참", "베일·액세서리 최종 매칭", "헬퍼 전달사항 메모"]}, {"id": "parentletter", "g": "g9", "d": "D-14", "name": "부모님 감사 편지·선물 준비", "who": "family", "cost": "선물 10~30만원(선택)", "deps": ["order"], "tips": ["식에서 하객이 우는 순간은 대부분 부모님 관련 순서예요. 편지 낭독 여부를 식순(order)에 미리 반영하세요.", "낭독은 1분 이내가 적당하고, 낭독이 부담스러우면 꽃다발·선물 전달로 대체해도 충분합니다.", "편지 인쇄본은 당일 가방(bag)에 들어가야 해요. 서약서와 같은 파우치에 보관하세요."], "check": ["낭독/전달 방식 결정·식순 반영", "편지 작성·인쇄 1부", "선물 준비(양가 동일 수준)", "가방 패킹 목록에 추가"]}, {"id": "guestbook", "g": "g9", "d": "D-14", "name": "방명록·포토테이블 준비", "who": "guest", "cost": "방명록·액자 5~15만원", "deps": ["select", "hallopt"], "tips": ["포토테이블은 하객이 식전 시간을 즐기는 공간이에요. 셀렉(select)해둔 컷 중 스토리가 있는 5~7장을 고르세요.", "방명록은 책·폴라로이드·영상 중 하나만. 두 개 이상이면 줄이 생기고 관리가 안 돼요.", "액자·이젤 규격과 설치 위치는 홀 옵션(hallopt)에서 확인한 조건을 따르세요."], "check": ["포토테이블 사진 인화·액자", "방명록 형식 결정·펜 준비", "설치 위치·철수 담당 지정"]}, {"id": "nails", "g": "g9", "name": "네일·마지막 뷰티 케어", "d": "D-3", "cost": "네일 5~15만원", "deps": ["skin"], "tips": ["반지 교환 클로즈업 컷 때문에 손이 생각보다 많이 찍혀요. 네일은 D-3~2에, 색은 드레스와 어울리는 누드·밀크 계열이 실패가 없어요.", "신랑도 손톱 정리+핸드크림까지. 반지 교환 컷의 절반은 신랑 손이에요.", "왁싱·제모·각질 케어는 D-3 이전에 끝내세요. 직전 시술은 당일 붉은 자국 리스크가 있어요."], "check": ["네일 예약(D-3~2)", "신랑 손 정리", "왁싱·각질 케어 완료"]}, {"id": "hallmeet", "g": "g10", "name": "웨딩홀 최종 미팅", "d": "D-14", "cost": "-", "deps": ["video", "photobooth"], "tips": ["홀 담당자와 식순·음향(입장곡 큐)·식전 영상 테스트·좌석 배치·꽃장식 최종본을 한 번에 확정하는 자리예요. 반드시 커플이 함께 참석하세요.", "계약 때의 구두 약속(서비스 항목)을 이 자리에서 서면으로 재확인하세요. 담당자가 바뀌었을 수 있어요.", "당일 비상 연락처(홀 매니저 직통)를 받아 관계자 연락망에 추가합니다."], "check": ["식순·음향 큐시트 확정", "식전 영상 송출 테스트 예약", "좌석 배치도·혼주석 확인", "홀 매니저 직통 연락처 확보", "원판(단체사진) 비용·최소 구매 단위 확인", "신랑신부·도우미 식사 제공 여부 확인"]}, {"id": "final", "g": "g10", "name": "최종 인원 통보", "d": "D-7", "cost": "-", "deps": ["meal", "mobile", "hallmeet", "meetup"], "tips": ["RSVP 응답+청모 반응으로 최종치를 잡고 홀에 통보하세요. 마감일을 넘기면 계약 보증인원으로 확정돼버려요.", "식권 여유분은 보증인원의 5~10%가 적당해요."], "check": ["홀 통보 완료·회신 문자 보관", "식권 수령 수량 확인", "답례품 수량 최종 조정", "통보 담당: 신랑(회신 문자 캡처 보관)"], "who": "guest"}, {"id": "money", "g": "g10", "name": "잔금·현금 봉투 준비", "d": "D-7", "cost": "잔금 + 당일 현금 100~200만원", "deps": ["hall"], "tips": ["당일 현금 봉투 목록: 헬퍼 이모님, 사회자·축가 사례, 주례(있다면), 버스 기사, 미용실, 폐백 수모. 봉투에 이름을 써서 한 파우치에.", "잔금의 카드/현금/이체 가능 여부는 업체마다 달라요. D-7에 전부 확인하세요.", "사례비 시세: 지인 사회·축가 각 15~30만원(20만원이 기본선), 접수 수고비 1인 10만원 선, 주례를 모셨다면 20만원 전후. 당일보다 미리, 손글씨 메모와 함께 전하면 더 좋아요."], "check": ["봉투별 금액·이름 라벨링", "봉투 파우치 담당자 지정(보통 신랑 형제)", "잔금 이체 예약"]}, {"id": "roles", "g": "g10", "name": "당일 담당자 4인 지정", "d": "D-7", "cost": "수고비 접수 1인 10만원 선", "deps": ["guest"], "tips": ["당일 신랑·신부가 직접 챙기면 안 되는 일: 축의금·정산·가족 소집·주차 문의·길 안내. 최소 4명에게 나누세요 — ① 가족 소집 담당(원판 촬영 소집) ② 물품 담당(예물·서약서·봉투·비상키트) ③ 연락 담당(길·주차 문의 대리 수신) ④ 정산 담당(잔금·추가금 대조).", "역할은 이름만 정하지 말고 할 일을 문자로 구체적으로 보내두세요. \"축의금 부탁해\"보다 \"접수 마감 후 봉투를 식권함과 분리해 어머니께 전달해줘\"가 실수를 줄여요.", "한 사람에게 여러 역할을 몰지 마세요. 그 사람도 예식을 즐겨야 하니까요."], "check": ["가족 소집 담당 지정(원판 명단 공유)", "물품 담당 지정(가방 목록 전달)", "연락 담당 지정(안내문자에 그 번호 기재)", "정산 담당 지정(계약서 사본·결제수단 전달)", "역할별 할 일 문자 발송"]}, {"id": "desk", "g": "g10", "name": "축의대·안내 담당 지정", "d": "D-5", "cost": "수고비 각 5~10만원", "deps": ["guest"], "tips": ["축의대는 양가 각 2명(기록 1+보관 1)이 표준이에요. 반드시 믿을 수 있는 사람으로.", "축의금 가방 인계 시점(식 종료 직후, 누구에게)까지 미리 정해두세요. 당일 가장 흔한 사고 지점입니다.", "안내 담당 1명을 따로 두면 어른 하객 만족도가 크게 올라가요(주차·좌석·화장실 안내)."], "check": ["양가 축의대 4인 확정·역할 공지", "축의금 가방·인계자 지정", "혼주 코사지·명찰 준비"], "who": "guest"}, {"id": "parkflower", "g": "g10", "name": "주차·화환·안내 동선 확정", "d": "D-5", "cost": "-", "deps": ["hallmeet"], "tips": ["주차는 \"가능\"만 확인하지 말고 입구 위치·무료 시간·발렛 여부·만차 시 대체 주차장까지 파악해 안내 문자에 넣으세요.", "식이 끝난 화환은 보통 홀이나 화환 업체가 수거·재사용해요. 처리 방식을 홀에 미리 확인하고, 리본(보내주신 분 성함)은 떼어 보관했다가 감사 인사에 활용하세요.", "하객 길 안내·주차 문의 전화는 신랑·신부가 받지 않도록 연락 담당에게 번호를 넘겨두세요."], "check": ["주차 등록·주차권 지급 방식 확인", "만차 대비 인근 대체 주차장 파악", "화환 수령 위치·처리 방식 홀에 확인", "화환 리본 수거 담당 지정(감사 인사용)", "로비 안내(포토테이블·좌석 안내) 배치 확인"], "who": "guest"}, {"id": "gift", "g": "g10", "name": "답례품·식권 준비", "d": "D-5", "cost": "개당 3천~1만원", "deps": ["final"], "tips": ["답례품은 식사 못 하고 가시는 분용이에요. 예상 인원의 10~15% 수량이면 충분합니다.", "수건·와인·쌀 등 실용템이 무난해요. 축의대 옆에 배치하고 담당자에게 지급 기준을 알려주세요."], "check": ["수량·배치 위치 확정", "지급 기준 축의대 공지", "남는 수량 회수 담당 지정"], "who": "guest"}, {"id": "parentguide", "g": "g10", "d": "D-5", "name": "양가 부모님 당일 안내서", "who": "family", "cost": "-", "deps": ["car", "order"], "tips": ["부모님이 가장 불안해하시는 건 ‘내가 언제 어디에 있어야 하는지’예요. 부모님 전용 한 장 안내서를 만들어 드리세요.", "구성: 도착 시간, 대기실·폐백실·식사 위치, 화촉점화·인사 타이밍, 코사지 수령, 원판 촬영 시각, 비상 연락처.", "글자는 크게(14pt+), 종이로 인쇄해 드리는 게 좋아요. 브리핑(brief) 때 함께 전달합니다."], "check": ["부모님용 1장 안내서 작성(큰 글씨)", "양가 각 2부 인쇄", "브리핑 때 전달·설명"]}, {"id": "elders", "g": "g10", "d": "D-5", "name": "어르신·아이 동반 하객 케어", "who": "guest", "cost": "-", "deps": ["guest", "hallmeet"], "tips": ["휠체어·지팡이 하객의 동선(엘리베이터·경사로)과 전용 좌석은 홀 최종 미팅(hallmeet)에서 확정한 배치를 기준으로 정하세요.", "조부모님은 원판 촬영을 먼저 찍어드리고, 식사 자리는 출입구 가까운 테이블로.", "아이 동반 하객에겐 아동식 여부와 유아 의자 개수를 미리 물어보면 배려가 완성됩니다."], "check": ["교통약자 하객 명단·좌석 지정", "유아 의자·아동식 수량 확인", "안내 도우미에게 케어 포인트 공유"]}, {"id": "brief", "g": "g10", "name": "관계자 브리핑·리허설", "d": "D-3", "cost": "-", "deps": ["desk", "speech", "roles", "parentguide"], "tips": ["양가 부모님+축의대+사회자+운전 담당에게 타임테이블과 비상 연락망을 최종 배포하세요.", "커플끼리 식순 동선(입장 발 맞추기, 맞절 각도, 행진 속도)을 거실에서 한 번 맞춰보면 당일 긴장이 확 줄어요."], "check": ["타임테이블 최종본 배포", "입장·행진 셀프 리허설", "양가 단체사진 순서(원판 명단) 정리"]}, {"id": "weather", "g": "g10", "name": "날씨 확인·플랜 조정", "d": "D-3", "cost": "-", "deps": ["car"], "tips": ["D-3부터 예보를 아침저녁으로 확인하세요. 비 예보면 이동 버퍼 +30분, 우산 도우미 지정, 야외 컷 대체 장소를 미리 정합니다.", "폭염·한파에는 하객 실내 대기 동선과 부채·핫팩 준비가 어른 하객 만족도를 좌우해요.", "날씨 이슈는 D-2 하객 안내 문자에 한 줄로 반영하세요(\"우천이 예상되니 여유 있게 와주세요\")."], "check": ["예보 확인 루틴(아침·저녁)", "우천 대비 물품·도우미", "안내 문자 반영", "우천 시 이동·촬영 플랜B를 연락 담당과 공유"]}, {"id": "notice", "g": "g10", "name": "하객 안내 문자 발송", "d": "D-2", "cost": "-", "deps": ["parkflower", "weather", "bus", "lodging"], "tips": ["식 1~2일 전, 시간·주소(지도 링크)·주차 안내를 담은 짧은 안내 문자를 보내면 하객 경험이 완전히 달라져요. 특히 어른 하객 만족도가 높습니다.", "문구 예시: \"OO일 OO시, OO웨딩홀 3층입니다. 주차는 B1~B3 2시간 무료예요. 와주셔서 감사합니다.\"", "단체 문자 서비스나 단톡 공지를 활용하고, 양가 부모님 손님 몫은 부모님 명의로 발송을 부탁드리세요."], "check": ["안내 문구 작성(지도 링크 포함)", "발송 명단 = 최종 하객 명단", "양가 부모님 발송분 분담", "주차 안내(무료시간·발렛·만차 시 대안) 문구 포함 — 담당: 커플"], "who": "guest"}, {"id": "bag", "g": "g10", "name": "당일 짐 체크리스트", "d": "D-1", "cost": "-", "deps": ["vow", "money", "ring", "parentletter"], "tips": ["필수: 신분증, 혼인서약서·식순, 현금 봉투 파우치, 결혼반지(!), 예비 스타킹, 편한 신발, 물+빨대, 간단 간식, 보조배터리.", "반지 담당자를 반드시 지정하세요. 당일 가장 많이 잊는 물건 1위가 반지예요.", "오늘은 일찍 자는 게 최고의 준비. 밤샘 정리는 내일 얼굴에 그대로 나옵니다."], "check": ["가방 패킹 완료 사진 촬영", "반지 담당자에게 인계", "알람 2중 설정", "비상 키트(립·실핀·안전핀·진통제·밴드·기름종이·보조배터리) 꾸리기"]}, {"id": "d_wake", "g": "gd", "name": "기상·아침 식사", "d": "H-7:00", "cost": "-", "deps": ["bag", "suit", "nails"], "tips": ["아침은 무조건 든든히. 예식까지 제대로 된 식사 기회가 없어요. 과한 카페인·낯선 음식은 피하세요.", "물은 조금씩 자주, 신부는 드레스 착장 후 화장실이 어려우니 출발 전 꼭 다녀오세요."], "check": ["신랑·신부 각자 가방 최종 확인(물품 담당에게 인계)", "평소 먹던 가벼운 아침 식사"]}, {"id": "d_shop", "g": "gd", "name": "메이크업샵 도착", "d": "H-6:30", "cost": "-", "deps": ["d_wake"], "tips": ["예약 시간보다 10~15분 일찍 도착하세요. 주차·엘리베이터·짐 정리만으로 시간이 갑니다.", "당일 문의 전화는 신부가 받지 않도록 연락 담당(친구·형제)에게 미리 돌려두세요.", "신랑은 중간에 합류해 헤어·메이크업 후 먼저 이동 대기."], "check": ["신부 헤어·메이크업 시작", "신랑 합류 시간 확인", "연락 담당에게 전화 위임"]}, {"id": "d_dress", "g": "gd", "name": "드레스 착장 완료", "d": "H-3:30", "cost": "-", "deps": ["d_shop", "finalfit"], "tips": ["착장 후에는 혼자 화장실을 못 가요. 헬퍼 이모님 동행이 기본이니 부끄러워 말고 부탁하세요.", "이너웨어·웨딩슈즈·베일은 전날 가방에 — 여기서 없으면 대안이 없습니다."], "check": ["드레스·베일·슈즈 착장", "헬퍼와 베일 정리 지점 합의"]}, {"id": "d_move", "g": "gd", "name": "웨딩홀로 이동", "d": "H-3:00", "cost": "-", "deps": ["d_dress"], "tips": ["주말 교통이 복잡한 지역이면 20~30분 여유를 더 두세요. 이동 가방은 물품 담당 한 명에게 몰아주세요."], "check": ["웨딩카 출발(기사·물품 담당 동승)", "예물·서약서·사례비 봉투 소지 확인"]}, {"id": "d_parents", "g": "gd", "d": "H-2:30", "name": "혼주 도착·착장 확인", "who": "family", "cost": "-", "deps": ["parents"], "tips": ["양가 부모님 미용실 완료·한복 착장·이동 상황을 연락 담당이 확인하는 시점이에요. 신랑신부가 직접 전화하지 않습니다.", "혼주 도착이 늦으면 가족 사진과 화촉점화가 연쇄로 밀려요. 이 확인이 당일 가족 일정의 앵커입니다."], "check": ["양가 혼주 출발·도착 확인(연락 담당)", "한복·예복 착장 완료 확인", "코사지 전달 위치 재확인"]}, {"id": "d_arrive", "g": "gd", "name": "홀 도착·관계자 체크인", "d": "H-2:00", "cost": "-", "deps": ["d_move", "brief"], "tips": ["예식 1시간 30분~2시간 전 도착이 안정적(홀 규정 확인).", "신랑은 접수대·사회자·축가자·성혼선언 낭독자·양가 혼주 동선을 확인하는 사람이에요. 반지 위치와 서약서 출력본도 이때 재확인."], "check": ["홀 매니저와 큐시트 확인", "사회자·축가자 도착 확인", "식전 영상·MR 재생 테스트"]}, {"id": "d_bouquet", "g": "gd", "d": "H-1:50", "name": "부케·부토니에·코사지 수령", "cost": "-", "deps": ["d_arrive", "bouquet", "parents"], "tips": ["생화는 도착 즉시 상태를 확인하세요. 시들었으면 이 시점이 교체 요청 마지노선이에요.", "부토니에는 신랑 왼쪽 가슴, 코사지는 혼주 도착 시 가족 소집 담당이 전달합니다.", "부케는 대기실 스냅의 핵심 소품이라 입실 전에 손에 있어야 해요."], "check": ["부케 상태·리본 확인", "신랑 부토니에 착용", "혼주 코사지 전달(가족 소집 담당)"]}, {"id": "d_wait", "g": "gd", "name": "신부대기실 입실·대기실 스냅", "d": "H-1:40", "cost": "-", "deps": ["d_bouquet", "snap", "waiting"], "tips": ["하객 인사는 짧고 따뜻하게, 사진은 빠르게. 전부와 길게 얘기하면 표정이 먼저 지쳐요.", "\"와주셔서 감사해요, 식사 맛있게 하세요\" 같은 문장을 미리 정해두면 긴장해도 자연스러워요."], "check": ["대기실 스냅 촬영", "수정 파우치·물·간식은 헬퍼가 관리"]}, {"id": "d_photo1", "g": "gd", "name": "가족 대기·혼주 인사", "d": "H-1:10", "cost": "-", "deps": ["d_wait", "d_parents"], "tips": ["가족 소집 담당이 양가 부모님·형제·조부모님 위치를 확인하고 촬영 시간에 모이게 하는 역할. 혼주에겐 대기실·폐백실·식사 장소·접수대 위치를 미리 알려드리세요."], "check": ["가족 소집 담당 활동 시작", "혼주 코사지 착용 확인"], "who": "family"}, {"id": "d_desk", "g": "gd", "name": "접수대 오픈", "d": "H-1:00", "cost": "-", "deps": ["d_arrive", "gift", "guestbook"], "tips": ["양가 각 1~2인, 2인 1조가 기본: 한 명은 봉투 수령·방명록 안내, 한 명은 봉투 넘버링·기록·식권 배부.", "봉투는 받은 즉시 번호를 적고 장부(엑셀)와 같은 번호로 기록하면 정산이 10분 만에 끝나요.", "\"축의금 잘못 냈다\"며 반환 요구가 오면 그 자리에서 주지 말고 \"예식 후 신랑측에 전달드릴게요\"로 대응. 축의금 가방은 홀 제공 쇼핑백 말고 튼튼한 별도 가방으로.", "\"계좌로 보냈어요\" 하객은 성함·금액을 방명록에 메모해두면 정산 때 이체내역과 대조가 쉬워요."], "check": ["접수 2인 1조 배치·명찰 착용", "방명록·펜·식권·답례품 세팅", "축의금 전용 가방 배치"], "who": "guest"}, {"id": "d_rehearsal", "g": "gd", "name": "식순 리허설·음원 확인", "d": "H-0:40", "cost": "-", "deps": ["d_arrive"], "tips": ["입장 속도(긴장하면 빨라져요 — \"천천히\"를 의식), 아버지와 손잡는 위치, 버진로드 끝 멈춤 지점, 맞절 타이밍, 반지 교환 위치를 확인.", "사회자와 식순은 반드시 같은 최종본으로. 음원 파일명은 \"행진곡_최종_진짜\" 말고 단순하게."], "check": ["입장·행진 동선 리허설", "사회자와 식순 최종본 대조", "BGM 5파트(화촉·신랑·신부·인사·퇴장) 확인"]}, {"id": "d_greet", "g": "gd", "name": "하객 인사 집중", "d": "H-0:20", "cost": "-", "deps": ["d_wait", "elders"], "tips": ["신랑은 입구·접수대 근처에서 많이 움직이니 구두 착용감과 수분 섭취를 챙기세요."], "check": ["버스 대절 하객 도착 확인(인솔자 연락)", "지각 관계자 없는지 연락 담당 확인"], "who": "guest"}, {"id": "d_ceremony", "g": "gd", "name": "예식(25~40분)", "d": "H+0:00", "cost": "-", "deps": ["d_rehearsal", "d_greet", "d_desk"], "tips": ["표준 식순: 개식 → 화촉점화(양가 어머니) → 신랑 입장 → 신부 입장 → 맞절 → 혼인서약 → 성혼선언(양가 아버지 중 한 분) → 축가 → 부모님·하객 인사 → 행진.", "무슨 일이 생겨도 하객은 모릅니다. 두 사람이 웃고 있으면 완벽한 결혼식이에요."], "check": ["휴대폰은 물품 담당에게", "서약서·반지 최종 위치 확인"]}, {"id": "d_photo2", "g": "gd", "name": "원판(단체) 촬영", "d": "H+0:40", "cost": "-", "deps": ["d_ceremony", "d_photo1"], "tips": ["순서는 양가 직계 → 친척 → 친구 → 회사가 일반적이고, 조부모님·아이는 먼저 찍어드리세요.", "누가 빠졌는지 신랑·신부는 못 봅니다. 가족 소집 담당이 명단을 들고 호명, 사회자에게 안내 방송을 부탁하면 빨리 끝나요."], "check": ["가족 소집 담당이 원판 명단 순서대로 호명·촬영", "부케 토스/전달 컷"], "who": "family"}, {"id": "d_rounds", "g": "gd", "name": "환복·식사 인사(라운딩)", "d": "H+1:10", "cost": "-", "deps": ["d_photo2", "pyebaek"], "tips": ["폐백을 생략해도 양가 부모님과 식사 인사를 어떻게 할지는 정해두세요.", "라운딩은 테이블당 30초면 충분해요. 멀리서 온 분·어르신 테이블 먼저."], "check": ["2부 의상 환복", "테이블 인사 동선(혼주 동행 여부)", "폐백(선택) 진행 시 폐백실 이동"], "who": "family"}, {"id": "d_settle", "g": "gd", "name": "정산·축의금 인계", "d": "H+2:00", "cost": "-", "deps": ["d_ceremony"], "tips": ["정산 담당이 계약서 사본을 들고 보증인원 대비 추가 식대·음료·폐백·헬퍼비·주차·추가 촬영비를 대조하세요.", "축의금은 접수 담당 → 가족 대표 → 정산 담당으로 흐름을 나누고, 세는 장소·보관 가방·이동 차량까지 정해두면 안전해요. 돈은 감정이 아니라 절차로 관리합니다."], "check": ["홀 잔금·추가금 계약서 대조 후 결제", "축의금 봉투·장부 대조 → 지정 인계자에게 인계", "사례비 봉투(사회자·축가·헬퍼·기사) 전달 완료"]}, {"id": "dday", "g": "gd", "name": "반납·마무리·출발", "d": "H+2:30", "cost": "-", "deps": ["d_settle", "d_rounds"], "tips": ["드레스·예복 반납 조건(당일/익일)을 확인하고 물품 담당이 짐을 회수하세요.", "화환 리본은 떼어 보관 — 누가 보내주셨는지 감사 인사의 근거가 됩니다.", "신혼여행이 당일 출국이면 공항 이동 시간을 역산해 라운딩을 조절하세요. 축하합니다!"], "check": ["물품 담당: 드레스·소품 반납 또는 반납 일정 확인", "화환 리본·방명록·남은 답례품 회수", "축의금 가방 인계 확인 후 출발"]}, {"id": "honeymoon", "g": "g11", "d": "D+1", "name": "신혼여행 출발", "cost": "-", "deps": ["dday", "voucher", "pack"], "tips": ["식 다음날 이후 출국이 체력적으로 낫다는 leave 절차의 원칙 그대로예요. 당일 밤 비행은 비추천.", "국제선은 3시간 전 공항 도착이 안전해요. 여권·바우처 파우치(voucher)를 기내 가방에.", "본식 스냅 셀렉 등 기한 업무는 여행 중 알림으로 걸어두면 놓치지 않아요(album 참조)."], "check": ["여권·바우처 파우치 소지", "허니문 특전 체크인 시 재확인", "기한 업무 알림 설정"]}, {"id": "report", "g": "g11", "name": "혼인신고", "d": "D+7~", "cost": "무료", "deps": ["dday"], "tips": ["시기는 자유지만, 청약·대출·연말정산에 혼인신고일이 기준이 되는 제도가 많아요. 유불리를 확인하고 날짜를 정하세요.", "증인 2명의 서명이 필요해요(동행 불필요, 서명만). 신분증 지참하고 아무 구청·시청이나 가능합니다."], "check": ["신고 날짜 전략 결정", "증인 2인 서명 확보", "가족관계증명서 발급 확인"], "links": [{"n": "정부24", "u": "https://www.gov.kr"}, {"n": "전자가족관계등록", "u": "https://efamily.scourt.go.kr"}]}, {"id": "settle", "g": "g11", "name": "축의금 정산·전입신고", "d": "D+7", "cost": "-", "deps": ["dday", "utility"], "tips": ["명의 변경 누락 단골: 통신·보험·카드 주소지, 자동차보험 부부 특약. 리스트로 만들어 한 번에 처리하세요.", "축의금은 양가 장부를 대조해 \"부모님 손님 몫 / 커플 손님 몫\"을 먼저 구분하는 게 정산의 시작이에요.", "전입신고+확정일자는 이사 후 14일 이내가 원칙이에요. 대출 조건과도 연결되니 미루지 마세요."], "check": ["축의 장부 디지털화(추후 경조사 답례 기준)", "양가 정산 완료", "전입신고·확정일자 완료 재확인(utility에서 처리)"], "links": [{"n": "정부24 전입신고", "u": "https://www.gov.kr"}], "who": "family"}, {"id": "thanks", "g": "g11", "name": "감사 인사", "d": "D+14 이내", "cost": "-", "deps": ["honeymoon"], "tips": ["참석자에겐 신혼여행 다녀와서 1~2주 내 감사 문자(가능하면 개별 문구)를 보내세요.", "고액 축의·주례·사회·축가 등 수고해준 분들께는 작은 선물이나 식사로 따로 인사하는 게 좋아요.", "양가 부모님께는 여행 선물과 함께 정산 보고를 겸한 식사 자리를 만드세요."], "check": ["감사 문자 발송", "수고해준 지인 개별 인사", "양가 식사 자리"], "who": "family"}, {"id": "album", "g": "g11", "name": "앨범·DVD·반납 정리", "d": "D+30", "cost": "-", "deps": ["dday"], "tips": ["본식 스냅 셀렉 기한을 놓치지 마세요. 신혼여행 중에 셀렉 링크가 오는 경우가 많아요.", "부케 보존(드라이·레진), 드레스·예복 반납 기한, 대여 소품 반납을 한 번에 처리하세요."], "check": ["본식 스냅 셀렉", "앨범·DVD 수령 확인", "대여품 반납 완료"]}, {"id": "taxcredit", "g": "g11", "name": "혼인 세액공제·정부 혜택", "d": "D+30", "cost": "세액공제 1인 50만원", "deps": ["report"], "tips": ["혼인신고를 하면 부부 각자 50만원(합산 100만원) 결혼 세액공제를 연말정산에서 받을 수 있어요(생애 1회). 신고 연도 기준이니 연말 혼인신고라면 해를 넘기기 전에 유불리를 따져보세요.", "신혼부부 대상 청약 특별공급, 대출 우대금리 등도 혼인신고일부터 자격이 시작돼요. 혜택 달력을 한 번에 정리해두세요."], "check": ["연말정산 세액공제 반영 확인", "청약·대출 자격 개시일 메모"], "links": [{"n": "홈택스", "u": "https://www.hometax.go.kr"}, {"n": "정부24", "u": "https://www.gov.kr"}]}, {"id": "review", "g": "g11", "name": "후기·정산 리뷰, 분쟁 대응", "d": "D+30", "cost": "-", "deps": ["album"], "tips": ["계약 때 \"후기 작성 조건 할인\"을 받았다면 기한 내 이행하세요. 미작성 시 할인액을 환수하는 특약을 둔 업체가 있어요.", "업체 과실(사진 누락·드레스 파손 등)은 사진 증거를 남기고 서면으로 요구하세요. 해결이 안 되면 1372 소비자상담 → 한국소비자원 피해구제 순서로 진행합니다.", "만족한 업체의 실명 후기는 다음 커플에게 가장 큰 선물이에요. 우리도 그 후기 덕을 봤으니까요."], "check": ["리뷰 특약 이행 확인", "증빙(계약서·사진) 보관", "분쟁 시 1372 상담"], "links": [{"n": "소비자24", "u": "https://www.consumer.go.kr"}, {"n": "1372 소비자상담", "u": "https://www.ccn.go.kr"}]}, {"id": "life", "g": "g11", "name": "신혼 생활 셋업", "d": "D+30", "cost": "-", "deps": ["settle"], "tips": ["생활비 통장 구조(공동/각자/혼합)를 첫 달에 정하세요. 돈 얘기는 미룰수록 어려워져요.", "보험 수익자 변경, 비상 연락처 갱신, 부부 공동 캘린더 만들기까지가 마지막 단계입니다."], "check": ["생활비 구조 합의", "보험·서류상 정보 갱신", "양가 기념일 캘린더 등록"]}, {"id": "housewarming", "g": "g11", "d": "D+30", "name": "양가 집들이", "who": "family", "cost": "상차림·케이터링 10~30만원/회", "deps": ["thanks"], "tips": ["감사 식사(thanks)까지 마친 뒤, 신혼집으로 양가를 초대하는 마무리 예절이에요. 양가 합동보다 따로 모시는 게 서로 편합니다.", "음식은 케이터링+집 요리 한두 가지 조합이 현실적이에요. 부모님은 ‘사는 모습’을 보러 오시는 거니 완벽할 필요 없어요.", "부모님 취향 선물(수건·소형가전 등)을 돌아가실 때 챙겨드리면 격식이 완성됩니다."], "check": ["양가 각각 날짜 확정", "상차림 준비 방식 결정", "답례 선물 준비"]}];
+let taskById,ORDER;
+/*GRAPH-BEGIN*/
+/* ── 구조 지표(v7-5): 후속(desc)·선행(anc) 도달 수와 계층(core/mid/edge) ──
+   규칙: 외곽 = 후속 0(그 자체로 끝) · 중핵 = 후속 수 상위 15위 이내(동점 포함) · 나머지 중간 */
+const GRAPH={desc:{},anc:{},tier:{},thr:0,up:{},dn:{}};
+let MLAY=null;
+function computeGraph(){
+  const succ={},memoD={},memoA={},byId={};
+  for(const t of TASKS)byId[t.id]=t;
+  for(const t of TASKS)for(const d of t.deps)(succ[d]=succ[d]||[]).push(t.id);
+  const D=id=>{if(memoD[id])return memoD[id];const s=new Set();
+    for(const n of(succ[id]||[])){s.add(n);for(const x of D(n))s.add(x)}return memoD[id]=s};
+  const A=id=>{if(memoA[id])return memoA[id];const s=new Set();
+    for(const d of((byId[id]&&byId[id].deps)||[])){s.add(d);for(const x of A(d))s.add(x)}return memoA[id]=s};
+  for(const t of TASKS){GRAPH.desc[t.id]=D(t.id).size;GRAPH.anc[t.id]=A(t.id).size;
+    GRAPH.dn[t.id]=D(t.id);GRAPH.up[t.id]=A(t.id);}
+  const ds=Object.values(GRAPH.desc).slice().sort((a,b)=>b-a);
+  GRAPH.thr=Math.max(1,ds[Math.min(14,ds.length-1)]||1);
+  for(const t of TASKS){const d=GRAPH.desc[t.id];
+    GRAPH.tier[t.id]=d>=GRAPH.thr?'core':(d>0?'mid':'edge');}
+  computeMapLayout();
+}
+/* 연결 지도 배치(v7-5): 층위 = 뿌리로부터의 최장 경로, 층내 순서 = barycenter 4회 스윕.
+   결정적 규약(파이썬 골든과 동일): 초기 순서 = TASKS 배열, 동점은 직전 위치 유지,
+   키는 1e-9로 양자화 — 부동소수 합산 노이즈가 동점 판정을 가르는 것을 차단
+   (예: Python 3.12+ sum()의 Neumaier 보정합산 vs JS reduce의 최하위 비트 차이). */
+function computeMapLayout(){
+  const idx={},byId={},lay={};
+  TASKS.forEach((t,i)=>{idx[t.id]=i;byId[t.id]=t;});
+  const L=id=>{if(lay[id]!=null)return lay[id];const d=byId[id].deps;
+    return lay[id]=d.length?1+Math.max(...d.map(L)):0;};
+  TASKS.forEach(t=>L(t.id));
+  const maxL=Math.max(...TASKS.map(t=>lay[t.id]));
+  const layers=Array.from({length:maxL+1},()=>[]);
+  TASKS.forEach(t=>layers[lay[t.id]].push(t.id));
+  layers.forEach(a=>a.sort((x,y)=>idx[x]-idx[y]));
+  const succ={};TASKS.forEach(t=>t.deps.forEach(d=>(succ[d]=succ[d]||[]).push(t.id)));
+  const pos={};const re=()=>layers.forEach(a=>a.forEach((v,i)=>pos[v]=i));re();
+  const norm=v=>(pos[v]+0.5)/layers[lay[v]].length;
+  const Q=x=>Math.floor(x*1e9+0.5)/1e9;
+  for(let it=0;it<4;it++){
+    for(let l=1;l<=maxL;l++){const k={};
+      for(const v of layers[l]){const d=byId[v].deps;
+        k[v]=Q(d.length?d.reduce((s,p)=>s+norm(p),0)/d.length:norm(v));}
+      layers[l].sort((a,b)=>(k[a]-k[b])||(pos[a]-pos[b]));re();}
+    for(let l=maxL-1;l>=0;l--){const k={};
+      for(const v of layers[l]){const s=succ[v]||[];
+        k[v]=Q(s.length?s.reduce((q,n)=>q+norm(n),0)/s.length:norm(v));}
+      layers[l].sort((a,b)=>(k[a]-k[b])||(pos[a]-pos[b]));re();}
+  }
+  const NW=74,NH=30,CW=82,RH=64,PT=64,PL=20;
+  const maxN=Math.max(...layers.map(a=>a.length));
+  MLAY={n:{},layers,lay,W:maxN*CW+PL*2,H:PT+(maxL+1)*RH+20};
+  layers.forEach((a,l)=>a.forEach((v,i)=>{
+    MLAY.n[v]={x:PL+maxN*CW/2+(i-(a.length-1)/2)*CW-NW/2,y:PT+l*RH,w:NW,h:NH};}));
+  // 형식검증: 모든 간선은 아래로만 흘러야 함
+  let bad=0;TASKS.forEach(t=>t.deps.forEach(d=>{if(lay[d]>=lay[t.id])bad++;}));
+  if(bad)console.warn('[지도 검증] 비하강 간선',bad);
+}
+/*GRAPH-END*/
+const phaseById=Object.fromEntries(PHASES.map(p=>[p.id,p]));
+function reindex(){
+  taskById=Object.fromEntries(TASKS.map(t=>[t.id,t]));
+  ORDER=TASKS.map(t=>t.id);
+  computeGraph();
+}
+reindex();
+
+/* ── 형식검증(v7-5): 의존 그래프 자가진단 — 로드 시 콘솔 리포트 ── */
+(function verifyGraph(){
+  const off=s=>{const p=s.split('~')[0].trim();
+    let m=p.match(/^D([+-])(\d+)/); if(m) return (m[1]==='+'?1:-1)*+m[2]*1440;
+    m=p.match(/^H([+-])(\d+):(\d+)/); return m?(m[1]==='+'?1:-1)*(+m[2]*60+ +m[3]):0};
+  const errs=[];
+  for(const t of TASKS) for(const d of t.deps){
+    const p=taskById[d];
+    if(!p){errs.push('참조오류 '+t.id+'→'+d);continue}
+    if(off(p.d)>off(t.d)) errs.push('시간역전 '+d+'('+p.d+')→'+t.id+'('+t.d+')');
+  }
+  const st={};
+  const dfs=id=>{st[id]=1;
+    for(const d of (taskById[id]?taskById[id].deps:[])){
+      if(st[d]===1) errs.push('순환 '+d+'↔'+id);
+      else if(!st[d]) dfs(d);
+    } st[id]=2;};
+  TASKS.forEach(t=>{if(!st[t.id])dfs(t.id)});
+  const E=TASKS.reduce((a,t)=>a+t.deps.length,0);
+  console[errs.length?'warn':'log']('[런시트 형식검증] 절차 '+TASKS.length+' · 간선 '+E+(errs.length?' · 문제 '+errs.length+'건':' · 이상 없음'), errs.length?errs:'');
 })();
 
-(function(){
-  var els = document.querySelectorAll('.fi');
-  var obs = new IntersectionObserver(function(entries){
-    for(var i=0;i<entries.length;i++){
-      if(entries[i].isIntersecting) entries[i].target.classList.add('vis');
-    }
-  }, {threshold:0.15});
-  for(var i=0;i<els.length;i++) obs.observe(els[i]);
-})();
-
-(function(){
-  var canvas = document.getElementById('scratchCanvas');
-  var ctx = canvas.getContext('2d');
-  var wrap = document.getElementById('canvasWrap');
-  var hint = document.getElementById('scratchHint');
-  var drawing = false;
-  var done = false;
-  var inited = false;
-
-  function init(){
-    if(inited) return;
-    var inner = document.getElementById('scratchCard').querySelector('.sc-inner');
-    var rect = inner.getBoundingClientRect();
-    var w = rect.width;
-    var h = rect.height;
-    if(w === 0 || h === 0) return;
-
-    var dpr = window.devicePixelRatio || 1;
-    canvas.width = w * dpr;
-    canvas.height = h * dpr;
-    canvas.style.width = w + 'px';
-    canvas.style.height = h + 'px';
-    ctx.setTransform(1,0,0,1,0,0);
-    ctx.scale(dpr, dpr);
-
-    ctx.fillStyle = '#D4C8B8';
-    ctx.fillRect(0, 0, w, h);
-
-    ctx.fillStyle = 'rgba(196,169,125,0.25)';
-    for(var i=0;i<1500;i++){
-      ctx.beginPath();
-      ctx.arc(Math.random()*w, Math.random()*h, Math.random()*1.2, 0, Math.PI*2);
-      ctx.fill();
-    }
-
-    ctx.strokeStyle = 'rgba(255,255,255,0.18)';
-    ctx.lineWidth = 1;
-    ctx.strokeRect(16, 16, w-32, h-32);
-
-    ctx.fillStyle = 'rgba(255,255,255,0.5)';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.font = '14px "Noto Serif KR", serif';
-    ctx.fillText('이곳을 긁어주세요', w/2, h/2 - 10);
-    ctx.font = '20px serif';
-    ctx.fillText('\u2726', w/2, h/2 + 24);
-
-    ctx.globalCompositeOperation = 'destination-out';
-    inited = true;
+/* ── 연결 지도(v7-5): 노드·간선 렌더와 연관 하이라이트 ── */
+function buildMap(){
+  meG.innerHTML='';mnG.innerHTML='';
+  for(const t of TASKS)for(const d of t.deps){
+    const A=MLAY.n[d],B=MLAY.n[t.id];
+    const x1=A.x+A.w/2,y1=A.y+A.h,x2=B.x+B.w/2,y2=B.y,g2=Math.max(14,(y2-y1)/2);
+    meG.appendChild(S('path',{class:'me','data-a':d,'data-b':t.id,
+      d:`M${x1} ${y1} C ${x1} ${y1+g2}, ${x2} ${y2-g2}, ${x2} ${y2}`}));
   }
-
-  function getPos(e){
-    var rect = canvas.getBoundingClientRect();
-    var t = e.touches ? e.touches[0] : e;
-    return { x: t.clientX - rect.left, y: t.clientY - rect.top };
+  const lg=S('text',{class:'mlg',x:20,y:26});
+  lg.textContent='굵은 테두리=중핵 · 점선 테두리=외곽 · 우상단 점=양가/하객';mnG.appendChild(lg);
+  const lg2=S('text',{class:'mlg',x:20,y:42});
+  lg2.textContent='노드를 탭: 빨강=이걸 먼저(선행 전체) · 초록=이게 풀린다(후행 전체)';mnG.appendChild(lg2);
+  for(const t of TASKS){
+    const L=MLAY.n[t.id];
+    const g=S('g',{class:'mnode'+(U.excluded.has(t.id)?' off':''),'data-id':t.id});
+    g.appendChild(S('rect',{class:'mb mn-'+(GRAPH.tier[t.id]||'mid'),x:L.x,y:L.y,width:L.w,height:L.h,rx:8}));
+    const nm=S('text',{class:'mt',x:L.x+L.w/2,y:L.y+L.h/2+3.5,'text-anchor':'middle'});
+    nm.textContent=t.name.length>5?t.name.slice(0,5)+'…':t.name;g.appendChild(nm);
+    if(t.who)g.appendChild(S('circle',{class:'mw '+t.who,cx:L.x+L.w-6,cy:L.y+6,r:4}));
+    mnG.appendChild(g);
   }
-
-  function scratchAt(pos){
-    ctx.beginPath();
-    ctx.arc(pos.x, pos.y, 26, 0, Math.PI*2);
-    ctx.fill();
+  // SKIP 반영은 모든 변경 경로의 refreshSkipStyles()가 담당(초기 SKIP은 빈 집합)
+}
+function mapFocus(id){
+  const up=GRAPH.up[id]||new Set(),dn=GRAPH.dn[id]||new Set();
+  for(const el of mnG.children){
+    const r=el.dataset?el.dataset.id:null; if(!r)continue;
+    el.classList.toggle('m-focus',r===id);
+    el.classList.toggle('m-pre',up.has(r));
+    el.classList.toggle('m-next',dn.has(r));
+    el.classList.toggle('m-dim',r!==id&&!up.has(r)&&!dn.has(r));
   }
+  for(const el of meG.children){
+    const a=el.dataset.a,b=el.dataset.b;
+    const pre=up.has(a)&&(b===id||up.has(b));
+    const nxt=dn.has(b)&&(a===id||dn.has(a));
+    el.classList.toggle('pre',pre);el.classList.toggle('next',nxt);
+    el.classList.toggle('dim',!pre&&!nxt);
+  }
+}
+function toggleMap(){
+  if(MAPMODE)modeView.m={...goal};else modeView.t={...goal};
+  MAPMODE=!MAPMODE;
+  $('structBtn').textContent=MAPMODE?'🗓 타임라인':'🧭 구조';
+  $('structBtn').classList.toggle('primary',MAPMODE);
+  feG.innerHTML='';
+  const rv=MAPMODE?modeView.m:modeView.t;
+  if(rv){Object.assign(goal,rv);Object.assign(view,goal);clampPan(view);syncGoal();render();}
+  else fitAll(false);
+  if(FOCUS)focusStep(FOCUS,false);else render();
+}
 
-  function checkReveal(){
-    if(done) return;
-    var data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-    var transparent = 0, total = 0;
-    for(var i=3; i<data.length; i+=16){
-      if(data[i] === 0) transparent++;
-      total++;
+/* 사용자 상태 (저장 대상) */
+const U={excluded:new Set(),memos:{},custom:[],skipExcluded:true,wedding:null,done:new Set()};
+
+/* ============================================================
+   레이아웃: 중앙 스파인 1열 타임라인
+   ============================================================ */
+const SPX=64;                 // 스파인 x
+const RX=82, RW=282, RH=58;   // 절차 카드
+const RGAP=14, PHH=58, PHGAP=34;
+const WORLD_W=RX+RW+70;       // 오른쪽 후행 곡선 여백
+const layout={rows:{},phases:{}};
+function computeLayout(){
+  layout.rows={};layout.phases={};
+  let y=20;
+  for(const p of PHASES){
+    layout.phases[p.id]={y0:y};
+    y+=PHH;
+    const ts=TASKS.filter(t=>t.g===p.id);
+    for(const t of ts){
+      layout.rows[t.id]={x:RX,y,w:RW,h:RH};
+      y+=RH+RGAP;
     }
-    var pct = (transparent / total) * 100;
-    if(pct > 15 && pct <= 45) hint.textContent = '조금만 더...!';
-    if(pct > 45){
-      done = true;
-      wrap.classList.add('gone');
-      hint.classList.add('hide');
-    }
+    layout.phases[p.id].y1=y-RGAP;
+    y+=PHGAP;
   }
+  layout.totalH=y;
+}
 
-  function onStart(e){ e.preventDefault(); drawing = true; scratchAt(getPos(e)); }
-  function onMove(e){ e.preventDefault(); if(!drawing) return; scratchAt(getPos(e)); }
-  function onEnd(){ drawing = false; checkReveal(); }
+/* ============================================================
+   SVG 빌드 (재빌드 가능)
+   ============================================================ */
+const S=(n,a={})=>{const e=document.createElementNS('http://www.w3.org/2000/svg',n);
+  for(const k in a)e.setAttribute(k,a[k]);return e};
+const $=id=>document.getElementById(id);
+const rowsG=$('rows'),spineG=$('spineG'),phG=$('phaseHeads'),feG=$('focusEdges'),pCardsG=$('pCards');
+const mapL=$('worldMap'),meG=$('mapEdges'),mnG=$('mapNodes');
+let MAPMODE=false; const modeView={t:null,m:null};
+function curW(){return MAPMODE?MLAY.W:WORLD_W;}
+function curH(){return MAPMODE?MLAY.H:layout.totalH;}
+const phaseBar=$('phaseBar');
 
-  canvas.addEventListener('mousedown', onStart);
-  canvas.addEventListener('mousemove', onMove);
-  canvas.addEventListener('mouseup', onEnd);
-  canvas.addEventListener('mouseleave', onEnd);
-  canvas.addEventListener('touchstart', onStart, {passive:false});
-  canvas.addEventListener('touchmove', onMove, {passive:false});
-  canvas.addEventListener('touchend', onEnd);
-
-  setTimeout(init, 200);
-  setTimeout(init, 500);
-  setTimeout(init, 1000);
-
-  window.addEventListener('resize', function(){
-    if(!done){ inited = false; ctx.globalCompositeOperation = 'source-over'; init(); }
+function buildWorld(){
+  reindex();computeLayout();
+  rowsG.innerHTML='';spineG.innerHTML='';phG.innerHTML='';pCardsG.innerHTML='';feG.innerHTML='';
+  buildMap();
+  phaseBar.innerHTML='';
+  // 스파인
+  for(const p of PHASES){
+    const L=layout.phases[p.id];
+    spineG.appendChild(S('line',{class:'spine',x1:SPX,y1:L.y0+PHH-8,x2:SPX,y2:L.y1}));
+  }
+  // 단계 헤더
+  PHASES.forEach((p,i)=>{
+    const L=layout.phases[p.id];
+    const g=S('g',{class:'ph-head'});
+    const num=S('text',{class:'num',x:16,y:L.y0+22});num.textContent=String(i+1).padStart(2,'0');
+    const nm=S('text',{class:'nm',x:16,y:L.y0+44});nm.textContent=p.name;
+    const pd=S('text',{class:'pd',x:WORLD_W-16,y:L.y0+44,'text-anchor':'end'});pd.textContent=p.period;
+    g.appendChild(S('line',{x1:16,y1:L.y0+6,x2:WORLD_W-16,y2:L.y0+6}));
+    g.appendChild(num);g.appendChild(nm);g.appendChild(pd);
+    phG.appendChild(g);
   });
-})();
-</script>
-</body>
-</html>
+  // 절차 행
+  for(const t of TASKS){
+    const L=layout.rows[t.id];
+    const g=S('g',{class:'row'+(U.excluded.has(t.id)?' off':'')+(t.custom?' custom':''),'data-id':t.id,'data-tier':(GRAPH.tier[t.id]||'mid')});
+    g.appendChild(S('rect',{class:'bg',x:L.x,y:L.y,width:L.w,height:L.h,rx:10}));
+    g.appendChild(S('circle',{class:'dot',cx:SPX,cy:L.y+L.h/2,r:6}));
+    const dl=S('text',{class:'dl',x:SPX-14,y:L.y+L.h/2+3});dl.textContent=t.d.split(' ')[0];g.appendChild(dl);
+    const nm=S('text',{class:'nm',x:L.x+14,y:L.y+24});
+    nm.textContent=(t.custom?'★ ':'')+t.name;g.appendChild(nm);
+    const info=S('text',{class:'info',x:L.x+14,y:L.y+43});
+    let it=U.excluded.has(t.id)?'제외한 절차 · 탭해서 복원'
+      :(t.cost&&t.cost!=='-')?('💰 '+(t.cost.length>22?t.cost.slice(0,21)+'…':t.cost))
+      :(t.tips&&t.tips[0]?t.tips[0].slice(0,22)+'…':'');
+    if(U.memos[t.id]&&!U.excluded.has(t.id))it='📝 '+(U.memos[t.id].slice(0,20))+(U.memos[t.id].length>20?'…':'');
+    const wt=t.who==='family'?'👪':(t.who==='guest'?'🤝':'');
+    if(wt&&!U.excluded.has(t.id))it=wt+' '+it;
+    info.textContent=it;
+    g.appendChild(info);
+    rowsG.appendChild(g);
+  }
+  // 오버뷰 단계 카드
+  PHASES.forEach((p,i)=>{
+    const L=layout.phases[p.id];
+    const h=L.y1-L.y0;
+    const g=S('g',{class:'p-card','data-p':p.id});
+    g.appendChild(S('rect',{class:'bg',x:12,y:L.y0+4,width:WORLD_W-24,height:h-8,rx:14}));
+    const cy=L.y0+h/2;
+    const num=S('text',{class:'num',x:32,y:cy-14});num.textContent='PHASE '+String(i+1).padStart(2,'0');
+    const nm=S('text',{class:'nm',x:32,y:cy+12});nm.textContent=p.name;
+    const pd=S('text',{class:'pd',x:32,y:cy+34});pd.textContent=p.period;
+    const ct=S('text',{class:'ct',x:WORLD_W-32,y:cy+12,'text-anchor':'end'});
+    const ts=TASKS.filter(t=>t.g===p.id);
+    ct.textContent=`${ts.filter(t=>!U.excluded.has(t.id)).length}/${ts.length}개 절차`;
+    g.appendChild(num);g.appendChild(nm);g.appendChild(pd);g.appendChild(ct);
+    pCardsG.appendChild(g);
+  });
+  // 단계 진행 바
+  PHASES.forEach((p,i)=>{
+    const seg=document.createElement('div');
+    seg.className='seg';seg.dataset.p=p.id;
+    seg.style.flexGrow=TASKS.filter(t=>t.g===p.id).length;
+    seg.innerHTML=`<span class="tip">${i+1}</span>`;
+    seg.onclick=()=>{const first=TASKS.find(t=>t.g===p.id&&!U.excluded.has(t.id))||TASKS.find(t=>t.g===p.id);focusStep(first.id,true);};
+    phaseBar.appendChild(seg);
+  });
+}
+buildWorld();
+
+/* ============================================================
+   카메라 (rAF, 부드러움 + 클램프 + 관성)
+   ============================================================ */
+const vp=$('viewport'),stage=$('stage'),detailL=$('worldDetail'),overL=$('worldOverview');
+const ZOOM_T=0.5, MIN_S=0.1, MAX_S=2.2;
+const view={s:1,tx:0,ty:0}, goal={s:1,tx:0,ty:0};
+let rect=stage.getBoundingClientRect();
+let needRender=false, animRunning=false, lastDetailOn=null;
+
+function render(){
+  vp.setAttribute('transform',`translate(${view.tx} ${view.ty}) scale(${view.s})`);
+  if(MAPMODE){
+    detailL.style.opacity=0;overL.style.opacity=0;mapL.style.opacity=1;
+    detailL.style.pointerEvents='none';overL.style.pointerEvents='none';
+    mapL.style.pointerEvents='auto';lastDetailOn=-1;return;
+  }
+  mapL.style.opacity=0;mapL.style.pointerEvents='none';
+  const op=Math.min(1,Math.max(0,(view.s-ZOOM_T+0.1)/0.2));
+  detailL.style.opacity=op; overL.style.opacity=1-op;
+  const on=op>0.5;
+  if(on!==lastDetailOn){
+    detailL.style.pointerEvents=on?'auto':'none';
+    overL.style.pointerEvents=on?'none':'auto';
+    lastDetailOn=on;
+  }
+}
+function scheduleRender(){if(needRender)return;needRender=true;
+  requestAnimationFrame(()=>{needRender=false;render();});}
+function animTick(){
+  const k=(typeof REDUCE!=='undefined'&&REDUCE)?1:0.22;let done=true;
+  const ds=goal.s-view.s,dx=goal.tx-view.tx,dy=goal.ty-view.ty;
+  if(Math.abs(ds)>0.0008||Math.abs(dx)>0.4||Math.abs(dy)>0.4){
+    view.s+=ds*k;view.tx+=dx*k;view.ty+=dy*k;done=false;
+  }else{view.s=goal.s;view.tx=goal.tx;view.ty=goal.ty;}
+  render();
+  if(!done)requestAnimationFrame(animTick);else animRunning=false;
+}
+function startAnim(){if(!animRunning){animRunning=true;requestAnimationFrame(animTick);}}
+function syncGoal(){goal.s=view.s;goal.tx=view.tx;goal.ty=view.ty;}
+function clampS(s){return Math.min(MAX_S,Math.max(MIN_S,s));}
+function clampPan(v){
+  const w=curW()*v.s,h=curH()*v.s,m=90;
+  v.tx=Math.min(rect.width-m,Math.max(m-w,v.tx));
+  v.ty=Math.min(rect.height-m,Math.max(m-h,v.ty));
+}
+function fitAll(animated){
+  const s=clampS(Math.min((rect.width-24)/curW(),(rect.height-24)/curH()));
+  goal.s=s;goal.tx=(rect.width-curW()*s)/2;goal.ty=12;
+  if(animated)startAnim();else{Object.assign(view,goal);render();}
+}
+function cameraTo(id,animated=true){ // 포커스 행/노드를 화면 36% 지점에
+  const L=MAPMODE?MLAY.n[id]:layout.rows[id];
+  const s=clampS(Math.min(1.15,(rect.width-16)/curW()));
+  goal.s=MAPMODE?Math.max(clampS(0.9),0.9):Math.max(s,ZOOM_T+0.2);
+  goal.tx=MAPMODE?rect.width/2-(L.x+L.w/2)*goal.s:(rect.width-curW()*goal.s)/2;
+  goal.ty=rect.height*0.36-(L.y+L.h/2)*goal.s;
+  clampPan(goal);
+  if(animated)startAnim();else{Object.assign(view,goal);render();}
+}
+$('zin').onclick=()=>{const c={x:rect.width/2,y:rect.height/2};
+  const ns=clampS(goal.s*1.4),k=ns/goal.s;
+  goal.tx=c.x-(c.x-goal.tx)*k;goal.ty=c.y-(c.y-goal.ty)*k;goal.s=ns;clampPan(goal);startAnim();};
+$('zout').onclick=()=>{const c={x:rect.width/2,y:rect.height/2};
+  const ns=clampS(goal.s/1.4),k=ns/goal.s;
+  goal.tx=c.x-(c.x-goal.tx)*k;goal.ty=c.y-(c.y-goal.ty)*k;goal.s=ns;clampPan(goal);startAnim();};
+$('zfit').onclick=()=>fitAll(true);
+stage.addEventListener('wheel',e=>{e.preventDefault();
+  const cx=e.clientX-rect.left,cy=e.clientY-rect.top;
+  const ns=clampS(view.s*Math.exp(-e.deltaY*0.0016)),k=ns/view.s;
+  view.tx=cx-(cx-view.tx)*k;view.ty=cy-(cy-view.ty)*k;view.s=ns;
+  clampPan(view);syncGoal();scheduleRender();},{passive:false});
+window.addEventListener('resize',()=>{rect=stage.getBoundingClientRect();scheduleRender();});
+
+/* 포인터: 탭 대상은 pointerdown 시점에 기억 (capture 버그 수정) */
+const ptrs=new Map();
+let lastDist=0,lastMid=null,moved=false,downAt=0,downTarget=null;
+let vx=0,vy=0,inertiaOn=false;
+function inertiaTick(){
+  if(!inertiaOn)return;
+  view.tx+=vx;view.ty+=vy;vx*=0.92;vy*=0.92;
+  clampPan(view);syncGoal();render();
+  if(Math.abs(vx)+Math.abs(vy)>0.4)requestAnimationFrame(inertiaTick);else inertiaOn=false;
+}
+stage.addEventListener('pointerdown',e=>{
+  if(e.target.closest('.controls'))return;
+  inertiaOn=false;
+  ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  moved=false;downAt=performance.now();vx=vy=0;
+  downTarget=e.target;                       // ← 핵심 수정
+  if(stage.setPointerCapture)try{stage.setPointerCapture(e.pointerId);}catch(_){}
+  if(ptrs.size===2){const[a,b]=[...ptrs.values()];
+    lastDist=Math.hypot(a.x-b.x,a.y-b.y);
+    lastMid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};}
+});
+stage.addEventListener('pointermove',e=>{
+  if(!ptrs.has(e.pointerId))return;
+  const prev=ptrs.get(e.pointerId);
+  ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+  if(ptrs.size===1){
+    const dx=e.clientX-prev.x,dy=e.clientY-prev.y;
+    if(Math.abs(dx)+Math.abs(dy)>3)moved=true;
+    vx=vx*0.5+dx*0.5;vy=vy*0.5+dy*0.5;
+    view.tx+=dx;view.ty+=dy;clampPan(view);syncGoal();scheduleRender();
+  }else if(ptrs.size===2){
+    moved=true;
+    const[a,b]=[...ptrs.values()];
+    const dist=Math.hypot(a.x-b.x,a.y-b.y);
+    const mid={x:(a.x+b.x)/2,y:(a.y+b.y)/2};
+    if(lastDist>0){
+      const ns=clampS(view.s*(dist/lastDist)),k=ns/view.s;
+      const cx=mid.x-rect.left,cy=mid.y-rect.top;
+      view.tx=cx-(cx-view.tx)*k;view.ty=cy-(cy-view.ty)*k;view.s=ns;
+    }
+    view.tx+=mid.x-lastMid.x;view.ty+=mid.y-lastMid.y;
+    lastDist=dist;lastMid=mid;clampPan(view);syncGoal();scheduleRender();
+  }
+});
+function endPtr(e){
+  const wasSingle=ptrs.size===1;
+  if(!moved&&wasSingle&&performance.now()-downAt<500&&downTarget){
+    const rowEl=downTarget.closest('.row');
+    const cardEl=downTarget.closest('.p-card');
+    const mapEl=downTarget.closest('.mnode');
+    if(mapEl&&mapEl.dataset.id)focusStep(mapEl.dataset.id,true);
+    else if(rowEl)focusStep(rowEl.dataset.id,true);
+    else if(cardEl){const first=TASKS.find(t=>t.g===cardEl.dataset.p);focusStep(first.id,true);}
+  }else if(moved&&wasSingle&&Math.abs(vx)+Math.abs(vy)>3){
+    inertiaOn=true;requestAnimationFrame(inertiaTick);
+  }
+  ptrs.delete(e.pointerId);lastDist=0;downTarget=null;
+}
+stage.addEventListener('pointerup',endPtr);
+stage.addEventListener('pointercancel',e=>{ptrs.delete(e.pointerId);lastDist=0;downTarget=null;});
+
+/* ============================================================
+   스토리: 포커스 = 카메라 + 관계선 + 패널 동기화
+   ============================================================ */
+let FOCUS=null;
+/* 커스텀 상태 (세션 메모리, 저장 없음) */
+const SKIP=new Set();
+const NAMES={a:'',b:''};
+function activeOrder(){return ORDER.filter(id=>!SKIP.has(id));}
+function refreshSkipStyles(){
+  for(const el of rowsG.children)el.classList.toggle('skipped',SKIP.has(el.dataset.id));
+  for(const el of mnG.children)if(el.dataset&&el.dataset.id)el.classList.toggle('skipped',SKIP.has(el.dataset.id));
+}
+function gcalUrl(t){ // 구글 캘린더 등록 (웹 연동, 저장 없음)
+  const off=dOffset(t.d);
+  if(!weddingDate||off===null)return null;
+  const dt=new Date(weddingDate.getTime()-off*86400000);
+  const p=n=>String(n).padStart(2,'0');
+  const d1=`${dt.getFullYear()}${p(dt.getMonth()+1)}${p(dt.getDate())}`;
+  const dt2=new Date(dt.getTime()+86400000);
+  const d2=`${dt2.getFullYear()}${p(dt2.getMonth()+1)}${p(dt2.getDate())}`;
+  const details=[(t.tips||[])[0]||'',...(t.check||[]).map(c=>'☐ '+c)].join('\n');
+  return 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+    +'&text='+encodeURIComponent('[결혼준비] '+t.name)
+    +'&dates='+d1+'/'+d2
+    +'&details='+encodeURIComponent(details);
+}
+function shareStep(t){
+  const off=dOffset(t.d);
+  let when=t.d;
+  if(weddingDate&&off!==null){const dt=new Date(weddingDate.getTime()-off*86400000);
+    when+=` (${dt.getMonth()+1}/${dt.getDate()})`;}
+  const text=`[결혼 준비] ${t.name} · ${when}\n`+(t.tips||[]).slice(0,2).map(x=>'- '+x).join('\n');
+  if(navigator.share){navigator.share({title:t.name,text}).catch(()=>{});}
+  else if(navigator.clipboard){navigator.clipboard.writeText(text).then(()=>alert('내용을 복사했어요. 붙여넣기로 공유하세요.')).catch(()=>{});}
+}
+function midY(id){const L=layout.rows[id];return L.y+L.h/2;}
+function drawFocusEdges(t){
+  feG.innerHTML='';
+  // 선행: 왼쪽 레일 (이걸 먼저 끝내야)
+  t.deps.forEach((d,i)=>{
+    const y1=midY(d),y2=midY(t.id);
+    const bulge=34+i*16+Math.min(60,Math.abs(y2-y1)*0.03);
+    feG.appendChild(S('path',{class:'f-edge pre',
+      d:`M${SPX-8},${y1} C${SPX-bulge},${y1} ${SPX-bulge},${y2} ${SPX-8},${y2}`}));
+    const tag=S('text',{class:'f-tag pre',x:SPX-bulge-2,y:(y1+y2)/2,'text-anchor':'end'});
+    tag.textContent='선행';feG.appendChild(tag);
+  });
+  // 후행: 오른쪽 레일 (이게 끝나면 풀린다)
+  const nexts=TASKS.filter(x=>x.deps.includes(t.id));
+  nexts.forEach((n,i)=>{
+    const y1=midY(t.id),y2=midY(n.id);
+    const x0=RX+RW, bulge=26+i*14+Math.min(50,Math.abs(y2-y1)*0.02);
+    feG.appendChild(S('path',{class:'f-edge next',
+      d:`M${x0+4},${y1} C${x0+bulge},${y1} ${x0+bulge},${y2} ${x0+4},${y2}`}));
+  });
+  return nexts;
+}
+function chip(txt,cls){return `<span class="chip ${cls||''}">${txt}</span>`;}
+/* D-라벨 → 오프셋(식 며칠 전, D+는 음수) */
+function dOffset(d){
+  if(/D-day/i.test(d))return 0;
+  const m=d.match(/D([+-])\s?(\d+)/);
+  if(!m)return null;
+  return m[1]==='-'?parseInt(m[2]):-parseInt(m[2]);
+}
+let weddingDate=null;
+function daysLeft(){return weddingDate?Math.ceil((weddingDate-new Date())/86400000):null;}
+function dateChipFor(t){
+  if(!weddingDate)return '';
+  const off=dOffset(t.d);if(off===null)return '';
+  const dt=new Date(weddingDate.getTime()-off*86400000);
+  const label=`${dt.getMonth()+1}/${dt.getDate()}(${'일월화수목금토'[dt.getDay()]})`;
+  const remain=Math.ceil((dt-new Date())/86400000);
+  let badge='';
+  if(remain<0)badge=chip('권장 시기 지남','warn');
+  else if(remain<=14)badge=chip(`임박 ${remain}일 전`,'soon');
+  return chip('📅 '+label,'date')+badge;
+}
+function relRow(id,cls){const x=taskById[id];
+  return `<div class="rel ${cls}" data-jump="${id}"><span>${x.name}</span><span class="rd">${x.d}</span></div>`;}
+/* 담당자 태그 (기본 커플) */
+const OWNER={sangprep:'커플+양가',sang:'커플+양가',dress:'신부',makeup:'신부',fitting:'신부',
+ bouquet:'신부',shower:'신부',hanbok:'신부+양가',suit:'신랑',ham:'신랑 측',yedan:'커플+양가',
+ parents:'양가',desk:'양가',leave:'각자 회사',skin:'각자',nails:'신부',speech:'커플+양가',company:'각자 회사',religion:'커플+양가',hairplan:'각자'};
+function ownerOf(id){return OWNER[id]||'커플';}
+function focusStep(id,animated){
+  FOCUS=id;
+  const t=taskById[id],p=phaseById[t.g];
+  const idx=ORDER.indexOf(id);
+  // 행 상태
+  detailL.classList.add('focusing');
+  let nexts;
+  if(MAPMODE){
+    nexts=TASKS.filter(x=>x.deps.includes(id));
+    mapFocus(id);
+  }else{
+    nexts=drawFocusEdges(t);
+    for(const el of rowsG.children){
+      const rid=el.dataset.id;
+      el.classList.toggle('focus',rid===id);
+      el.classList.toggle('pre',t.deps.includes(rid));
+      el.classList.toggle('next',rid!==id&&nexts.some(n=>n.id===rid));
+    }
+  }
+  // 진행 바
+  for(const seg of phaseBar.children)seg.classList.toggle('active',seg.dataset.p===t.g);
+  // 패널 피크
+  $('peEyebrow').textContent=`PHASE ${String(PHASES.indexOf(p)+1).padStart(2,'0')} ${p.name}`;
+  const AO=activeOrder(),aidx=AO.indexOf(id);
+  $('peCnt').textContent=aidx>=0?`${aidx+1} / ${AO.length}`:`생략됨 · 전체 ${AO.length}`;
+  $('peTitle').textContent=t.name;
+  $('peChips').innerHTML=chip(t.d,'d')+dateChipFor(t)+chip('담당 '+ownerOf(id))
+    +((t.cost&&t.cost!=='-')?chip(t.cost,'cost'):'');
+  $('prevBtn').disabled=aidx<=0;
+  $('nextBtn').disabled=aidx===AO.length-1;
+  // 패널 본문
+  let html='';
+  // 액션: 캘린더 등록 · 공유 · 생략
+  const gu=gcalUrl(t);
+  html+=`<div class="act-row">
+    ${gu?`<a class="abtn" href="${gu}" target="_blank" rel="noopener">📆 캘린더 등록</a>`
+        :`<button class="abtn" data-act="needdate">📆 캘린더 등록</button>`}
+    <button class="abtn" data-act="share">↗ 공유</button>
+    <button class="abtn ${SKIP.has(id)?'skip-on':''}" data-act="skip">${SKIP.has(id)?'↩ 생략 해제':'✕ 이 절차 생략'}</button>
+  </div>`;
+  if(t.links&&t.links.length){
+    html+=`<div class="s-sec"><span class="mark" style="background:#4E4A78"></span>공식 사이트 바로가기</div>`;
+    html+=`<div>`+t.links.map(l=>`<a class="lnk" href="${l.u}" target="_blank" rel="noopener">${l.n}</a>`).join('')+`</div>`;
+  }
+  // 단계 브리핑: 이 단계의 첫 활성 절차에서 목표 안내
+  const firstOfPhase=activeOrder().find(x=>taskById[x].g===t.g);
+  if(firstOfPhase===id){
+    const pi2=PHASES.indexOf(p)+1;
+    html+=`<div class="s-sec"><span class="mark" style="background:var(--focus)"></span>단계 ${String(pi2).padStart(2,'0')} 브리핑 — ${p.name}</div>
+      <div class="s-tip">${p.desc}. 이 단계는 절차 ${TASKS.filter(x=>x.g===p.id&&!SKIP.has(x.id)).length}개로 이루어져 있어요.</div>
+      <div class="s-tip"><b>완료 기준:</b> ${p.goal}</div>`;
+  }
+  if(t.deps.length){
+    html+=`<div class="s-sec"><span class="mark" style="background:var(--pre)"></span>먼저 끝내야 하는 절차</div>`;
+    html+=t.deps.map(d=>relRow(d,'pre')).join('');
+  }
+  if(t.tips&&t.tips.length){
+    html+=`<div class="s-sec"><span class="mark" style="background:var(--focus)"></span>실무 노하우</div>`;
+    html+=t.tips.map(x=>`<div class="s-tip">${x}</div>`).join('');
+  }
+  if(t.check&&t.check.length){
+    const dn=t.check.filter((_,i)=>U.done.has(t.id+':'+i)).length;
+    html+=`<div class="s-sec"><span class="mark" style="background:#B9B6B1"></span>체크리스트 · <span id="ckcnt-${t.id}">${dn}/${t.check.length}</span></div>`;
+    html+=t.check.map((x,i)=>{const k=t.id+':'+i;
+      return `<div class="s-check${U.done.has(k)?' on':''}" data-ck="${k}">${x}</div>`;}).join('');
+  }
+  if(t.ask&&t.ask.length){
+    html+=`<div class="s-sec"><span class="mark" style="background:var(--money)"></span>업체·양가에 확인할 질문</div>`;
+    html+=t.ask.map(x=>`<div class="s-ask">${x}</div>`).join('');
+  }
+  if(nexts.length){
+    html+=`<div class="s-sec"><span class="mark" style="background:var(--next)"></span>이 절차가 끝나면 진행 가능</div>`;
+    html+=nexts.map(n=>relRow(n.id,'next')).join('');
+  }
+  $('pBody').innerHTML=html;
+  $('pBody').scrollTop=0;
+  cameraTo(id,animated);
+}
+function step(dir){
+  const AO=activeOrder();
+  let i=AO.indexOf(FOCUS);
+  if(i<0){ // 현재 절차가 생략됨: ORDER상 가장 가까운 활성 절차로
+    const oi=ORDER.indexOf(FOCUS);
+    i=-1;
+    for(let k=oi+ (dir>0?1:-1); k>=0&&k<ORDER.length; k+=dir){
+      const ai=AO.indexOf(ORDER[k]);
+      if(ai>=0){focusStep(ORDER[k],true);return;}
+    }
+    return;
+  }
+  const ni=Math.min(AO.length-1,Math.max(0,i+dir));
+  if(ni!==i)focusStep(AO[ni],true);
+}
+/* 패널 액션 핸들러 */
+$('pBody').addEventListener('click',e=>{
+  const a=e.target.closest('[data-act]');
+  if(!a)return;
+  const t=taskById[FOCUS];
+  if(a.dataset.act==='share')shareStep(t);
+  else if(a.dataset.act==='needdate')alert('상단에서 예식일을 먼저 설정하면 실제 날짜로 캘린더에 등록할 수 있어요.');
+  else if(a.dataset.act==='skip'){
+    if(SKIP.has(FOCUS))SKIP.delete(FOCUS);else SKIP.add(FOCUS);
+    refreshSkipStyles();focusStep(FOCUS,false);
+  }
+});
+/* 커스텀: 이름·프리셋·생략 관리·글자 크기 (세션 한정, 저장 안 함) */
+const PRESETS={
+  classic:{label:'클래식(전체)',skip:[]},
+  light:{label:'간소화',skip:['ham','pyebaek','party','photobooth']},
+  small:{label:'스몰·미니멀',skip:['ham','pyebaek','hanbok','yedan','expo','party','photobooth','shower','hallopt']}
+};
+let curPreset='classic';
+const THEMES={navy:['네이비','#31527B'],burgundy:['버건디','#7B3140'],forest:['포레스트','#2F5D46'],plum:['플럼','#5C3B6E']};
+let curTheme='navy';
+let REDUCE=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function renderCustom(){
+  const skipped=[...SKIP];
+  const dark=document.documentElement.classList.contains('dark');
+  const nocost=document.documentElement.classList.contains('nocost');
+  $('mBody').innerHTML=`
+    <div class="cu-label">두 사람 이름 (제목에 표시)</div>
+    <div class="cu-names">
+      <input id="nameA" placeholder="이름 1" maxlength="8" value="${NAMES.a}">
+      <span style="color:var(--sub)">♥</span>
+      <input id="nameB" placeholder="이름 2" maxlength="8" value="${NAMES.b}">
+    </div>
+    <div class="cu-label">테마 색</div>
+    <div class="swatches">${Object.entries(THEMES).map(([k,[nm,c]])=>
+      `<button class="sw ${curTheme===k?'on':''}" data-theme="${k}" style="background:${c}" aria-label="${nm}"></button>`).join('')}</div>
+    <div class="cu-label">화면</div>
+    <div class="preset">
+      <button class="pbtn ${dark?'on':''}" data-opt="dark">🌙 다크 모드</button>
+      <button class="pbtn ${nocost?'on':''}" data-opt="nocost">💰 비용 숨김</button>
+      <button class="pbtn ${REDUCE?'on':''}" data-opt="motion">🎞 전환 줄이기</button>
+    </div>
+    <div class="cu-note">비용 숨김은 양가 부모님께 화면을 보여드릴 때 유용해요.</div>
+    <div class="cu-label">웨딩 타입 프리셋 — 스타일에 맞게 절차 자동 생략</div>
+    <div class="preset">${Object.entries(PRESETS).map(([k,p])=>
+      `<button class="pbtn ${curPreset===k?'on':''}" data-preset="${k}">${p.label}</button>`).join('')}</div>
+    <div class="cu-note">프리셋 후에도 개별 생략/해제는 자유예요. 새로고침하면 초기화됩니다(별도 저장 없음).</div>
+    <div class="cu-label">생략된 절차 ${skipped.length}개</div>
+    ${skipped.length?skipped.map(id=>relRow(id,'')).join('')
+      :'<div class="sr-empty">생략된 절차가 없어요. 각 절차 상세에서 "이 절차 생략"을 누르거나 프리셋을 선택하세요.</div>'}
+    ${skipped.length?'<div class="cu-note">절차를 누르면 해당 절차로 이동해 복원할 수 있어요.</div>':''}
+    <div class="cu-label">글자 크기</div>
+    <div class="preset">
+      <button class="pbtn ${!document.documentElement.classList.contains('bigfont')?'on':''}" data-font="normal">보통</button>
+      <button class="pbtn ${document.documentElement.classList.contains('bigfont')?'on':''}" data-font="big">크게</button>
+    </div>`;
+}
+$('customBtn').onclick=()=>{openModal('런시트 커스텀','');renderCustom();};
+$('mBody').addEventListener('click',e=>{
+  const pb=e.target.closest('[data-preset]');
+  if(pb){
+    curPreset=pb.dataset.preset;
+    SKIP.clear();PRESETS[curPreset].skip.forEach(id=>SKIP.add(id));
+    refreshSkipStyles();if(FOCUS)focusStep(FOCUS,false);
+    if($('mTitle').textContent==='런시트 커스텀')renderCustom();
+    return;
+  }
+  const tb=e.target.closest('[data-theme]');
+  if(tb){
+    curTheme=tb.dataset.theme;
+    document.documentElement.style.setProperty('--focus',THEMES[curTheme][1]);
+    renderCustom();return;
+  }
+  const ob=e.target.closest('[data-opt]');
+  if(ob){
+    const o=ob.dataset.opt;
+    if(o==='dark')document.documentElement.classList.toggle('dark');
+    else if(o==='nocost')document.documentElement.classList.toggle('nocost');
+    else if(o==='motion')REDUCE=!REDUCE;
+    renderCustom();return;
+  }
+  const fb=e.target.closest('[data-font]');
+  if(fb){document.documentElement.classList.toggle('bigfont',fb.dataset.font==='big');renderCustom();return;}
+  const j=e.target.closest('[data-jump]');
+  if(j&&($('mTitle').textContent==='런시트 커스텀'||$('mTitle').textContent.startsWith('전체 요약'))){
+    closeModal();focusStep(j.dataset.jump,true);}
+});
+$('mBody').addEventListener('input',e=>{
+  if(e.target.id==='nameA'||e.target.id==='nameB'){
+    NAMES[e.target.id==='nameA'?'a':'b']=e.target.value.trim();
+    const h=document.querySelector('h1');
+    h.textContent=(NAMES.a&&NAMES.b)?`${NAMES.a}·${NAMES.b}의 런시트`:'결혼 준비 런시트';
+  }
+});
+$('prevBtn').onclick=()=>step(-1);
+$('nextBtn').onclick=()=>step(1);
+const panel=$('panel');
+$('expBtn').onclick=()=>panel.classList.toggle('open');
+$('panelMid').onclick=()=>panel.classList.toggle('open');
+$('pBody').addEventListener('click',e=>{
+  const j=e.target.closest('[data-jump]');
+  if(j)focusStep(j.dataset.jump,true);
+});
+window.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();step(1);}
+  else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();step(-1);}
+  else if(e.key===' '){e.preventDefault();panel.classList.toggle('open');}
+});
+
+/* ============================================================
+   D-day · 오늘 위치 · 검색 · 예산 · 스와이프
+   ============================================================ */
+$('ddayInput').addEventListener('change',e=>{
+  const v=e.target.value;if(!v)return;
+  weddingDate=new Date(v+'T00:00:00');
+  const diff=daysLeft();
+  $('ddayLabel').textContent=diff>0?`D-${diff}`:diff===0?'D-day':`D+${-diff}`;
+  $('todayBtn').disabled=false;
+  if(FOCUS)focusStep(FOCUS,false); // 날짜 칩 갱신
+});
+/* 오늘 위치: 현재 남은 일수에 해당하는 절차로 */
+$('todayBtn').onclick=()=>{
+  const diff=daysLeft();if(diff===null)return;
+  let best=ORDER[ORDER.length-1];
+  for(const id of ORDER){
+    const off=dOffset(taskById[id].d);
+    if(off!==null&&off<=diff){best=id;break;}
+  }
+  focusStep(best,true);
+  panel.classList.remove('open');
+};
+
+/* 모달 공통 */
+const ovl=$('ovl'),modal=$('modal');
+function openModal(title,html){
+  $('mTitle').textContent=title;$('mBody').innerHTML=html;
+  ovl.classList.add('on');modal.classList.add('on');
+}
+function closeModal(){ovl.classList.remove('on');modal.classList.remove('on');}
+$('mClose').onclick=closeModal;ovl.onclick=closeModal;
+function toggleCk(el){
+  const k=el.dataset.ck; U.done.has(k)?U.done.delete(k):U.done.add(k);
+  el.classList.toggle('on');
+  const tid=k.split(':')[0], t=taskById[tid];
+  const dn1=(t.check||[]).filter((_,i)=>U.done.has(tid+':'+i)).length;
+  const c=$('ckcnt-'+tid); if(c)c.textContent=dn1+'/'+t.check.length;
+  const [dn,tot]=todoStats();
+  const bar=$('todoBar'); if(bar)bar.innerHTML=`할일 <b>${dn}</b>/${tot} 완료 — 항목을 탭하면 체크됩니다`;
+  if($('mTitle').textContent.startsWith('전체 할일'))$('mTitle').textContent=`전체 할일 ${dn}/${tot}`;
+}
+$('pBody').addEventListener('click',e=>{
+  const ck=e.target.closest('[data-ck]'); if(ck)toggleCk(ck);
+});
+$('mBody').addEventListener('click',e=>{
+  const ck=e.target.closest('[data-ck]'); if(ck){toggleCk(ck);return;}
+  const go=e.target.closest('[data-go]');
+  if(go){closeModal();focusStep(go.dataset.go,true);}
+});
+
+/* 절차 검색: 전문 검색 + 인기 검색어 + 단계 필터 + 매칭 스니펫 */
+const POPULAR=['추가금','보증인원','축의금','혼인신고','여권','예단','대출','답례품','헬퍼','생략'];
+function snippetFor(t,q){
+  const fields=[...(t.tips||[]),...(t.check||[]),...(t.ask||[])];
+  for(const f of fields){
+    const i=f.toLowerCase().indexOf(q);
+    if(i>=0){
+      const st=Math.max(0,i-16), en=Math.min(f.length,i+q.length+40);
+      const raw=(st>0?'…':'')+f.slice(st,en)+(en<f.length?'…':'');
+      return raw.replace(new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi'),m=>`<b>${m}</b>`);
+    }
+  }
+  return '';
+}
+$('searchBtn').onclick=()=>{
+  openModal('절차 검색',
+    `<input id="searchInput" type="search" placeholder="예: 추가금, 보증인원, 축의금…" autocomplete="off">
+     <div class="qrow">
+       <select class="sel" id="phaseFilter"><option value="">전체 단계</option>
+         ${PHASES.map((p,i)=>`<option value="${p.id}">${String(i+1).padStart(2,'0')} ${p.name}</option>`).join('')}
+       </select>
+       <div class="qchips">${POPULAR.map(w=>`<button class="qchip" data-q="${w}">${w}</button>`).join('')}</div>
+     </div>
+     <div id="searchResults" style="margin-top:12px"></div>`);
+  const inp=$('searchInput'),res=$('searchResults'),pf=$('phaseFilter');
+  function run(){
+    const q=inp.value.trim().toLowerCase(), ph=pf.value;
+    let pool=TASKS.filter(t=
