@@ -467,7 +467,7 @@ reindex();
     } st[id]=2;};
   TASKS.forEach(t=>{if(!st[t.id])dfs(t.id)});
   const E=TASKS.reduce((a,t)=>a+t.deps.length,0);
-  console[errs.length?'warn':'log']('[런시트 형식검증] 절차 '+TASKS.length+' · 간선 '+E+(errs.length?' · 문제 '+errs.length+'건':' · 이상 없음'), errs.length?errs:'');
+  console[errs.length?'warn':'log']('[런시트 형식검증 · build 7-5.1] 절차 '+TASKS.length+' · 간선 '+E+(errs.length?' · 문제 '+errs.length+'건':' · 이상 없음'), errs.length?errs:'');
 })();
 
 /* ── 연결 지도(v7-5): 노드·간선 렌더와 연관 하이라이트 ── */
@@ -1131,4 +1131,4 @@ $('searchBtn').onclick=()=>{
   const inp=$('searchInput'),res=$('searchResults'),pf=$('phaseFilter');
   function run(){
     const q=inp.value.trim().toLowerCase(), ph=pf.value;
-    let pool=TASKS.filter(t=
+    let pool=T
